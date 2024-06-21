@@ -1,7 +1,10 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { cookies } from "next/headers";
+import { getThemeFromCookies, Theme } from "@/lib/theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,9 +18,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const theme = getThemeFromCookies(cookieStore);
+
   return (
-    <html lang="en">
-      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.style)}>{children}</body>
+    <html lang="en" className={theme === Theme.Dark ? "dark" : ""}>
+      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.style)}>
+        <header className="p-4 bg-gray-800 text-white flex justify-between">
+          <nav>
+            <Link href="/" className="mr-4">
+              Home
+            </Link>
+            <Link href="/contact" className="mr-4">
+              Contact
+            </Link>
+          </nav>
+        </header>
+        {children}
+      </body>
     </html>
   );
 }

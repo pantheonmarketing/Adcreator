@@ -14,6 +14,13 @@ export const translations = {
       en: "English",
       es: "Spanish",
     },
+    contact: {
+      title: "Contact",
+      name: "Name",
+      email: "Email",
+      message: "Message",
+      submit: "Submit",
+    },
   },
   [Locale.es]: {
     home: {
@@ -23,7 +30,22 @@ export const translations = {
       en: "Inglés",
       es: "Español",
     },
+    contact: {
+      title: "Contacto",
+      name: "Nombre",
+      email: "Correo",
+      message: "Mensaje",
+      submit: "Enviar",
+    },
   },
 };
 
 export type TranslationKey = keyof (typeof translations)[Locale];
+
+export function getTranslation(locale: Locale, key: TranslationKey): any {
+  const translation = translations[locale][key];
+  if (translation) {
+    return translation;
+  }
+  return translations[DEFAULT_LOCALE][key];
+}
