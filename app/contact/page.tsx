@@ -1,35 +1,23 @@
 import { Button } from "@/components/ui/button";
-import { changeLocale, toggleTheme } from "@/app/actions";
+import { toggleTheme } from "@/app/actions";
 import { cookies } from "next/headers";
-import { Locale, translations } from "@/lib/i18n";
 import { getThemeFromCookies, Theme } from "@/lib/theme";
+import { getServerTranslations } from "../i18n/server";
+import { LangSelect } from "@/components/ui/LangSelect";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function Contact() {
+export default async function Contact() {
+  const { t, i18n } = await getServerTranslations();
   const cookieStore = cookies();
-  const locale = (cookieStore.get("locale")?.value || "en") as Locale;
   const theme = getThemeFromCookies(cookieStore);
 
   return (
     <main className="w-full h-screen py-12 md:py-24 lg:py-32 xl:py-48">
       <div className="w-full space-y-4 mx-auto">
-        <h1 className="space-x-2 flex justify-center font-bold text-2xl">
-          <span>{translations[locale].contact.title}</span>
-        </h1>
+        <h1 className="space-x-2 flex justify-center font-bold text-2xl">{t("shared.title")}</h1>
         <div className="flex flex-row justify-center items-center gap-4">
-          <form action={changeLocale} method="post">
-            <input type="hidden" name="locale" value="en" />
-            <input type="hidden" name="redirectTo" value="/contact" />
-            <Button variant="outline" type="submit">
-              {translations[locale].buttons.en} {locale === "en" && <span className="text-muted-foreground">(Current)</span>}
-            </Button>
-          </form>
-          <form action={changeLocale} method="post">
-            <input type="hidden" name="locale" value="es" />
-            <input type="hidden" name="redirectTo" value="/contact" />
-            <Button variant="outline" type="submit">
-              {translations[locale].buttons.es} {locale === "es" && <span className="text-muted-foreground">(Current)</span>}
-            </Button>
-          </form>
+          <LangSelect currentLanguage={i18n.language} />
         </div>
         <div className="flex flex-row justify-center items-center gap-4">
           <form action={toggleTheme} method="post">
@@ -39,22 +27,28 @@ export default function Contact() {
             </Button>
           </form>
         </div>
-        <div className="mt-8">
-          <form>
-            <div>
-              <label htmlFor="name">{translations[locale].contact.name}</label>
-              <input id="name" type="text" className="border rounded p-2 w-full" />
+        <div className="mt-8 max-w-xl mx-auto">
+          <form className="">
+            <div className="space-y-1">
+              <label htmlFor="name" className="text-xs font-medium text-muted-foreground">
+                {t("shared.name")}
+              </label>
+              <Input id="name" type="text" />
             </div>
-            <div>
-              <label htmlFor="email">{translations[locale].contact.email}</label>
-              <input id="email" type="email" className="border rounded p-2 w-full" />
+            <div className="space-y-1">
+              <label htmlFor="email" className="text-xs font-medium text-muted-foreground">
+                {t("shared.email")}
+              </label>
+              <Input id="email" type="email" />
             </div>
-            <div>
-              <label htmlFor="message">{translations[locale].contact.message}</label>
-              <textarea id="message" className="border rounded p-2 w-full" rows={5}></textarea>
+            <div className="space-y-1">
+              <label htmlFor="message" className="text-xs font-medium text-muted-foreground">
+                {t("shared.message")}
+              </label>
+              <Textarea id="message" rows={5} />
             </div>
-            <Button type="submit" className="mt-4">
-              {translations[locale].contact.submit}
+            <Button variant="default" type="submit" className="mt-4">
+              {t("shared.submit")}
             </Button>
           </form>
         </div>

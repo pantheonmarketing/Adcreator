@@ -1,0 +1,9 @@
+{
+  "shared": {
+    "title": "Título",
+    "name": "Nombre",
+    "email": "Correo",
+    "message": "Mensaje",
+    "submit": "Enviar"
+  }
+}
