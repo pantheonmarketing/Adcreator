@@ -1,7 +1,7 @@
-import { Button } from "../../components/ui/button";
-import { getServerTranslations } from "../../lib/i18n/server";
-import { Input } from "../../components/ui/input";
-import { Textarea } from "../../components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { getServerTranslations } from "@/lib/i18n/server";
 
 export default async function Contact() {
   const { t } = await getServerTranslations();

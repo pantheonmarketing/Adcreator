@@ -1,7 +1,7 @@
 import { getServerTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
 import { LangSelect } from "./LangSelect";
-import { toggleTheme } from "@/app/actions";
+import { toggleTheme } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
 import { cookies } from "next/headers";
 import { Theme, getThemeFromCookies } from "@/lib/theme";
