@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
+"use server";
+
+import { Button } from "../components/ui/button";
 import { toggleTheme } from "./actions";
 import { cookies } from "next/headers";
-import { getThemeFromCookies, Theme } from "@/lib/theme";
-import { getServerTranslations } from "./i18n/server";
-import { LangSelect } from "@/components/ui/LangSelect";
-
-// import type { Metadata, ResolvingMetadata } from "next";
+import { getThemeFromCookies, Theme } from "../lib/theme";
+import { getServerTranslations } from "../lib/i18n/server";
+import { LangSelect } from "../components/LangSelect";
 
 // type Props = {
 //   params: { id: string };
@@ -21,7 +21,14 @@ import { LangSelect } from "@/components/ui/LangSelect";
 //   };
 // }
 
-export default async function Home() {
+export async function generateMetadata() {
+  const { t } = await getServerTranslations();
+  return {
+    title: t("shared.title"),
+  };
+}
+
+export default async function Index() {
   const { t, i18n } = await getServerTranslations();
   const cookieStore = cookies();
   const theme = getThemeFromCookies(cookieStore);

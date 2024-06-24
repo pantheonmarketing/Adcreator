@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { getThemeFromCookies, Theme } from "@/lib/theme";
 import { dir } from "i18next";
-import { detectLanguage, getServerTranslations } from "./i18n/server";
-import { I18nProvider } from "./i18n/i18n-context";
+import { detectLanguage, getServerTranslations } from "@/lib/i18n/server";
+import { I18nProvider } from "@/lib/i18n/i18n-context";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { toggleTheme } from "@/app/actions";
+import { Button } from "../../components/ui/button";
 import { cookies } from "next/headers";
-import { getThemeFromCookies, Theme } from "@/lib/theme";
-import { getServerTranslations } from "../i18n/server";
-import { LangSelect } from "@/components/ui/LangSelect";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { getThemeFromCookies, Theme } from "../../lib/theme";
+import { getServerTranslations } from "../../lib/i18n/server";
+import { LangSelect } from "../../components/LangSelect";
+import { Input } from "../../components/ui/input";
+import { Textarea } from "../../components/ui/textarea";
+import { toggleTheme } from "../actions";
 
 export default async function Contact() {
   const { t, i18n } = await getServerTranslations();
