@@ -20,7 +20,7 @@ export default async function Contact() {
           <LangSelect currentLanguage={i18n.language} />
         </div>
         <div className="flex flex-row justify-center items-center gap-4">
-          <form action={toggleTheme} method="post">
+          <form action={toggleTheme}>
             <input type="hidden" name="redirectTo" value="/contact" />
             <Button variant="outline" type="submit">
               {theme === Theme.Light ? "Switch to Dark Mode" : "Switch to Light Mode"}
