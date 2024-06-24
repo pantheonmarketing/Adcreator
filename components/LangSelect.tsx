@@ -18,7 +18,7 @@ export const LangSelect = ({ currentLanguage }: { currentLanguage: string }) => 
       {languages.map((lang) => {
         return (
           <span key={lang}>
-            <Button variant="outline" type="button" onClick={(e) => handleChangeLanguage(e, lang)}>
+            <Button type="button" onClick={(e) => handleChangeLanguage(e, lang)}>
               {lang} {currentLanguage === lang ? " (current)" : ""}
             </Button>
           </span>

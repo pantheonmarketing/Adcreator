@@ -8,6 +8,7 @@ import { getThemeFromCookies, Theme } from "@/lib/theme";
 import { dir } from "i18next";
 import { detectLanguage, getServerTranslations } from "@/lib/i18n/server";
 import { I18nProvider } from "@/lib/i18n/i18n-context";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,16 +32,7 @@ export default async function RootLayout({
     <I18nProvider language={lng}>
       <html lang={lng} dir={dir(lng)} className={theme === Theme.Dark ? "dark" : ""}>
         <body className={cn("min-h-screen bg-background font-sans antialiased", inter.style)}>
-          <header className="p-4 bg-gray-800 text-white flex justify-between">
-            <nav>
-              <Link href="/" className="mr-4">
-                Home
-              </Link>
-              <Link href="/contact" className="mr-4">
-                Contact
-              </Link>
-            </nav>
-          </header>
+          <Header />
           {children}
         </body>
       </html>
