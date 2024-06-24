@@ -4,6 +4,7 @@
     "name": "Name",
     "email": "Email",
     "message": "Message",
-    "submit": "Submit"
+    "submit": "Submit",
+    "loading": "Loading"
   }
 }

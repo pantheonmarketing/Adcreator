@@ -4,6 +4,7 @@
     "name": "Nombre",
     "email": "Correo",
     "message": "Mensaje",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "loading": "Cargando"
   }
 }

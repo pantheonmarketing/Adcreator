@@ -1,7 +1,7 @@
 import { getServerTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
 import { LangSelect } from "./LangSelect";
-import { toggleTheme } from "@/app/(marketing)/actions";
+import { logout, toggleTheme } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
 import { cookies } from "next/headers";
 import { Theme, getThemeFromCookies } from "@/lib/theme";
@@ -10,6 +10,7 @@ export default async function Header() {
   const { t, i18n } = await getServerTranslations();
   const cookieStore = cookies();
   const theme = getThemeFromCookies(cookieStore);
+  const userInfo = cookieStore.get("user")?.value;
   return (
     <header className="p-4 bg-gray-800 text-white flex justify-between">
       <div className="flex items-center space-x-2 justify-between">
@@ -20,6 +21,12 @@ export default async function Header() {
           <Link href="/contact" className="mr-4">
             Contact
           </Link>
+          <Link href="/login" className="mr-4">
+            Login
+          </Link>
+          <Link href="/app" className="mr-4">
+            App
+          </Link>
         </nav>
         <div className="flex items-center space-x-2">
           <div className="flex flex-row justify-center items-center gap-4">
@@ -27,8 +34,19 @@ export default async function Header() {
           </div>
           <div className="flex flex-row justify-center items-center gap-4">
             <form action={toggleTheme}>
-              <Button type="submit">{theme === Theme.Light ? "Switch to Dark Mode" : "Switch to Light Mode"}</Button>
+              <Button type="submit">{theme === Theme.Light ? "Dark" : "Light"}</Button>
             </form>
+          </div>
+          <div>
+            {userInfo ? (
+              <form action={logout}>
+                <Button>Logout: {userInfo}</Button>
+              </form>
+            ) : (
+              <Link href="/login">
+                <Button>Login</Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

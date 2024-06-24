@@ -31,3 +31,10 @@ export async function toggleTheme(formData: FormData) {
   setThemeCookie(cookieStore, newTheme);
   return redirect(redirectTo || "/");
 }
+
+export async function logout(formData: FormData) {
+  console.log("logout");
+  const cookieStore = cookies();
+  cookieStore.delete("user");
+  return redirect("/");
+}
