@@ -1,20 +1,17 @@
-import { getServerTranslations } from "@/lib/i18n/server";
 import Link from "next/link";
-import { LangSelect } from "./LangSelect";
-import { logout, toggleTheme } from "@/app/(marketing)/actions";
+import { logout, toggleLightOrDarkMode } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
-import { cookies } from "next/headers";
-import { Theme, getThemeFromCookies } from "@/lib/theme";
+import { getUserInfo } from "@/lib/session";
+import LocaleSelector from "./ui/selectors/LocaleSelector";
+import ThemeSelector from "./ui/selectors/ThemeSelector";
+import DarkModeToggle from "./ui/toggles/DarkModeToggle";
 
 export default async function Header() {
-  const { t, i18n } = await getServerTranslations();
-  const cookieStore = cookies();
-  const theme = getThemeFromCookies(cookieStore);
-  const userInfo = cookieStore.get("user")?.value;
+  const userInfo = getUserInfo();
   return (
-    <header className="p-4 bg-gray-800 text-white flex justify-between">
-      <div className="flex items-center space-x-2 justify-between">
-        <nav>
+    <header className="p-4 flex justify-center w-full">
+      <div className="flex items-center gap-5 justify-between">
+        <nav className="gap-5 flex items-center">
           <Link href="/" className="mr-4">
             Home
           </Link>
@@ -30,17 +27,15 @@ export default async function Header() {
         </nav>
         <div className="flex items-center space-x-2">
           <div className="flex flex-row justify-center items-center gap-4">
-            <LangSelect currentLanguage={i18n.language} />
+            <LocaleSelector />
+            <ThemeSelector currentTheme={userInfo.theme} />
+            <DarkModeToggle currentLightOrDarkMode={userInfo.lightOrDarkMode} />
           </div>
-          <div className="flex flex-row justify-center items-center gap-4">
-            <form action={toggleTheme}>
-              <Button type="submit">{theme === Theme.Light ? "Dark" : "Light"}</Button>
-            </form>
-          </div>
+
           <div>
-            {userInfo ? (
+            {userInfo.userId ? (
               <form action={logout}>
-                <Button>Logout: {userInfo}</Button>
+                <Button>Logout</Button>
               </form>
             ) : (
               <Link href="/login">

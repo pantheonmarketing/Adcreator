@@ -1,41 +1,87 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+"use server";
+
+import HoneypotInput from "@/components/ui/honeypot/HoneypotInput";
+import InputText from "@/components/ui/input/InputText";
 import { getServerTranslations } from "@/lib/i18n/server";
+import LoadingButton from "@/components/LoadingButton";
+import { submission } from "./actions";
 
 export default async function Contact() {
   const { t } = await getServerTranslations();
+  const actionUrl = undefined;
 
   return (
-    <main className="w-full h-screen py-12 md:py-24 lg:py-32 xl:py-48">
-      <div className="w-full space-y-4 mx-auto">
-        <h1 className="space-x-2 flex justify-center font-bold text-2xl">{t("shared.title")}</h1>
-        <div className="mt-8 max-w-xl mx-auto">
-          <form className="">
-            <div className="space-y-1">
-              <label htmlFor="name" className="text-xs font-medium text-muted-foreground">
-                {t("shared.name")}
-              </label>
-              <Input id="name" type="text" />
+    <div className="bg-background">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="sm:align-center sm:flex sm:flex-col">
+          <div className="relative mx-auto w-full max-w-xl overflow-hidden px-2 py-12 sm:py-6">
+            <div className="text-center">
+              <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t("front.contact.title")}</h1>
+              <p className="text-muted-foreground mt-4 text-lg leading-6">{t("front.contact.headline")}</p>
             </div>
-            <div className="space-y-1">
-              <label htmlFor="email" className="text-xs font-medium text-muted-foreground">
-                {t("shared.email")}
-              </label>
-              <Input id="email" type="email" />
+            <div className="mt-12">
+              <form action={submission}>
+                <input type="hidden" name="action" value="submission" readOnly hidden />
+                <HoneypotInput name="_gotcha" />
+                <ContactForm />
+              </form>
+              <div></div>
             </div>
-            <div className="space-y-1">
-              <label htmlFor="message" className="text-xs font-medium text-muted-foreground">
-                {t("shared.message")}
-              </label>
-              <Textarea id="message" rows={5} />
-            </div>
-            <Button variant="default" type="submit" className="mt-4">
-              {t("shared.submit")}
-            </Button>
-          </form>
+          </div>
         </div>
       </div>
-    </main>
+    </div>
+  );
+}
+
+async function ContactForm() {
+  const { t } = await getServerTranslations();
+  return (
+    <div className="mt-9 grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
+      <div>
+        <div className="mt-1">
+          <InputText title={t("front.contact.firstName")} required type="text" name="first_name" id="first_name" autoComplete="given-name" defaultValue="" />
+        </div>
+      </div>
+      <div>
+        <div className="mt-1">
+          <InputText title={t("front.contact.lastName")} type="text" name="last_name" id="last_name" autoComplete="family-name" defaultValue="" />
+        </div>
+      </div>
+      <div className="sm:col-span-2">
+        <div className="mt-1">
+          <InputText title={t("front.contact.email")} required id="email" name="email" type="email" autoComplete="email" defaultValue="" />
+        </div>
+      </div>
+
+      <div>
+        <div className="mt-1">
+          <InputText title={t("front.contact.organization")} type="text" name="company" id="company" autoComplete="organization" defaultValue="" />
+        </div>
+      </div>
+
+      <div>
+        <div className="mt-1">
+          <InputText
+            title={t("front.contact.jobTitle")}
+            type="text"
+            name="jobTitle"
+            id="organization-title"
+            autoComplete="organization-title"
+            defaultValue=""
+          />
+        </div>
+      </div>
+
+      <div className="sm:col-span-2">
+        <div className="mt-1">
+          <InputText title={t("front.contact.comments")} required id="comments" name="comments" rows={4} defaultValue="" />
+        </div>
+      </div>
+
+      <div className="text-right sm:col-span-2">
+        <LoadingButton>{t("front.contact.send")}</LoadingButton>
+      </div>
+    </div>
   );
 }

@@ -1,22 +1,31 @@
 "use server";
 
-import { Theme, getThemeFromCookies, setThemeCookie } from "@/lib/theme";
-import { cookies } from "next/headers";
+import { getUserInfo, setUserSession, resetUserSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-export async function toggleTheme(formData: FormData) {
+export async function toggleLightOrDarkMode(formData: FormData) {
   const redirectTo = formData.get("redirectTo") as string;
-  const cookieStore = cookies();
-  const currentTheme = getThemeFromCookies(cookieStore);
-  const newTheme = currentTheme === Theme.Light ? Theme.Dark : Theme.Light;
+  const userInfo = getUserInfo();
+  userInfo.lightOrDarkMode = userInfo.lightOrDarkMode === "light" ? "dark" : "light";
+  console.log({
+    lightOrDarkMode: userInfo.lightOrDarkMode,
+  });
+  setUserSession(userInfo);
+  return redirect(redirectTo || "/");
+}
 
-  setThemeCookie(cookieStore, newTheme);
+export async function setTheme(formData: FormData) {
+  const redirectTo = formData.get("redirectTo") as string;
+  const userInfo = getUserInfo();
+  setUserSession({
+    ...userInfo,
+    theme: formData.get("theme") as string,
+  });
   return redirect(redirectTo || "/");
 }
 
 export async function logout(formData: FormData) {
   console.log("logout");
-  const cookieStore = cookies();
-  cookieStore.delete("user");
+  resetUserSession();
   return redirect("/");
 }

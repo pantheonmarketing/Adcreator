@@ -1,11 +1,12 @@
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
-import { cn } from "@/lib/utils";
-import { cookies } from "next/headers";
-import { getThemeFromCookies, Theme } from "@/lib/theme";
+import "@/styles/themes.css";
 import { dir } from "i18next";
 import { detectLanguage, getServerTranslations } from "@/lib/i18n/server";
 import { I18nProvider } from "@/lib/i18n/i18n-context";
+import { getUserInfo } from "@/lib/session";
+import clsx from "clsx";
+import { Toaster as ReactHostToaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,13 +23,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const lng = await detectLanguage();
-  const cookieStore = cookies();
-  const theme = getThemeFromCookies(cookieStore);
+  const userInfo = getUserInfo();
+  const lightOrDarkMode = userInfo?.lightOrDarkMode || "light";
 
   return (
     <I18nProvider language={lng}>
-      <html lang={lng} dir={dir(lng)} className={theme === Theme.Dark ? "dark" : ""}>
-        <body className={cn("min-h-screen bg-background font-sans antialiased", inter.style)}>{children}</body>
+      <html lang={lng} dir={dir(lng)} className={lightOrDarkMode === "dark" ? "dark" : ""}>
+        <body className={clsx(`theme-${userInfo.theme}`, "bg-background text-foreground max-h-full min-h-screen max-w-full", inter.style)}>
+          {children}
+          <ReactHostToaster />
+        </body>
       </html>
     </I18nProvider>
   );

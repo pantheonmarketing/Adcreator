@@ -25,7 +25,7 @@ export default async function Page() {
               <Input type="password" name="password" placeholder="Password" required />
             </div>
             <div className="mt-4 flex justify-end">
-              <LoadingButton />
+              <LoadingButton>{t("shared.login")}</LoadingButton>
             </div>
           </form>
         </div>
