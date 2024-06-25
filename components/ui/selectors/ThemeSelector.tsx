@@ -15,7 +15,6 @@ import {
 import { Button } from "../button";
 import { setTheme } from "@/app/(marketing)/actions";
 import { defaultThemeColor, defaultThemes } from "@/lib/theme";
-import toast from "react-hot-toast";
 
 interface Props {
   className?: string;
@@ -28,7 +27,6 @@ export default function ThemeSelector({ className, variant = "primary", disabled
   async function select(value: string) {
     const form = new FormData();
     form.set("theme", value);
-    toast.success("Theme updated: " + value);
     setTheme(form);
   }
 
