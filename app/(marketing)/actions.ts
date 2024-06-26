@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserInfo, setUserSession, resetUserSession } from "@/lib/session";
+import { getUserInfo, setUserSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
 export async function toggleLightOrDarkMode(formData: FormData) {
@@ -26,6 +26,10 @@ export async function setTheme(formData: FormData) {
 
 export async function logout(formData: FormData) {
   console.log("logout");
-  resetUserSession();
+  const userInfo = getUserInfo();
+  setUserSession({
+    ...userInfo,
+    userId: null,
+  });
   return redirect("/");
 }

@@ -53,9 +53,9 @@ export function setUserSession(userSession: UserSession) {
   cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
 }
 
-export function resetUserSession() {
-  const cookieStore = cookies();
-  const serializedSession = serialize(SESSION_COOKIE_NAME, "", { maxAge: -1, path: "/" });
-  cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
-  return redirect("/login");
-}
+// export function resetUserSession() {
+//   const cookieStore = cookies();
+//   const serializedSession = serialize(SESSION_COOKIE_NAME, "", { maxAge: -1, path: "/" });
+//   cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
+//   return redirect("/login");
+// }
