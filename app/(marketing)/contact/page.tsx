@@ -1,10 +1,12 @@
 "use server";
 
 import HoneypotInput from "@/components/ui/honeypot/HoneypotInput";
-import InputText from "@/components/ui/input/InputText";
 import { getServerTranslations } from "@/lib/i18n/server";
-import LoadingButton from "@/components/LoadingButton";
 import { submission } from "./actions";
+import { useTranslation } from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 export default async function Contact() {
   const { t } = await getServerTranslations();
@@ -40,47 +42,58 @@ async function ContactForm() {
     <div className="mt-9 grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
       <div>
         <div className="mt-1">
-          <InputText title={t("front.contact.firstName")} required type="text" name="first_name" id="first_name" autoComplete="given-name" defaultValue="" />
+          <label htmlFor="first_name" className="mb-1 text-xs font-medium">
+            {t("front.contact.firstName")} <span className="text-red-500">*</span>
+          </label>
+          <Input title={t("front.contact.firstName")} required type="text" name="first_name" id="first_name" autoComplete="given-name" defaultValue="" />
         </div>
       </div>
       <div>
         <div className="mt-1">
-          <InputText title={t("front.contact.lastName")} type="text" name="last_name" id="last_name" autoComplete="family-name" defaultValue="" />
+          <label htmlFor="last_name" className="mb-1 text-xs font-medium">
+            {t("front.contact.lastName")} <span className="text-red-500">*</span>
+          </label>
+          <Input title={t("front.contact.lastName")} type="text" name="last_name" id="last_name" autoComplete="family-name" defaultValue="" />
         </div>
       </div>
       <div className="sm:col-span-2">
         <div className="mt-1">
-          <InputText title={t("front.contact.email")} required id="email" name="email" type="email" autoComplete="email" defaultValue="" />
+          <label htmlFor="email" className="mb-1 text-xs font-medium">
+            {t("front.contact.email")} <span className="text-red-500">*</span>
+          </label>
+          <Input title={t("front.contact.email")} required id="email" name="email" type="email" autoComplete="email" defaultValue="" />
         </div>
       </div>
 
       <div>
         <div className="mt-1">
-          <InputText title={t("front.contact.organization")} type="text" name="company" id="company" autoComplete="organization" defaultValue="" />
+          <label htmlFor="company" className="mb-1 text-xs font-medium">
+            {t("front.contact.organization")}
+          </label>
+          <Input title={t("front.contact.organization")} type="text" name="company" id="company" autoComplete="organization" defaultValue="" />
         </div>
       </div>
 
       <div>
         <div className="mt-1">
-          <InputText
-            title={t("front.contact.jobTitle")}
-            type="text"
-            name="jobTitle"
-            id="organization-title"
-            autoComplete="organization-title"
-            defaultValue=""
-          />
+          <label htmlFor="organization-title" className="mb-1 text-xs font-medium">
+            {t("front.contact.jobTitle")}
+          </label>
+          <Input title={t("front.contact.jobTitle")} type="text" name="jobTitle" id="organization-title" autoComplete="organization-title" defaultValue="" />
         </div>
       </div>
 
       <div className="sm:col-span-2">
         <div className="mt-1">
-          <InputText title={t("front.contact.comments")} required id="comments" name="comments" rows={4} defaultValue="" />
+          <label htmlFor="comments" className="mb-1 text-xs font-medium">
+            {t("front.contact.comments")}
+          </label>
+          <Textarea title={t("front.contact.comments")} required id="comments" name="comments" rows={4} defaultValue="" />
         </div>
       </div>
 
       <div className="text-right sm:col-span-2">
-        <LoadingButton>{t("front.contact.send")}</LoadingButton>
+        <Button type="submit">{t("front.contact.send")}</Button>
       </div>
     </div>
   );
