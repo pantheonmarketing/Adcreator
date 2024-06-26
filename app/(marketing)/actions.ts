@@ -3,7 +3,7 @@
 import { getUserInfo, setUserSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-export async function toggleScheme(formData: FormData) {
+export async function actionToggleScheme(formData: FormData) {
   const redirectTo = formData.get("redirectTo") as string;
   const userInfo = getUserInfo();
   userInfo.scheme = userInfo.scheme === "light" ? "dark" : "light";
@@ -14,7 +14,7 @@ export async function toggleScheme(formData: FormData) {
   return redirect(redirectTo || "/");
 }
 
-export async function setTheme(formData: FormData) {
+export async function actionSetTheme(formData: FormData) {
   const redirectTo = formData.get("redirectTo") as string;
   const userInfo = getUserInfo();
   setUserSession({
@@ -24,7 +24,7 @@ export async function setTheme(formData: FormData) {
   return redirect(redirectTo || "/");
 }
 
-export async function logout(formData: FormData) {
+export async function actionLogout(formData: FormData) {
   console.log("logout");
   const userInfo = getUserInfo();
   setUserSession({

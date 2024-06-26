@@ -13,8 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "../dropdown-menu";
 import { Button } from "../button";
-import { setTheme } from "@/app/(marketing)/actions";
+import { actionSetTheme } from "@/app/(marketing)/actions";
 import { defaultThemeColor, defaultThemes } from "@/lib/theme";
+import { usePathname } from "next/navigation";
 
 interface Props {
   className?: string;
@@ -24,10 +25,12 @@ interface Props {
 }
 
 export default function ThemeSelector({ className, variant = "primary", disabled, currentTheme }: Props) {
+  const pathname = usePathname();
   async function select(value: string) {
     const form = new FormData();
     form.set("theme", value);
-    setTheme(form);
+    form.set("redirectTo", pathname || "/");
+    actionSetTheme(form);
   }
 
   return (

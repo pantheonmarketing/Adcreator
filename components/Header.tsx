@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logout, toggleScheme } from "@/app/(marketing)/actions";
+import { actionLogout } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
 import { getUserInfo } from "@/lib/session";
 import LocaleSelector from "./ui/selectors/LocaleSelector";
@@ -34,7 +34,7 @@ export default async function Header() {
 
           <div>
             {userInfo.userId ? (
-              <form action={logout}>
+              <form action={actionLogout}>
                 <Button>Logout</Button>
               </form>
             ) : (
