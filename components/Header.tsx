@@ -9,9 +9,9 @@ import DarkModeToggle from "./ui/toggles/DarkModeToggle";
 export default async function Header() {
   const userInfo = getUserInfo();
   return (
-    <header className="p-4 flex justify-center w-full">
-      <div className="flex items-center gap-5 justify-between">
-        <nav className="gap-5 flex items-center">
+    <header className="flex w-full justify-center p-4">
+      <div className="flex items-center justify-between gap-5">
+        <nav className="flex items-center gap-5">
           <Link href="/" className="mr-4">
             Home
           </Link>
@@ -26,7 +26,7 @@ export default async function Header() {
           </Link>
         </nav>
         <div className="flex items-center space-x-2">
-          <div className="flex flex-row justify-center items-center gap-4">
+          <div className="flex flex-row items-center justify-center gap-4">
             <LocaleSelector />
             <ThemeSelector currentTheme={userInfo.theme} />
             <DarkModeToggle currentLightOrDarkMode={userInfo.lightOrDarkMode} />

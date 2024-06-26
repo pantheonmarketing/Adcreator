@@ -10,7 +10,7 @@ export default function ColorBadge({ color, size = "md" }: Props) {
   return (
     <span
       className={clsx(
-        " inline-flex flex-shrink-0 items-center rounded-full text-xs font-medium",
+        "inline-flex flex-shrink-0 items-center rounded-full text-xs font-medium",
         getBadgeColor(color),
         size === "md" && "p-1",
         size === "sm" && "p-0.5"

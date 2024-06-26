@@ -37,7 +37,7 @@ export default function LocaleSelector({ className, disabled }: Props) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild disabled={disabled}>
           <Button variant="ghost" className={clsx("flex w-10 space-x-2", className)}>
-            <div className={clsx("text-muted-foreground inline-flex flex-shrink-0 items-center rounded-full p-1 text-xs font-medium")}>
+            <div className={clsx("inline-flex flex-shrink-0 items-center rounded-full p-1 text-xs font-medium text-muted-foreground")}>
               <div className="p-0.5">
                 {/* {t(i18n.language)} */}
                 <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">

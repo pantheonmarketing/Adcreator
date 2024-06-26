@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <I18nProvider language={lng}>
       <html lang={lng} dir={dir(lng)} className={lightOrDarkMode === "dark" ? "dark" : ""}>
-        <body className={clsx(`theme-${userInfo.theme}`, "bg-background text-foreground max-h-full min-h-screen max-w-full", inter.style)}>
+        <body className={clsx(`theme-${userInfo.theme}`, "max-h-full min-h-screen max-w-full bg-background text-foreground", inter.style)}>
           {children}
           <ReactHostToaster />
         </body>

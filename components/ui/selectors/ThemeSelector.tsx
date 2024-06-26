@@ -45,7 +45,7 @@ export default function ThemeSelector({ className, variant = "primary", disabled
               )}
             >
               {variant === "primary" ? (
-                <div className={clsx("text-primary inline-flex flex-shrink-0 items-center rounded-full p-1 text-xs font-medium")}>
+                <div className={clsx("inline-flex flex-shrink-0 items-center rounded-full p-1 text-xs font-medium text-primary")}>
                   <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                     <rect width="256" height="256" fill="none"></rect>
                     <line
@@ -74,7 +74,7 @@ export default function ThemeSelector({ className, variant = "primary", disabled
                 </div>
               ) : (
                 variant === "secondary" && (
-                  <span className={clsx(" bg-primary text-primary inline-flex flex-shrink-0 items-center rounded-full text-xs font-medium")}>
+                  <span className={clsx("inline-flex flex-shrink-0 items-center rounded-full bg-primary text-xs font-medium text-primary")}>
                     <svg className={clsx("h-2 w-2")} fill="currentColor" viewBox="0 0 8 8">
                       <circle cx={4} cy={4} r={3} />
                     </svg>
@@ -94,13 +94,13 @@ export default function ThemeSelector({ className, variant = "primary", disabled
                       <label
                         className={clsx(
                           `theme-${f.value}`,
-                          "ring-ring relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none"
+                          "relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-ring focus:outline-none"
                         )}
                       >
                         <span id="color-choice-0-label" className="sr-only">
                           {f.name}
                         </span>
-                        <span aria-hidden="true" className={clsx("border-border h-3 w-3 rounded-full border", "bg-primary border-primary")}></span>
+                        <span aria-hidden="true" className={clsx("h-3 w-3 rounded-full border border-border", "border-primary bg-primary")}></span>
                       </label>
                       <div>
                         {f.name}
@@ -119,7 +119,7 @@ export default function ThemeSelector({ className, variant = "primary", disabled
             <SelectValue
               placeholder={
                 <div className="p-0.5">
-                  <span className={clsx("text-primary inline-flex flex-shrink-0 items-center rounded-full text-xs font-medium")}>
+                  <span className={clsx("inline-flex flex-shrink-0 items-center rounded-full text-xs font-medium text-primary")}>
                     <svg className={clsx("h-3 w-3")} fill="currentColor" viewBox="0 0 8 8">
                       <circle cx={4} cy={4} r={3} />
                     </svg>

@@ -19,7 +19,7 @@ export default async function Contact() {
           <div className="relative mx-auto w-full max-w-xl overflow-hidden px-2 py-12 sm:py-6">
             <div className="text-center">
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t("front.contact.title")}</h1>
-              <p className="text-muted-foreground mt-4 text-lg leading-6">{t("front.contact.headline")}</p>
+              <p className="mt-4 text-lg leading-6 text-muted-foreground">{t("front.contact.headline")}</p>
             </div>
             <div className="mt-12">
               <form action={submission}>
