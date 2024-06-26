@@ -2,18 +2,18 @@
 
 import { Button } from "../button";
 import clsx from "clsx";
-import { toggleLightOrDarkMode } from "@/app/(marketing)/actions";
+import { toggleScheme } from "@/app/(marketing)/actions";
 
 interface Props {
   className?: string;
   disabled?: boolean;
-  currentLightOrDarkMode?: string;
+  currentScheme?: string;
 }
-export default function DarkModeToggle({ className, disabled, currentLightOrDarkMode }: Props) {
-  const isDarkMode = currentLightOrDarkMode === "dark";
+export default function DarkModeToggle({ className, disabled, currentScheme }: Props) {
+  const isDarkMode = currentScheme === "dark";
 
   return (
-    <form action={toggleLightOrDarkMode}>
+    <form action={toggleScheme}>
       <Button
         type="submit"
         variant="ghost"

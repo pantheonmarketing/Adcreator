@@ -12,8 +12,8 @@ if (!SESSION_SECRET) {
 
 export type UserSession = {
   userId: string | null;
-  lightOrDarkMode: string;
-  theme?: string;
+  scheme: string;
+  theme: string;
 };
 
 function getUserSession(): UserSession | null {
@@ -27,7 +27,7 @@ function getUserSession(): UserSession | null {
     const decoded = jwt.verify(token, SESSION_SECRET) as JwtPayload;
     const userSession: UserSession = {
       userId: decoded.userId as string,
-      lightOrDarkMode: decoded.lightOrDarkMode as string,
+      scheme: decoded.scheme as string,
       theme: decoded.theme as string,
     };
     return userSession;
@@ -45,11 +45,11 @@ function getUserSession(): UserSession | null {
 export function getUserInfo(): UserSession {
   const session = getUserSession();
   const userId = session?.userId ?? null;
-  const lightOrDarkMode = session?.lightOrDarkMode || defaultThemeScheme;
+  const scheme = session?.scheme || defaultThemeScheme;
   const theme = session?.theme ?? defaultThemeColor;
   return {
     userId,
-    lightOrDarkMode,
+    scheme,
     theme,
   };
 }

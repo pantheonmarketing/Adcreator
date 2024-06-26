@@ -3,12 +3,12 @@
 import { getUserInfo, setUserSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-export async function toggleLightOrDarkMode(formData: FormData) {
+export async function toggleScheme(formData: FormData) {
   const redirectTo = formData.get("redirectTo") as string;
   const userInfo = getUserInfo();
-  userInfo.lightOrDarkMode = userInfo.lightOrDarkMode === "light" ? "dark" : "light";
+  userInfo.scheme = userInfo.scheme === "light" ? "dark" : "light";
   console.log({
-    lightOrDarkMode: userInfo.lightOrDarkMode,
+    scheme: userInfo.scheme,
   });
   setUserSession(userInfo);
   return redirect(redirectTo || "/");

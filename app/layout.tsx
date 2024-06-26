@@ -24,11 +24,11 @@ export default async function RootLayout({
 }>) {
   const lng = await detectLanguage();
   const userInfo = getUserInfo();
-  const lightOrDarkMode = userInfo?.lightOrDarkMode || "light";
+  const scheme = userInfo?.scheme || "light";
 
   return (
     <I18nProvider language={lng}>
-      <html lang={lng} dir={dir(lng)} className={lightOrDarkMode === "dark" ? "dark" : ""}>
+      <html lang={lng} dir={dir(lng)} className={scheme === "dark" ? "dark" : ""}>
         <body className={clsx(`theme-${userInfo.theme}`, "max-h-full min-h-screen max-w-full bg-background text-foreground", inter.style)}>
           {children}
           <ReactHostToaster />

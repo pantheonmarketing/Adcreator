@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logout, toggleLightOrDarkMode } from "@/app/(marketing)/actions";
+import { logout, toggleScheme } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
 import { getUserInfo } from "@/lib/session";
 import LocaleSelector from "./ui/selectors/LocaleSelector";
@@ -29,7 +29,7 @@ export default async function Header() {
           <div className="flex flex-row items-center justify-center gap-4">
             <LocaleSelector />
             <ThemeSelector currentTheme={userInfo.theme} />
-            <DarkModeToggle currentLightOrDarkMode={userInfo.lightOrDarkMode} />
+            <DarkModeToggle currentScheme={userInfo.scheme} />
           </div>
 
           <div>
