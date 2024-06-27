@@ -333,19 +333,12 @@
     "logout": "Salir",
     "register": "Registrarse",
     "submit": "Enviar",
-    "recommended": "Recomendado"
+    "recommended": "Recomendado",
+    "pickDate": "Selecciona una fecha"
   },
   "components": {
     "date": {
       "pick": "Selecciona una fecha"
-    }
-  },
-  "auth": {
-    "github": {
-      "button": "Iniciar sesión con GitHub"
-    },
-    "google": {
-      "button": "Iniciar sesión con Google"
     }
   },
   "front": {
@@ -1538,6 +1531,13 @@
     }
   },
   "api": {
+    "featureLimits": {
+      "reachedMaxLimit": "Has llegado al límite ({{0}})",
+      "reachedMonthLimit": "Has llegado al límite este mes ({{0}})",
+      "noSubscription": "No tienes subscripción activa",
+      "notIncluded": "No incluido en tu subscripción",
+      "upgradeSubscription": "Actualiza tu subscripción para tener acceso a esta funcionalidad"
+    },
     "errors": {
       "youDontBelong": "No tienes acceso a esta cuenta",
       "alreadyAdded": "Ya agregado",
@@ -1580,46 +1580,6 @@
       "noChanges": "No hay cambios",
       "noSubscription": "No hay subscripción activa",
       "noOrganizations": "No perteneces a ninguna cuenta"
-    }
-  },
-  "docs": {
-    "title": "Docs"
-  },
-  "featureLimits": {
-    "reachedMaxLimit": "Has llegado al límite ({{0}})",
-    "reachedMonthLimit": "Has llegado al límite este mes ({{0}})",
-    "noSubscription": "No tienes subscripción activa",
-    "notIncluded": "No incluido en tu subscripción",
-    "upgradeSubscription": "Actualiza tu subscripción para tener acceso a esta funcionalidad"
-  },
-  "analytics": {
-    "title": "Analíticas",
-    "description": "Páginas vistas y eventos de {{0}}",
-    "overview": "Resumen",
-    "pageViews": "Páginas vistas",
-    "uniqueVisitors": "Visitantes únicos",
-    "liveVisitors": "Visitantes en vivo",
-    "events": "Eventos",
-    "settings": "Ajustes",
-    "delete": "Eliminar todos los datos",
-    "deleted": "Eliminado",
-    "viewed": "Visto",
-    "viewedAt": "Visto",
-    "route": "Ruta",
-    "url": "URL",
-    "action": "Acción",
-    "category": "Categoría",
-    "label": "Etiqueta",
-    "value": "Valor",
-    "visitor": "Visitante",
-    "visitors": "Visitantes",
-    "danger": {
-      "title": "Zona de peligro",
-      "description": "Eliminar datos de tu sitio web, esto no puede recuperarse.",
-      "reset": {
-        "title": "Restablecer",
-        "description": "Restablece los datos analíticos de tu sitio, incluyento Visitantes, Vistas de página y Eventos."
-      }
     }
   },
   "affiliates": {

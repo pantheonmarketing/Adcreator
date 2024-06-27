@@ -334,20 +334,8 @@
     "logout": "Logout",
     "register": "Register",
     "submit": "Submit",
-    "recommended": "Recommended"
-  },
-  "components": {
-    "date": {
-      "pick": "Pick a date"
-    }
-  },
-  "auth": {
-    "github": {
-      "button": "Continue with GitHub"
-    },
-    "google": {
-      "button": "Continue with Google"
-    }
+    "recommended": "Recommended",
+    "pickDate": "Pick a date"
   },
   "front": {
     "navbar": {
@@ -1541,6 +1529,13 @@
     }
   },
   "api": {
+    "featureLimits": {
+      "reachedMaxLimit": "You've reached the limit ({{0}})",
+      "reachedMonthLimit": "You've reached the limit this month ({{0}})",
+      "noSubscription": "You don't have an active subscription",
+      "notIncluded": "Not included in your plan",
+      "upgradeSubscription": "Upgrade your subscription to get this feature"
+    },
     "errors": {
       "youDontBelong": "You don't belong to this organization",
       "alreadyAdded": "Already added",
@@ -1583,46 +1578,6 @@
       "noChanges": "No changes",
       "noSubscription": "No active subscription",
       "noOrganizations": "You don't belong to any organization"
-    }
-  },
-  "docs": {
-    "title": "Docs"
-  },
-  "featureLimits": {
-    "reachedMaxLimit": "You've reached the limit ({{0}})",
-    "reachedMonthLimit": "You've reached the limit this month ({{0}})",
-    "noSubscription": "You don't have an active subscription",
-    "notIncluded": "Not included in your plan",
-    "upgradeSubscription": "Upgrade your subscription to get this feature"
-  },
-  "analytics": {
-    "title": "Analytics",
-    "description": "Tracked page views and events for {{0}}",
-    "overview": "Overview",
-    "pageViews": "Page views",
-    "uniqueVisitors": "Unique visitors",
-    "liveVisitors": "Live visitors",
-    "events": "Events",
-    "settings": "Settings",
-    "delete": "Delete all analytics data",
-    "deleted": "Deleted",
-    "viewed": "Viewed",
-    "viewedAt": "Viewed at",
-    "route": "Route",
-    "url": "URL",
-    "action": "Action",
-    "category": "Category",
-    "label": "Label",
-    "value": "Value",
-    "visitor": "Visitor",
-    "visitors": "Visitors",
-    "danger": {
-      "title": "Danger zone",
-      "description": "This will delete all analytics data. This cannot be undone.",
-      "reset": {
-        "title": "Reset data",
-        "description": "Reset your website to delete all historical data, including Unique visitors, Page views and Events."
-      }
     }
   },
   "affiliates": {
