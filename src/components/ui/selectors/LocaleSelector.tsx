@@ -6,7 +6,7 @@ import { Fragment } from "react";
 
 import { useRouter } from "next/navigation";
 import i18next from "i18next";
-import { languages } from "@/lib/i18n/settings";
+import { languages } from "@/i18n/settings";
 import {
   DropdownMenu,
   DropdownMenuContent,

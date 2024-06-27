@@ -1,6 +1,6 @@
 import { ContactPage } from "./ContactPage";
 
-import { getServerTranslations } from "@/lib/i18n/server";
+import { getServerTranslations } from "@/i18n/server";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();

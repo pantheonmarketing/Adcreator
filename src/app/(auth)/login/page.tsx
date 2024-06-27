@@ -1,4 +1,4 @@
-import { getServerTranslations } from "@/lib/i18n/server";
+import { getServerTranslations } from "@/i18n/server";
 import { authenticate } from "./actions";
 import SubmitButton from "@/components/ui/buttons/SubmitButton";
 import { Input } from "@/components/ui/input";
