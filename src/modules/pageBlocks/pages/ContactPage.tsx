@@ -1,23 +1,46 @@
 import { TFunction } from "i18next";
-import ContactForm from "./ContactForm";
+import { ContactFormBlockData } from "../blocks/marketing/contact/ContactFormBlockDto";
+import { PageBlockDto } from "../blocks/PageBlockDto";
+import { defaultHeader } from "../defaultBlocks/defaultHeader";
+import { defaultFooter } from "../defaultBlocks/defaultFooter";
 
 export namespace ContactPage {
   export type LoaderData = {
-    actionUrl?: string;
+    contactFormData: ContactFormBlockData;
   };
   export async function load(): Promise<LoaderData> {
     return {
-      actionUrl: process.env.CONTACT_FORM_URL,
+      contactFormData: {
+        actionUrl: process.env.CONTACT_FORM_URL,
+      },
     };
   }
-  export async function metadata({ t }: { t: TFunction }) {
+  export async function metatags({ t }: { t: TFunction }) {
     return {
       title: t("front.contact.title"),
       description: t("front.contact.headline"),
     };
   }
-  export async function blocks({ data }: { data: ContactPage.LoaderData }) {
-    return [{ render: <ContactForm data={data} /> }];
+  export function blocks({ data, t }: { data: LoaderData; t: TFunction }): PageBlockDto[] {
+    return [
+      // Header
+      { header: defaultHeader({ t }) },
+      {
+        heading: {
+          headline: t("front.contact.title"),
+          subheadline: t("front.contact.headline"),
+        },
+      },
+      // Main
+      {
+        contact: {
+          style: "simple",
+          data: data.contactFormData,
+        },
+      },
+      // Footer
+      { footer: defaultFooter({ t }) },
+    ];
   }
   export async function actionSubmission(prev: any, form: FormData) {
     // fake 3 seconds delay

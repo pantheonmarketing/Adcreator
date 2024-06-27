@@ -1,14 +1,14 @@
-import { ContactPage } from "./ContactPage";
-
 import { getServerTranslations } from "@/i18n/server";
+import PageBlocks from "@/modules/pageBlocks/blocks/PageBlocks";
+import { ContactPage } from "@/modules/pageBlocks/pages/ContactPage";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
-  return await ContactPage.metadata({ t });
+  return await ContactPage.metatags({ t });
 }
 
 export default async function Contact() {
+  const { t } = await getServerTranslations();
   const data = await ContactPage.load();
-  const blocks = await ContactPage.blocks({ data });
-  return blocks.map((block) => block.render);
+  return <PageBlocks items={ContactPage.blocks({ t, data })} />;
 }

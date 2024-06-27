@@ -1,22 +1,14 @@
-"use server";
-
 import { getServerTranslations } from "@/i18n/server";
+import PageBlocks from "@/modules/pageBlocks/blocks/PageBlocks";
+import { LandingPage } from "@/modules/pageBlocks/pages/LandingPage";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
-  return {
-    title: t("shared.title"),
-  };
+  return await LandingPage.metatags({ t });
 }
 
 export default async function Index() {
+  // const data = await LandingPage.load();
   const { t } = await getServerTranslations();
-
-  return (
-    <main className="h-screen w-full py-12 md:py-24 lg:py-32 xl:py-48">
-      <div className="mx-auto w-full space-y-4">
-        <h1 className="flex justify-center space-x-2 text-2xl font-bold">{t("shared.title")}</h1>
-      </div>
-    </main>
-  );
+  return <PageBlocks items={LandingPage.blocks({ data: {}, t })} />;
 }

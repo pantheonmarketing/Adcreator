@@ -361,10 +361,10 @@
       "affiliates": "Afiliados"
     },
     "hero": {
-      "headline1": "Desarrolla tu SaaS con Remix",
+      "headline1": "Desarrolla tu SaaS con Next.js",
       "headline2": "Lanza aplicaciones SaaS listas para producción: Autenticación y gestión de usuarios, Suscripciones y pagos de Stripe, Roles y permisos, Gestión de créditos, Bloques de página, SEO optimizado, Multi-cuenta, Caché, Multi-tema e Internacionalización (i18n).",
       "headline3": "",
-      "subheadline1": "Demo RockStack Remix",
+      "subheadline1": "Demo RockStack Next.js",
       "hint": "Este sitio usa {{0}} Edición Core",
       "buy": "Empieza ahora",
       "features": "Funcionalidades",

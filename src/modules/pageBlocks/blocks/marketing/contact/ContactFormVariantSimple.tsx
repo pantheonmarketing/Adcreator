@@ -7,13 +7,11 @@ import { useFormState } from "react-dom";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
-import { ContactPage } from "./ContactPage";
 import SubmitButton from "@/components/ui/buttons/SubmitButton";
+import { ContactFormBlockDto } from "./ContactFormBlockDto";
+import { ContactPage } from "@/modules/pageBlocks/pages/ContactPage";
 
-interface Props {
-  data: ContactPage.LoaderData;
-}
-export default function ContactForm({ data }: Props) {
+export default function ContactFormVariantSimple({ item }: { item: ContactFormBlockDto }) {
   const { t } = useTranslation();
   const [actionData, action] = useFormState(ContactPage.actionSubmission, null);
 
@@ -28,7 +26,7 @@ export default function ContactForm({ data }: Props) {
 
   return (
     <div className="mx-auto mt-12 max-w-xl">
-      <form ref={formRef} action={data.actionUrl || action} method={data.actionUrl ? "POST" : undefined}>
+      <form ref={formRef} action={item.data.actionUrl || action} method={item.data.actionUrl ? "POST" : undefined}>
         <input type="hidden" name="action" value="actionSubmission" readOnly hidden />
         <HoneypotInput name="_gotcha" />
         <div className="mt-9 grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">

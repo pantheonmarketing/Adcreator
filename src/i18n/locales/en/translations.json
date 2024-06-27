@@ -362,10 +362,10 @@
       "affiliates": "Affiliate program"
     },
     "hero": {
-      "headline1": "The Remix Rock-solid Stack",
+      "headline1": "The Next.js Rock-solid Stack",
       "headline2": "Launch production-ready SaaS apps: Auth & User Management, Stripe Subscriptions & Payments, Roles & Permissions, Credits Management, Page Blocks, SEO Optimized, Multi-tenant, Cache, Multi-theme, and Internationalization (i18n).",
       "headline3": "",
-      "subheadline1": "RockStack Remix Demo",
+      "subheadline1": "RockStack Next.js Demo",
       "hint": "This site uses {{0}} Core Edition",
       "buy": "Get started",
       "features": "Features",
@@ -451,98 +451,6 @@
     },
     "logoClouds": {
       "title": "Leverage the power of web fundamentals, utility-first CSS, and a top-tier ORM."
-    },
-    "features": {
-      "frontend": {
-        "hint": "React + Tailwind CSS",
-        "title": "Frontend Features",
-        "headline": "Everything you need get started building a complete SaaS application.",
-        "components": {
-          "title": "Components",
-          "description": "Buttons, Links, Breadcrumbs, Modals, Image/Document Uploaders, Banners and more.",
-          "viewAll": "View all components."
-        },
-        "routes": {
-          "title": "SaaS pages/routes/views",
-          "front": "Front",
-          "frontPages": "(Landing, Pricing...)",
-          "account": "Account",
-          "accountPages": "(Login, Register...)",
-          "admin": "Admin",
-          "adminPages": "(Organizations, Users...)",
-          "core": "Core",
-          "corePages": "(Dashboard, Settings...)",
-          "app": "and Sample app",
-          "appPages": "(Contracts, Employees...)",
-          "views": "views.",
-          "viewAll": "Explore all views."
-        },
-        "i18n": {
-          "title": "i18n",
-          "description": "Localize your app, comes with English and Spanish locale keys. Recommended extension: "
-        },
-        "store": {
-          "title": "Persisted Store",
-          "description": "Modular persisted store to remember your users previous state."
-        },
-        "tailwindcss": {
-          "title": "Tailwind CSS",
-          "description": "Improve the current design with your own design skills. Comes with a custom theme color and "
-        },
-        "classComponents": {
-          "title": "React Hooks",
-          "description": "Functional components + React Hooks."
-        },
-        "fakeApi": {
-          "title": "Fake API (sandbox env)",
-          "description": "Love the design-first approach? Just set your environment to sandbox and call fake API implementations."
-        },
-        "eslint": {
-          "title": "ESLint",
-          "description": "Lint your code with your own rules, using"
-        }
-      },
-      "backend": {
-        "hint": "Remix",
-        "title": "Backend Features",
-        "description": "Multi-organizations/tenants, clean architecture, integration tests, Stripe subscriptions and Postmark Emails.",
-        "features": {
-          "net": {
-            "title": "Remix",
-            "description": "Web API built on top of Microsoft's framework, .NET."
-          },
-          "cleanArchitecture": {
-            "title": "Clean Architecture",
-            "description": "Solution split the project into multiple 'layers': Domain, Application, Infrastructre, Tests and ClientApp (frontend)."
-          },
-          "tests": {
-            "title": "Integration Tests",
-            "description": "Almost every controller method has its own integration test."
-          },
-          "multiTenant": {
-            "title": "Multi-tenant/organization",
-            "description": "Designed to have tenants per account/subscription."
-          },
-          "memberManagement": {
-            "title": "Member management",
-            "description": "Invite users as Owner, Admin, or Member. Or add your custom roles."
-          },
-          "stripe": {
-            "title": "Stripe Subscriptions",
-            "description": "Configure your plans and pricing the way it makes sense for your SaaS.",
-            "setup": "Click here to setup."
-          },
-          "postmark": {
-            "title": "Postmark Emails",
-            "description": "Setup your custom email tempaltes with Postmark.",
-            "setup": "Click here to setup."
-          },
-          "ef": {
-            "title": "Entity Framework",
-            "description": "EF Core supported databases. Current implementation: PostgreSql."
-          }
-        }
-      }
     },
     "components": {
       "title": "Components",
