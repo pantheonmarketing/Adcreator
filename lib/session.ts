@@ -32,12 +32,8 @@ function getUserSession(): UserSession | null {
     };
     return userSession;
   } catch (e: any) {
-    console.log({
-      sessionCookie,
-      SESSION_SECRET,
-    });
+    // eslint-disable-next-line no-console
     console.error("[session] error: " + e.message);
-    console.error("[session] stack: " + e.stack);
     return null;
   }
 }
@@ -66,10 +62,3 @@ export function setUserSession(userSession: UserSession) {
   });
   cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
 }
-
-// export function resetUserSession() {
-//   const cookieStore = cookies();
-//   const serializedSession = serialize(SESSION_COOKIE_NAME, "", { maxAge: -1, path: "/" });
-//   cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
-//   return redirect("/login");
-// }
