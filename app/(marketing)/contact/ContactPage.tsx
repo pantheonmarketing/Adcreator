@@ -1,3 +1,4 @@
+import { TFunction } from "i18next";
 import ContactForm from "./ContactForm";
 
 export namespace ContactPage {
@@ -7,6 +8,12 @@ export namespace ContactPage {
   export async function load(): Promise<LoaderData> {
     return {
       actionUrl: process.env.CONTACT_FORM_URL,
+    };
+  }
+  export async function metadata({ t }: { t: TFunction }) {
+    return {
+      title: t("front.contact.title"),
+      description: t("front.contact.headline"),
     };
   }
   export async function blocks({ data }: { data: ContactPage.LoaderData }) {

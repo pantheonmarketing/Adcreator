@@ -1,6 +1,6 @@
 import { getServerTranslations } from "@/lib/i18n/server";
 import { authenticate } from "./actions";
-import LoadingButton from "@/components/LoadingButton";
+import SubmitButton from "@/components/ui/buttons/SubmitButton";
 import { Input } from "@/components/ui/input";
 
 export default async function Page() {
@@ -25,7 +25,7 @@ export default async function Page() {
               <Input type="password" name="password" placeholder="Password" required />
             </div>
             <div className="mt-4 flex justify-end">
-              <LoadingButton>{t("shared.login")}</LoadingButton>
+              <SubmitButton>{t("shared.login")}</SubmitButton>
             </div>
           </form>
         </div>

@@ -7,13 +7,20 @@ import { I18nProvider } from "@/lib/i18n/i18n-context";
 import { getUserInfo } from "@/lib/session";
 import clsx from "clsx";
 import { Toaster as ReactHostToaster } from "react-hot-toast";
+import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslations();
   return {
     title: t("shared.title"),
+    icons: [
+      { url: "/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
   };
 }
 
