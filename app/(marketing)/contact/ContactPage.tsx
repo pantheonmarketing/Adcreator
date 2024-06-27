@@ -6,7 +6,7 @@ export namespace ContactPage {
   };
   export async function load(): Promise<LoaderData> {
     return {
-      actionUrl: undefined,
+      actionUrl: process.env.CONTACT_FORM_URL,
     };
   }
   export async function blocks({ data }: { data: ContactPage.LoaderData }) {
