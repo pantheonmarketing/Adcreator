@@ -54,13 +54,10 @@ type FeatureSolution = {
 const features: FeatureSolution[] = [
   { name: "Remix Edition", rockstack: true, saasrock: true, href: "https://remix.run" },
   { name: "Next.js Edition", rockstack: true, saasrock: false, href: "https://nextjs.org" },
-  { name: "Astro Edition", rockstack: true, saasrock: false, href: "https://astro.build" },
-  { name: "Nuxt Edition", rockstack: true, saasrock: false, href: "https://nuxt.com" },
   { name: "SvelteKit Edition", rockstack: true, saasrock: false, href: "https://kit.svelte.dev" },
   { name: "Repository Pattern", rockstack: true, saasrock: false },
   { name: "Prisma ORM", rockstack: true, saasrock: true, href: "https://www.prisma.io" },
   { name: "Drizzle ORM", rockstack: true, saasrock: false, href: "https://orm.drizzle.team" },
-  { name: "Kysely ORM", rockstack: true, saasrock: false, href: "https://kysely.dev" },
   { name: "Mock ORM", rockstack: true, saasrock: false },
   { name: "shadcn/ui", rockstack: true, saasrock: true },
   { name: "Stripe Subscriptions & Payments", rockstack: true, saasrock: true, href: "https://stripe.com" },
