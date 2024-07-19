@@ -3,7 +3,7 @@
 import { getUserInfo, setUserSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 
-export async function authenticate(formData: FormData) {
+export async function authenticate(prev: any, formData: FormData) {
   const userInfo = getUserInfo();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

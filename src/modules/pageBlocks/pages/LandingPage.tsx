@@ -103,7 +103,7 @@ export namespace LandingPage {
               link: { href: "https://rockstack.dev/docs/articles/multi-tenant", target: "_blank" },
             },
             {
-              name: "Cache",
+              name: "Caching",
               description: "Cache the most used data to improve performance and reduce database queries.",
               link: { href: "https://rockstack.dev/docs/articles/cache", target: "_blank" },
             },
@@ -117,11 +117,11 @@ export namespace LandingPage {
               description: "Translate your app into multiple languages with i18n.",
               link: { href: "https://rockstack.dev/docs/articles/internationalization-i18n", target: "_blank" },
             },
-            {
-              name: "Credits Management",
-              description: "Limit user actions with a built-in credit system.",
-              link: { href: "https://rockstack.dev/docs/articles/credits-management", target: "_blank" },
-            },
+            // {
+            //   name: "Credits Management",
+            //   description: "Limit user actions with a built-in credit system.",
+            //   link: { href: "https://rockstack.dev/docs/articles/credits-management", target: "_blank" },
+            // },
           ],
         },
       },

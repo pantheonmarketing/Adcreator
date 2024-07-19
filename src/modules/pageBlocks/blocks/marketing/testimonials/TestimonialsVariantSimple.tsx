@@ -47,6 +47,7 @@ export default function TestimonialsVariantSimple({ item }: { item: Testimonials
                       {testimonial.stars &&
                         Array.from({ length: testimonial.stars }, (_, i) => (
                           <svg
+                            key={i}
                             className="ms-1 h-4 w-4 text-yellow-400"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"

@@ -2,18 +2,18 @@
 
 import HoneypotInput from "@/components/ui/honeypot/HoneypotInput";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useRef, useActionState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
-import SubmitButton from "@/components/ui/buttons/SubmitButton";
 import { ContactFormBlockDto } from "./ContactFormBlockDto";
 import { ContactPage } from "@/modules/pageBlocks/pages/ContactPage";
+import { Button } from "@/components/ui/button";
+import clsx from "clsx";
 
 export default function ContactFormVariantSimple({ item }: { item: ContactFormBlockDto }) {
   const { t } = useTranslation();
-  const [actionData, action] = useFormState(ContactPage.actionSubmission, null);
+  const [actionData, action, pending] = useActionState(ContactPage.actionSubmission, null);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -65,7 +65,9 @@ export default function ContactFormVariantSimple({ item }: { item: ContactFormBl
           </div>
 
           <div className="text-right sm:col-span-2">
-            <SubmitButton>{t("front.contact.send")}</SubmitButton>
+            <Button type="submit" disabled={pending} className={clsx(pending && "base-spinner cursor-not-allowed")}>
+              {t("front.contact.send")}
+            </Button>
           </div>
         </div>
       </form>
