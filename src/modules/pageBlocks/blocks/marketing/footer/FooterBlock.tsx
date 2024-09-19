@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslation } from "react-i18next";
 import { FooterBlockDto } from "@/modules/pageBlocks/blocks/marketing/footer/FooterBlockDto";
 import { defaultFooter } from "@/modules/pageBlocks/defaultBlocks/defaultFooter";

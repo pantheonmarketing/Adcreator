@@ -10,24 +10,26 @@ import { ContactFormBlockDto } from "./ContactFormBlockDto";
 import { ContactPage } from "@/modules/pageBlocks/pages/ContactPage";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
+import { actionContact } from "@/app/(marketing)/contact/actions";
 
 export default function ContactFormVariantSimple({ item }: { item: ContactFormBlockDto }) {
   const { t } = useTranslation();
-  const [actionData, action, pending] = useActionState(ContactPage.actionSubmission, null);
+  const [actionData, action, pending] = useActionState(actionContact, null);
 
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (actionData?.success) {
       toast.success(actionData.success);
-      formRef.current?.reset();
+      // formRef.current?.reset();
+    } else if (actionData?.error) {
+      toast.error(actionData.error);
     }
   }, [actionData]);
 
   return (
     <div className="mx-auto mt-12 max-w-xl">
       <form ref={formRef} action={item.data.actionUrl || action} method={item.data.actionUrl ? "POST" : undefined}>
-        <input type="hidden" name="action" value="actionSubmission" readOnly hidden />
         <HoneypotInput name="_gotcha" />
         <div className="mt-9 grid grid-cols-1 gap-x-1 gap-y-4 sm:grid-cols-2 sm:gap-x-4">
           <div>

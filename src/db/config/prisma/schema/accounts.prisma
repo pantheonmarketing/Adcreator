@@ -1,0 +1,79 @@
+model User {
+  id              String                 @id @default(cuid())
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  email           String                 @unique
+  passwordHash    String
+  firstName       String
+  lastName        String
+  avatar          String?
+  phone           String?
+  defaultTenantId String?
+  verifyToken     String?
+  locale          String?
+  active          Boolean                @default(false)
+  admin           Boolean                @default(false)
+  tenants         TenantUser[]
+  invitation      TenantUserInvitation?  @relation("createdUser")
+  sentInvitations TenantUserInvitation[] @relation("fromUser")
+  roles           UserRole[]
+  credits         Credit[]
+}
+
+model Tenant {
+  id               String                   @id @default(cuid())
+  createdAt        DateTime                 @default(now())
+  updatedAt        DateTime                 @updatedAt
+  slug             String                   @unique
+  name             String
+  icon             String?
+  subscriptionId   String?
+  active           Boolean                  @default(false)
+  subscription     TenantSubscription?
+  users            TenantUser[]
+  invitations      TenantUserInvitation[]
+  userRoles        UserRole[]
+  fromRegistration UserRegistrationAttempt?
+  credits          Credit[]
+
+  @@index([slug])
+}
+
+model TenantUser {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  tenantId  String
+  userId    String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, userId])
+}
+
+model TenantUserInvitation {
+  id            String  @id @default(cuid())
+  tenantId      String
+  email         String
+  firstName     String
+  lastName      String
+  pending       Boolean
+  createdUserId String? @unique
+  fromUserId    String?
+  fromUser      User?   @relation(name: "fromUser", fields: [fromUserId], references: [id])
+  user          User?   @relation(name: "createdUser", fields: [createdUserId], references: [id])
+  tenant        Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+}
+
+model UserRegistrationAttempt {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  email           String   @unique
+  firstName       String
+  lastName        String
+  slug            String?
+  token           String   @unique
+  ipAddress       String?
+  company         String?
+  createdTenantId String?  @unique
+  createdTenant   Tenant?  @relation(fields: [createdTenantId], references: [id], onDelete: Cascade)
+}

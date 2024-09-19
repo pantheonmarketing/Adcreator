@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, useState } from "react";
 import { Transition } from "@headlessui/react";
 import Logo from "@/components/brand/Logo";
@@ -13,16 +15,11 @@ import ThemeSelector from "@/components/ui/selectors/ThemeSelector";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
 import { usePathname } from "next/navigation";
+import { useRootData } from "@/lib/state/useRootData";
 
 export default function HeaderVariantSimple({ item, width = "7xl" }: { item: HeaderBlockDto; width?: "screen-2xl" | "7xl" }) {
-  // TODO
-  // const { authenticated, appConfiguration } = useRootData();
-  const authenticated = false;
-  const appConfiguration = {
-    subscription: {
-      allowSignUpBeforeSubscribe: true,
-    },
-  };
+  const { authenticated, appConfiguration } = useRootData();
+
   const { t } = useTranslation();
 
   const pathname = usePathname();

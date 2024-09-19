@@ -1,6 +1,4 @@
-import { fallbackLng } from "@/i18n/settings";
 import { MetaTagsDto } from "@/lib/dtos/MetaTagsDto";
-import { getBaseURL } from "@/lib/url";
 
 type SiteTags = {
   title?: string;
@@ -11,7 +9,7 @@ type SiteTags = {
   twitterCreator?: string;
   twitterSite?: string;
 };
-const defaultSiteTags: SiteTags = {
+export const defaultSiteTags: SiteTags = {
   title: "RockStack Next.js Demo",
   description:
     "Launch production-ready SaaS apps: Auth & User Management, Stripe Subscriptions & Payments, Roles & Permissions, Credits Management, Page Blocks, SEO Optimized, Multi-tenant, Cache, Multi-theme, and Internationalization (i18n).",
@@ -22,7 +20,7 @@ const defaultSiteTags: SiteTags = {
   twitterSite: "",
 };
 
-function getMetaTags(tags?: SiteTags): MetaTagsDto {
+export function getMetaTags(tags?: SiteTags): MetaTagsDto {
   return parseMetaTags({
     ...defaultSiteTags,
     ...tags,
@@ -85,8 +83,3 @@ function getLinkTags(): MetaTagsDto {
 
   // return linkTags;
 }
-
-export default {
-  defaultSiteTags,
-  getMetaTags,
-};

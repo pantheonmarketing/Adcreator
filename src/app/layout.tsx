@@ -4,17 +4,23 @@ import "@/styles/themes.css";
 import { dir } from "i18next";
 import { detectLanguage, getServerTranslations } from "@/i18n/server";
 import { I18nProvider } from "@/i18n/i18n-context";
-import { getUserInfo } from "@/lib/session";
+import { getUserInfo } from "@/lib/services/session.server";
 import clsx from "clsx";
 import { Toaster as ReactHostToaster } from "react-hot-toast";
+import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Metadata } from "next";
+import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
+import ScriptInjector from "@/modules/shared/scripts/ScriptInjector";
+import { getRootData } from "@/lib/services/rootData.server";
+import RootDataLayout from "@/context/RootDataLayout";
+import { defaultSiteTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslations();
   return {
-    title: t("shared.title"),
+    title: defaultSiteTags.title,
     icons: [
       { url: "/android-icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
@@ -32,13 +38,19 @@ export default async function RootLayout({
   const lng = await detectLanguage();
   const userInfo = getUserInfo();
   const scheme = userInfo?.scheme || "light";
+  const appConfiguration = await getAppConfiguration();
+  const rootData = await getRootData();
 
   return (
     <I18nProvider language={lng}>
       <html lang={lng} dir={dir(lng)} className={scheme === "dark" ? "dark" : ""}>
         <body className={clsx(`theme-${userInfo.theme}`, "max-h-full min-h-screen max-w-full bg-background text-foreground", inter.style)}>
-          {children}
-          <ReactHostToaster />
+          <RootDataLayout data={rootData}>
+            {children}
+            <ReactHostToaster />
+            <SonnerToaster />
+            <ScriptInjector scripts={appConfiguration?.scripts} />
+          </RootDataLayout>
         </body>
       </html>
     </I18nProvider>

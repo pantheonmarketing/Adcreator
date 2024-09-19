@@ -4,12 +4,12 @@ import { defaultFaq } from "../defaultBlocks/defaultFaq";
 import { defaultFooter } from "../defaultBlocks/defaultFooter";
 import { defaultHeader } from "../defaultBlocks/defaultHeader";
 import { TFunction } from "i18next";
-import SeoMetaTagsUtils from "../seo/SeoMetaTagsUtils";
+import { getMetaTags } from "../seo/SeoMetaTagsUtils";
 
 export namespace LandingPage {
   export type LoaderData = {};
   export async function metatags({ t }: { t: TFunction }) {
-    return SeoMetaTagsUtils.getMetaTags();
+    return getMetaTags();
   }
   export function blocks({ data, t }: { data: LoaderData; t: TFunction }): PageBlockDto[] {
     return [
@@ -28,23 +28,23 @@ export namespace LandingPage {
       {
         hero: {
           style: "simple",
-          headline: t("front.hero.headline1"),
-          description: t("front.hero.headline2"),
+          heading: t("front.hero.heading"),
+          subheading: t("front.hero.subheading"),
           image: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1718755479116-rockstack-cover-2.png",
           cta: [
             {
-              text: t("front.hero.buy"),
+              text: t("front.hero.cta1"),
               href: "/pricing",
               isPrimary: true,
             },
             {
-              text: t("front.hero.contact"),
+              text: t("front.hero.cta2"),
               href: "/contact",
               isPrimary: false,
             },
           ],
           topText: {
-            text: t("front.hero.subheadline1"),
+            text: t("front.hero.topText"),
           },
         },
       },

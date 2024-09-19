@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import SeoMetaTagsUtils from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
+import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import Link from "next/link";
 import CheckIcon from "@/components/ui/icons/CheckIcon";
 import XIcon from "@/components/ui/icons/XIcon";
@@ -10,8 +10,8 @@ import { defaultFooter } from "@/modules/pageBlocks/defaultBlocks/defaultFooter"
 import { getServerTranslations } from "@/i18n/server";
 
 export async function generateMetadata() {
-  return SeoMetaTagsUtils.getMetaTags({
-    title: `RockStack vs SaasRock | ${SeoMetaTagsUtils.defaultSiteTags.title}`,
+  return getMetaTags({
+    title: `RockStack vs SaasRock | ${defaultSiteTags.title}`,
   });
 }
 

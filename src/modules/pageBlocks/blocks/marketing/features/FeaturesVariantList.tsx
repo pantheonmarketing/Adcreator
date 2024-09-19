@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslation } from "react-i18next";
 import { FeaturesBlockDto } from "@/modules/pageBlocks/blocks/marketing/features/FeaturesBlockDto";
 import CheckIcon from "@/components/ui/icons/CheckIcon";

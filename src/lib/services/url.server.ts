@@ -1,3 +1,5 @@
+"server-only";
+
 import { headers } from "next/headers";
 
 export const getBaseURL = () => {
@@ -8,4 +10,9 @@ export const getBaseURL = () => {
   }
 
   return process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+};
+
+export const getDomainName = () => {
+  const url = new URL(getBaseURL());
+  return url.host;
 };

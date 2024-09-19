@@ -1,3 +1,5 @@
+"use client";
+
 import { MouseEventHandler, ReactNode, useRef } from "react";
 import clsx from "clsx";
 import LinkOrAhref from "./LinkOrAhref";

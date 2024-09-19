@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslation } from "react-i18next";
 import { GalleryBlockDto } from "@/modules/pageBlocks/blocks/marketing/gallery/GalleryBlockDto";
 import { useEffect, useState } from "react";

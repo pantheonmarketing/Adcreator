@@ -14,7 +14,7 @@ import {
 } from "../dropdown-menu";
 import { Button } from "../button";
 import { actionSetTheme } from "@/app/(marketing)/actions";
-import { defaultThemeColor, defaultThemes } from "@/lib/theme";
+import { defaultThemeColor, defaultThemes } from "@/lib/themes";
 import { usePathname } from "next/navigation";
 
 interface Props {

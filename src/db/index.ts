@@ -1,0 +1,157 @@
+import { IAppConfigurationDb } from "./interfaces/core/IAppConfigurationDb";
+import { AppConfigurationDbPrisma } from "./repositories/prisma/AppConfigurationDbPrisma";
+import { AppConfigurationDbDrizzle } from "./repositories/drizzle/AppConfigurationDbDrizzle";
+import { AppConfigurationDbMock } from "./repositories/mock/AppConfigurationDbMock";
+import { IUserDb } from "./interfaces/accounts/IUserDb";
+import { UserDbPrisma } from "./repositories/prisma/UserDbPrisma";
+import { UserDbDrizzle } from "./repositories/drizzle/UserDbDrizzle";
+import { UserDbMock } from "./repositories/mock/UserDbMock";
+import { ITenantDb } from "./interfaces/accounts/ITenantDb";
+import { TenantDbPrisma } from "./repositories/prisma/TenantDbPrisma";
+import { ITenantUserDb } from "./interfaces/accounts/ITenantUserDb";
+import { TenantUserDbPrisma } from "./repositories/prisma/TenantUserDbPrisma";
+import { ITenantUserInvitationDb } from "./interfaces/accounts/ITenantUserInvitationDb";
+import { TenantUserInvitationDbPrisma } from "./repositories/prisma/TenantUserInvitationDbPrisma";
+import { TenantDbDrizzle } from "./repositories/drizzle/TenantDbDrizzle";
+import { TenantUserInvitationDbDrizzle } from "./repositories/drizzle/TenantUserInvitationDbDrizzle";
+import { TenantUserDbDrizzle } from "./repositories/drizzle/TenantUserDbDrizzle";
+import { IUserRegistrationAttemptDb } from "./interfaces/accounts/IUserRegistrationAttemptDb";
+import { UserRegistrationAttemptDbPrisma } from "./repositories/prisma/UserRegistrationAttemptDbPrisma";
+import { UserRegistrationAttemptDbDrizzle } from "./repositories/drizzle/UserRegistrationAttemptDbDrizzle";
+import { ITenantSubscriptionDb } from "./interfaces/subscriptions/ITenantSubscriptionDb";
+import { TenantSubscriptionDbPrisma } from "./repositories/prisma/TenantSubscriptionDbPrisma";
+import { TenantSubscriptionDbDrizzle } from "./repositories/drizzle/TenantSubscriptionDbDrizzle";
+import { UserRegistrationAttemptDbMock } from "./repositories/mock/UserRegistrationAttemptDbMock";
+import { TenantDbMock } from "./repositories/mock/TenantDbMock";
+import { TenantUserDbMock } from "./repositories/mock/TenantUserDbMock";
+import { TenantUserInvitationDbMock } from "./repositories/mock/TenantUserInvitationDbMock";
+import { TenantSubscriptionDbMock } from "./repositories/mock/TenantSubscriptionDbMock";
+import { IRoleDb } from "./interfaces/permissions/IRoleDb";
+import { RoleDbPrisma } from "./repositories/prisma/RoleDbPrisma";
+import { RoleDbDrizzle } from "./repositories/drizzle/RoleDbDrizzle";
+import { IUserRoleDb } from "./interfaces/permissions/IUserRoleDb";
+import { UserRoleDbPrisma } from "./repositories/prisma/UserRoleDbPrisma";
+import { UserRoleDbDrizzle } from "./repositories/drizzle/UserRoleDbDrizzle";
+import { IPermissionDb } from "./interfaces/permissions/IPermissionDb";
+import { PermissionDbPrisma } from "./repositories/prisma/PermissionDbPrisma";
+import { PermissionDbDrizzle } from "./repositories/drizzle/PermissionDbDrizzle";
+import { CreditDbPrisma } from "./repositories/prisma/CreditDbPrisma";
+import { ICreditDb } from "./interfaces/subscriptions/ICreditDb";
+import { CreditDbDrizzle } from "./repositories/drizzle/CreditDbDrizzle";
+import { IRolePermissionDb } from "./interfaces/permissions/IRolePermissionDb";
+import { RolePermissionDbPrisma } from "./repositories/prisma/RolePermissionDbPrisma";
+import { RolePermissionDbDrizzle } from "./repositories/drizzle/RolePermissionDbDrizzle";
+import { CheckoutSessionStatusDbDrizzle } from "./repositories/drizzle/CheckoutSessionStatusDbDrizzle";
+import { ICheckoutSessionStatusDb } from "./interfaces/subscriptions/ICheckoutSessionStatusDb";
+import { CheckoutSessionStatusDbPrisma } from "./repositories/prisma/CheckoutSessionStatusDbPrisma";
+import { ISubscriptionFeatureDb } from "./interfaces/subscriptions/ISubscriptionFeatureDb";
+import { SubscriptionFeatureDbPrisma } from "./repositories/prisma/SubscriptionFeatureDbPrisma";
+import { SubscriptionFeatureDbDrizzle } from "./repositories/drizzle/SubscriptionFeatureDbDrizzle";
+import { ISubscriptionProductDb } from "./interfaces/subscriptions/ISubscriptionProductDb";
+import { SubscriptionProductDbPrisma } from "./repositories/prisma/SubscriptionProductDbPrisma";
+import { SubscriptionProductDbDrizzle } from "./repositories/drizzle/SubscriptionProductDbDrizzle";
+import { ITenantSubscriptionProductDb } from "./interfaces/subscriptions/ITenantSubscriptionProductDb";
+import { TenantSubscriptionProductDbPrisma } from "./repositories/prisma/TenantSubscriptionProductDbPrisma";
+import { TenantSubscriptionProductDbDrizzle } from "./repositories/drizzle/TenantSubscriptionProductDbDrizzle";
+import { CreditDbMock } from "./repositories/mock/CreditDbMock";
+import { RoleDbMock } from "./repositories/mock/RoleDbMock";
+import { UserRoleDbMock } from "./repositories/mock/UserRoleDbMock";
+import { PermissionDbMock } from "./repositories/mock/PermissionDbMock";
+import { RolePermissionDbMock } from "./repositories/mock/RolePermissionDbMock";
+import { CheckoutSessionStatusDbMock } from "./repositories/mock/CheckoutSessionStatusDbMock";
+import { SubscriptionFeatureDbMock } from "./repositories/mock/SubscriptionFeatureDbMock";
+import { SubscriptionProductDbMock } from "./repositories/mock/SubscriptionProductDbMock";
+import { TenantSubscriptionProductDbMock } from "./repositories/mock/TenantSubscriptionProductDbMock";
+import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
+
+export type DatabaseOrm = "prisma" | "drizzle" | "mock";
+export class Database {
+  provider: DatabaseOrm | undefined;
+  appConfiguration: IAppConfigurationDb;
+  user: IUserDb;
+  userRegistrationAttempt: IUserRegistrationAttemptDb;
+  tenant: ITenantDb;
+  tenantUser: ITenantUserDb;
+  tenantUserInvitation: ITenantUserInvitationDb;
+  tenantSubscription: ITenantSubscriptionDb;
+  credit: ICreditDb;
+  role: IRoleDb;
+  userRole: IUserRoleDb;
+  permission: IPermissionDb;
+  rolePermission: IRolePermissionDb;
+  checkoutSessionStatus: ICheckoutSessionStatusDb;
+  subscriptionFeature: ISubscriptionFeatureDb;
+  subscriptionProduct: ISubscriptionProductDb;
+  tenantSubscriptionProduct: ITenantSubscriptionProductDb;
+  constructor(provider?: DatabaseOrm) {
+    let providerValue = provider || defaultAppConfiguration.orm;
+    if (!providerValue) {
+      throw new Error("defaultAppConfiguration.orm is not defined. Valid values are: prisma, drizzle, mock");
+    }
+    console.log("[RockStack] Using database ORM: " + providerValue);
+    switch (providerValue) {
+      case "prisma":
+        this.provider = "prisma";
+        this.appConfiguration = new AppConfigurationDbPrisma();
+        this.user = new UserDbPrisma();
+        this.userRegistrationAttempt = new UserRegistrationAttemptDbPrisma();
+        this.tenant = new TenantDbPrisma();
+        this.tenantUser = new TenantUserDbPrisma();
+        this.tenantUserInvitation = new TenantUserInvitationDbPrisma();
+        this.tenantSubscription = new TenantSubscriptionDbPrisma();
+        this.credit = new CreditDbPrisma();
+        this.role = new RoleDbPrisma();
+        this.userRole = new UserRoleDbPrisma();
+        this.permission = new PermissionDbPrisma();
+        this.rolePermission = new RolePermissionDbPrisma();
+        this.checkoutSessionStatus = new CheckoutSessionStatusDbPrisma();
+        this.subscriptionFeature = new SubscriptionFeatureDbPrisma();
+        this.subscriptionProduct = new SubscriptionProductDbPrisma();
+        this.tenantSubscriptionProduct = new TenantSubscriptionProductDbPrisma();
+        break;
+      case "drizzle":
+        this.provider = "drizzle";
+        this.appConfiguration = new AppConfigurationDbDrizzle();
+        this.user = new UserDbDrizzle();
+        this.userRegistrationAttempt = new UserRegistrationAttemptDbDrizzle();
+        this.tenant = new TenantDbDrizzle();
+        this.tenantUser = new TenantUserDbDrizzle();
+        this.tenantUserInvitation = new TenantUserInvitationDbDrizzle();
+        this.tenantSubscription = new TenantSubscriptionDbDrizzle();
+        this.credit = new CreditDbDrizzle();
+        this.role = new RoleDbDrizzle();
+        this.userRole = new UserRoleDbDrizzle();
+        this.permission = new PermissionDbDrizzle();
+        this.rolePermission = new RolePermissionDbDrizzle();
+        this.checkoutSessionStatus = new CheckoutSessionStatusDbDrizzle();
+        this.subscriptionFeature = new SubscriptionFeatureDbDrizzle();
+        this.subscriptionProduct = new SubscriptionProductDbDrizzle();
+        this.tenantSubscriptionProduct = new TenantSubscriptionProductDbDrizzle();
+        break;
+      case "mock":
+        this.provider = "mock";
+        this.appConfiguration = new AppConfigurationDbMock();
+        this.user = new UserDbMock();
+        this.userRegistrationAttempt = new UserRegistrationAttemptDbMock();
+        this.tenant = new TenantDbMock();
+        this.tenantUser = new TenantUserDbMock();
+        this.tenantUserInvitation = new TenantUserInvitationDbMock();
+        this.tenantSubscription = new TenantSubscriptionDbMock();
+        this.credit = new CreditDbMock();
+        this.role = new RoleDbMock();
+        this.userRole = new UserRoleDbMock();
+        this.permission = new PermissionDbMock();
+        this.rolePermission = new RolePermissionDbMock();
+        this.checkoutSessionStatus = new CheckoutSessionStatusDbMock();
+        this.subscriptionFeature = new SubscriptionFeatureDbMock();
+        this.subscriptionProduct = new SubscriptionProductDbMock();
+        this.tenantSubscriptionProduct = new TenantSubscriptionProductDbMock();
+        break;
+      default:
+        throw new Error("Invalid defaultAppConfiguration.orm: " + providerValue + ". Valid values are: prisma, drizzle, mock");
+    }
+  }
+}
+
+let db = new Database();
+export { db };

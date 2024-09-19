@@ -1,0 +1,22 @@
+model AppConfiguration {
+  id                                     String   @id @default(cuid())
+  updatedAt                              DateTime @updatedAt
+  name                                   String
+  theme                                  String?
+  authRequireEmailVerification           Boolean  @default(false)
+  authRequireOrganization                Boolean  @default(true)
+  authRequireName                        Boolean  @default(true)
+  analyticsSimpleAnalytics               Boolean  @default(false)
+  analyticsPlausibleAnalytics            Boolean  @default(false)
+  analyticsGoogleAnalyticsTrackingId     String?
+  subscriptionRequired                   Boolean  @default(true)
+  subscriptionAllowSubscribeBeforeSignUp Boolean  @default(true)
+  subscriptionAllowSignUpBeforeSubscribe Boolean  @default(true)
+  brandingLogo                           String?
+  brandingLogoDarkMode                   String?
+  brandingIcon                           String?
+  brandingIconDarkMode                   String?
+  brandingFavicon                        String?
+  headScripts                            String?
+  bodyScripts                            String?
+}

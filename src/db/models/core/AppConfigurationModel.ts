@@ -1,0 +1,20 @@
+export type AppConfigurationModel = {
+  name: string;
+  theme: string | null;
+  authRequireEmailVerification: boolean;
+  authRequireOrganization: boolean;
+  authRequireName: boolean;
+  analyticsSimpleAnalytics: boolean;
+  analyticsPlausibleAnalytics: boolean;
+  analyticsGoogleAnalyticsTrackingId: string | null;
+  subscriptionRequired: boolean;
+  subscriptionAllowSubscribeBeforeSignUp: boolean;
+  subscriptionAllowSignUpBeforeSubscribe: boolean;
+  brandingLogo: string | null;
+  brandingLogoDarkMode: string | null;
+  brandingIcon: string | null;
+  brandingIconDarkMode: string | null;
+  brandingFavicon: string | null;
+  headScripts: string | null;
+  bodyScripts: string | null;
+};

@@ -354,19 +354,11 @@
       "affiliates": "Afiliados"
     },
     "hero": {
-      "headline1": "Desarrolla tu SaaS con Next.js",
-      "headline2": "Lanza aplicaciones SaaS listas para producción: Autenticación y gestión de usuarios, Suscripciones y pagos de Stripe, Roles y permisos, Gestión de créditos, Bloques de página, SEO optimizado, Multi-cuenta, Caché, Multi-tema e Internacionalización (i18n).",
-      "headline3": "",
-      "subheadline1": "Demo RockStack Next.js",
-      "hint": "Este sitio usa {{0}} Edición Core",
-      "buy": "Empieza ahora",
-      "features": "Funcionalidades",
-      "docs": "Documentación",
-      "components": "Componentes",
-      "blog": "Blog",
-      "contact": "Contáctanos",
-      "startHint": "Este demo está alojado en Vercel + Supabase.",
-      "cta": "Empieza ahora"
+      "heading": "Desarrolla tu SaaS con Next.js",
+      "subheading": "Lanza aplicaciones SaaS listas para producción: Autenticación y gestión de usuarios, Suscripciones y pagos de Stripe, Roles y permisos, Page Blocks, SEO optimizado, Multi-cuentas, Caché, Multi-tema e Internacionalización (i18n).",
+      "topText": "Next.js RockStack Demo",
+      "cta1": "Ver precios",
+      "cta2": "Contáctanos"
     },
     "pricing": {
       "title": "Precios",
@@ -1011,7 +1003,7 @@
       "new": "Nuevo plan",
       "edit": "Editar plan",
       "i18n": "Traducción i18n",
-      "thesePricesAreFromFiles": "Estos precios son demo, personalízalos en archivo plans.server.ts.",
+      "thesePricesAreFromFiles": "Estos precios son demo, personalízalos en archivo defaultPlans.server.ts.",
       "noPricesInDatabase": "No hay precios configurados. Inicia como admin para configurar los planes y precios.",
       "noPricesConfigured": "No hay precios configurados.",
       "generateFromFiles": "Clic aquí para generar planes"

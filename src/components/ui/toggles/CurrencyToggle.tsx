@@ -4,14 +4,14 @@ import InputSelect from "../input/InputSelect";
 interface Props {
   className?: string;
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (value: string) => void;
   possibleCurrencies: string[];
   darkMode?: boolean;
 }
 
-export default function CurrencyToggle({ className, value, setValue, possibleCurrencies, darkMode }: Props) {
+export default function CurrencyToggle({ className, value, onChange, possibleCurrencies, darkMode }: Props) {
   // function changeCurrency(currency: string) {
-  //   setValue(currency);
+  //   onChange(currency);
   // }
   return (
     <Fragment>
@@ -19,11 +19,7 @@ export default function CurrencyToggle({ className, value, setValue, possibleCur
         <div className={className}>
           <InputSelect
             value={value}
-            setValue={(e) => setValue(e?.toString() ?? "")}
-            // className={clsx(
-            //   "focus:ring-theme-500 focus:border-theme-500 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base text-gray-800 focus:outline-none sm:text-sm",
-            //   darkMode && "dark:border-gray-700 dark:bg-gray-800 dark:text-gray-50"
-            // )}
+            setValue={(e) => onChange(e?.toString() ?? "")}
             options={possibleCurrencies.map((item) => {
               return {
                 value: item,

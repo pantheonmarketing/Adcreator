@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserInfo, setUserSession } from "@/lib/session";
+import { getUserInfo, createUserSession } from "@/lib/services/session.server";
 import { redirect } from "next/navigation";
 
 export async function authenticate(prev: any, formData: FormData) {
@@ -9,9 +9,12 @@ export async function authenticate(prev: any, formData: FormData) {
   const password = formData.get("password") as string;
   const redirectTo = formData.get("redirectTo") as string;
   console.log("[auth.login.actions] authenticate", { email, password });
-  setUserSession({
-    ...userInfo,
-    userId: "1",
-  });
-  return redirect(redirectTo || "/");
+  return createUserSession(
+    {
+      ...userInfo,
+      userId: "1",
+    },
+    redirectTo || "/"
+  );
+  // return redirect(redirectTo || "/");
 }

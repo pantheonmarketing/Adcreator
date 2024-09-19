@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { FooterBlockDto } from "@/modules/pageBlocks/blocks/marketing/footer/FooterBlockDto";

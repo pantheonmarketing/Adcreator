@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { actionLogout } from "@/app/(marketing)/actions";
 import { Button } from "./ui/button";
-import { getUserInfo } from "@/lib/session";
+import { getUserInfo } from "@/lib/services/session.server";
 import LocaleSelector from "./ui/selectors/LocaleSelector";
 import ThemeSelector from "./ui/selectors/ThemeSelector";
 import DarkModeToggle from "./ui/toggles/DarkModeToggle";

@@ -1,22 +1,26 @@
+"server-only";
+
 import { parse, serialize } from "cookie";
 import { cookies } from "next/headers";
-import { defaultThemeColor, defaultThemeScheme } from "./theme";
+import { defaultThemeColor, defaultThemeScheme } from "../themes";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 
-const SESSION_COOKIE_NAME = "RS_session";
+const SESSION_COOKIE_NAME = "RSN_session";
 const SESSION_SECRET = process.env.SESSION_SECRET || "";
 
 if (!SESSION_SECRET) {
   throw new Error("SESSION_SECRET must be set");
 }
 
-export type UserSession = {
+export type UserSessionDto = {
   userId: string | null;
   scheme: string;
   theme: string;
 };
 
-function getUserSession(): UserSession | null {
+function getUserSession(): UserSessionDto | null {
   const cookieStore = cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!sessionCookie) return null;
@@ -25,7 +29,7 @@ function getUserSession(): UserSession | null {
     const parsedCookies = parse(sessionCookie);
     const token = parsedCookies[SESSION_COOKIE_NAME];
     const decoded = jwt.verify(token, SESSION_SECRET) as JwtPayload;
-    const userSession: UserSession = {
+    const userSession: UserSessionDto = {
       userId: decoded.userId as string,
       scheme: decoded.scheme as string,
       theme: decoded.theme as string,
@@ -38,7 +42,7 @@ function getUserSession(): UserSession | null {
   }
 }
 
-export function getUserInfo(): UserSession {
+export function getUserInfo(): UserSessionDto {
   const session = getUserSession();
   const userId = session?.userId ?? null;
   const scheme = session?.scheme || defaultThemeScheme;
@@ -50,7 +54,18 @@ export function getUserInfo(): UserSession {
   };
 }
 
-export function setUserSession(userSession: UserSession) {
+export function resetUserSession() {
+  const cookieStore = cookies();
+  cookieStore.set(SESSION_COOKIE_NAME, "", {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: -1, // This deletes the cookie
+    httpOnly: true,
+  });
+}
+
+export function createUserSession(userSession: UserSessionDto, redirectTo: string = "") {
   const cookieStore = cookies();
   const token = jwt.sign(userSession, SESSION_SECRET, { expiresIn: "30d" });
   const serializedSession = serialize(SESSION_COOKIE_NAME, token, {
@@ -61,4 +76,5 @@ export function setUserSession(userSession: UserSession) {
     httpOnly: true,
   });
   cookieStore.set(SESSION_COOKIE_NAME, serializedSession);
+  return redirect(redirectTo);
 }

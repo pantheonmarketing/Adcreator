@@ -1,4 +1,4 @@
-import { getBaseURL } from "@/lib/url";
+import { getBaseURL } from "@/lib/services/url.server";
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {

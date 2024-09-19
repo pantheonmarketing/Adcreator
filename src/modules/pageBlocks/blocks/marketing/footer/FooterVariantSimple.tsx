@@ -1,3 +1,5 @@
+"use client";
+
 import ButtonEvent from "@/components/ui/buttons/ButtonEvent";
 import { FooterBlockDto } from "@/modules/pageBlocks/blocks/marketing/footer/FooterBlockDto";
 import SocialsVariantSimple from "../socials/SocialsVariantSimple";

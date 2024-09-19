@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { HeroBlockDto } from "./HeroBlockDto";
@@ -33,8 +35,8 @@ export default function HeroVariantSimple({ item }: { item: HeroBlockDto }) {
               </span>
             )}
           </div>
-          {item.headline && <h1 className="title-font mb-4 max-w-4xl text-4xl font-bold sm:text-5xl md:text-6xl md:font-black">{t(item.headline)}</h1>}
-          {item.description && <h2 className="mb-8 max-w-4xl text-lg leading-relaxed md:text-xl">{t(item.description)}</h2>}
+          {item.heading && <h1 className="title-font mb-4 max-w-4xl text-4xl font-bold sm:text-5xl md:text-6xl md:font-black">{t(item.heading)}</h1>}
+          {item.subheading && <h2 className="mb-8 max-w-4xl text-lg leading-relaxed md:text-xl">{t(item.subheading)}</h2>}
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             {item.cta.map((item, idx) => {

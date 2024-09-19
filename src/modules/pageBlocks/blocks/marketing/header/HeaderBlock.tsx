@@ -1,3 +1,5 @@
+"use client";
+
 import { HeaderBlockDto } from "@/modules/pageBlocks/blocks/marketing/header/HeaderBlockDto";
 import { defaultHeader } from "@/modules/pageBlocks/defaultBlocks/defaultHeader";
 import HeaderVariantSimple from "./HeaderVariantSimple";
