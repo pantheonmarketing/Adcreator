@@ -6,7 +6,6 @@ import { AppConfigurationModel } from "@/db/models";
 import { defaultAppConfiguration } from "../data/defaultAppConfiguration";
 
 export async function getAppConfiguration(): Promise<AppConfigurationDto> {
-  console.log("get");
   const appConfiguration = await cachified({
     key: `appConfiguration`,
     ttl: 1000 * 60 * 60 * 24, // 1 day
