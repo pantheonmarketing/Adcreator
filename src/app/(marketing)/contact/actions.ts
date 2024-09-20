@@ -2,7 +2,8 @@
 
 import { getServerTranslations } from "@/i18n/server";
 import { getBaseURL } from "@/lib/services/url.server";
-import { sendEmail } from "@/modules/emails/services/EmailService";
+import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
+import { getEmailConfig, sendEmail } from "@/modules/emails/services/EmailService";
 
 export async function actionContact(prev: any, form: FormData) {
   const { t } = await getServerTranslations();
@@ -23,10 +24,11 @@ export async function actionContact(prev: any, form: FormData) {
   }
   console.log("[Contact] New submission", { submission });
 
-  if (process.env.SUPPORT_EMAIL && process.env.POSTMARK_SERVER_TOKEN && process.env.SUPPORT_EMAIL && process.env.POSTMARK_FROM_EMAIL) {
+  const emailConfig = getEmailConfig();
+  if (emailConfig) {
     try {
       await sendEmail({
-        to: process.env.SUPPORT_EMAIL,
+        to: defaultAppConfiguration.email.supportEmail,
         subject: "New contact form submission",
         body: `
                 <p>
@@ -40,11 +42,6 @@ export async function actionContact(prev: any, form: FormData) {
                   <b>Message</b>: ${submission.message}<br/>
                 </p>
                 `,
-        config: {
-          provider: "postmark",
-          from: process.env.POSTMARK_FROM_EMAIL!,
-          apiKey: process.env.POSTMARK_SERVER_TOKEN!,
-        },
       });
     } catch (e: any) {
       console.error("[Contact] Error sending email", e);

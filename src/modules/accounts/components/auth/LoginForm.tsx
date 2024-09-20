@@ -42,7 +42,7 @@ export default function LoginForm({ appConfiguration, redirectTo }: { appConfigu
       </div>
 
       <div className="mx-auto flex flex-col items-center space-y-6 rounded-lg border border-border p-6">
-        <form action={action} method="post" className="w-full space-y-3">
+        <form action={action} className="w-full space-y-3">
           <input type="hidden" name="action" value="login" hidden readOnly />
           <input type="hidden" name="redirectTo" value={redirectTo ?? searchParams.get("redirect") ?? undefined} />
           <div>

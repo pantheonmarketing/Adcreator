@@ -4,8 +4,9 @@ import { PageBlockDto } from "../blocks/PageBlockDto";
 import { defaultSiteTags, getMetaTags } from "../seo/SeoMetaTagsUtils";
 import { defaultHeader } from "../defaultBlocks/defaultHeader";
 import { defaultFooter } from "../defaultBlocks/defaultFooter";
-import { sendEmail } from "@/modules/emails/services/EmailService";
+import { getEmailConfig, sendEmail } from "@/modules/emails/services/EmailService";
 import NewsletterComponent from "../blocks/marketing/newsletter/NewsletterComponent";
+import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
 
 export namespace NewsletterPage {
   export async function metatags({ t }: { t: TFunction }): Promise<MetaTagsDto> {
@@ -43,20 +44,16 @@ export namespace NewsletterPage {
       throw Error("Missing fields");
     }
 
-    if (process.env.SUPPORT_EMAIL && process.env.POSTMARK_SERVER_TOKEN && process.env.SUPPORT_EMAIL && process.env.POSTMARK_FROM_EMAIL) {
+    const emailConfig = getEmailConfig();
+    if (emailConfig) {
       await sendEmail({
-        to: process.env.SUPPORT_EMAIL,
+        to: defaultAppConfiguration.email.supportEmail,
         subject: "New newsletter subscription",
         body: `
                 <p>First Name: ${submission.firstName}</p>
                 <p>Last Name: ${submission.lastName}</p>
                 <p>Email: ${submission.email}</p>
                 `,
-        config: {
-          provider: "postmark",
-          from: process.env.POSTMARK_FROM_EMAIL!,
-          apiKey: process.env.POSTMARK_SERVER_TOKEN!,
-        },
       }).catch((e) => {});
     }
 

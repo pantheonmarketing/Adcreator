@@ -24,7 +24,7 @@ ${appConfiguration.email.supportEmail && `<p>If you have any questions, feel fre
 
 <p>Thanks,
 <br>-
-<br>${appConfiguration.email.senderName}</p>
+<br>${appConfiguration.email.fromName}</p>
 `;
     return { subject, body };
   },
@@ -45,7 +45,7 @@ const PASSWORD_RESET_EMAIL = {
 
 <p>Thanks,
 <br>-
-<br>${appConfiguration.email.senderName}</p>
+<br>${appConfiguration.email.fromName}</p>
 `;
     return { subject, body };
   },
@@ -78,7 +78,7 @@ ${appConfiguration.email.supportEmail && `<p>If you have any questions, feel fre
 
 <p>Thanks,
 <br>-
-<br>${appConfiguration.email.senderName}</p>
+<br>${appConfiguration.email.fromName}</p>
 `;
     return { subject, body };
   },
@@ -98,7 +98,7 @@ ${appConfiguration.email.supportEmail && `<p>If you have any questions, feel fre
 
 <p>Thanks,
 <br>-
-<br>${appConfiguration.email.senderName}</p>`;
+<br>${appConfiguration.email.fromName}</p>`;
     return { subject, body };
   },
 };
@@ -114,7 +114,7 @@ If you haven't already, <a href="${action_url}" target="_blank">click here to</a
 
 <p>Thanks,
 <br>-
-<br>${appConfiguration.email.senderName}</p>`;
+<br>${appConfiguration.email.fromName}</p>`;
     return { subject, body };
   },
 };

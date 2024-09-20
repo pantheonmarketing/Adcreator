@@ -1,0 +1,43 @@
+import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
+import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
+import { getServerTranslations } from "@/i18n/server";
+import AdminCacheComponent from "./component";
+import { CachedValue, getCachedValues } from "@/lib/services/cache.server";
+import { UserDto } from "@/db/models";
+import { db } from "@/db";
+
+export async function generateMetadata() {
+  const { t } = await getServerTranslations();
+  return getMetaTags({
+    title: `${t("settings.admin.cache.title")} | ${defaultSiteTags.title}`,
+  });
+}
+
+export type CacheLoaderData = {
+  title: string;
+  cachedValues: CachedValue[];
+  allTenants: { id: string; name: string; slug: string }[];
+  allUsers: UserDto[];
+};
+async function load() {
+  await verifyUserHasPermission("admin.settings.general.update");
+  const { t } = await getServerTranslations();
+  const cachedValues = await getCachedValues();
+  console.log({ cachedValues: cachedValues.length });
+
+  const allTenants = await db.tenant.getAllIdsAndNames();
+  const allUsers = await db.user.getAll();
+
+  const data: CacheLoaderData = {
+    title: `${t("settings.admin.cache.title")} | ${defaultSiteTags.title}`,
+    cachedValues,
+    allTenants,
+    allUsers,
+  };
+  return data;
+}
+
+export default async function () {
+  const data = await load();
+  return <AdminCacheComponent data={data} />;
+}

@@ -3,8 +3,9 @@ export type AppConfigurationDto = {
   app: { name: string };
   email: {
     provider: "postmark" | "resend";
+    fromName: string;
+    fromEmail: string;
     supportEmail: string;
-    senderName: string;
   };
   theme: { color: string; scheme: "light" | "dark" };
   auth: {

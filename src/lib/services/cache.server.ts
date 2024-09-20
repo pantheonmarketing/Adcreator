@@ -8,7 +8,7 @@ const CACHE_ENABLED = false;
 const CACHE_LOGGING_ENABLED = true;
 
 if (!process.env.REDIS_URL && CACHE_ENABLED) {
-  throw new Error("REDIS_URL is required");
+  throw new Error("REDIS_URL is required when CACHE_ENABLED is true");
 }
 
 const redis = createClient({
@@ -18,9 +18,9 @@ redis.on("error", function (err: Error) {
   throw err;
 });
 await redis.connect();
-await redis.set("rock", "stack");
 
-const cache = redisCacheAdapter(redis);
+export const cache = redisCacheAdapter(redis);
+await redis.set("rock", "stack");
 
 export async function cachified<Value>(
   options: Omit<CachifiedOptions<Value>, "cache"> & {
@@ -60,7 +60,7 @@ export async function getCachedValues() {
     if (cachedValues.find((x) => x.key === key)) {
       continue;
     }
-    const value = cache.get(key);
+    const value = await redis.get(key);
     if (!value) {
       continue;
     }
@@ -69,11 +69,16 @@ export async function getCachedValues() {
     // const createdTime = value.metadata.createdTime;
     // const createdAt = new Date(createdTime);
     // const cachedValue = { key, value: value.value, sizeMb, createdAt, createdTime };
-    cachedValues.push({ key, value, sizeMb, createdAt: new Date(), createdTime: Date.now() });
+    cachedValues.push({
+      key,
+      value,
+      sizeMb,
+      createdAt: new Date(),
+      createdTime: Date.now(),
+    });
   }
   return cachedValues;
 }
-
 
 export async function clearAllCache() {
   await redis.flushAll();

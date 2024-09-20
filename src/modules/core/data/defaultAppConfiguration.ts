@@ -8,8 +8,9 @@ export const defaultAppConfiguration: AppConfigurationDto = {
   },
   email: {
     provider: "postmark",
+    fromEmail: "alex@rockstack.dev",
+    fromName: "Alex @ Rockstack",
     supportEmail: "rockstack.dev@gmail.com",
-    senderName: "Alex from Rockstack",
   },
   theme: {
     color: defaultThemeColor,

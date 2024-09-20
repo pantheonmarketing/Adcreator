@@ -9,12 +9,19 @@ import SidebarLayout from "@/components/layouts/SidebarLayout";
 import AdminDataLayout from "@/context/AdminDataLayout";
 import { redirect } from "next/navigation";
 import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { headers } from "next/headers";
 
-export async function load({ params }: ServerComponentsProps): Promise<AdminDataDto> {
+export async function load({ params, searchParams }: ServerComponentsProps): Promise<AdminDataDto> {
   const userInfo = getUserInfo();
   const user = userInfo.userId ? await getUser(userInfo.userId) : null;
+  const heads = headers();
+  const currentUrl = heads.get("x-url")?.toLowerCase() || "/";
+  const url = new URL(currentUrl);
+  const redirectTo = url.pathname + url.search;
+  console.log({ redirectTo });
   if (!userInfo || !user || !userInfo.userId) {
-    redirect(`/login`);
+    let searchParams = new URLSearchParams([["redirect", redirectTo]]);
+    throw redirect(`/login?${searchParams}`);
   }
 
   if (!user.admin) {
