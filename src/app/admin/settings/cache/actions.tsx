@@ -2,7 +2,7 @@
 
 import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
 import { cache, clearAllCache, getCachedValues } from "@/lib/services/cache.server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 type ActionData = {
   success?: string;
@@ -27,7 +27,8 @@ export const actionAdminCache = async (prev: any, form: FormData): Promise<Actio
       cache.delete(key);
       keyCount++;
     }
-    revalidatePath("/admin/settings/cache");
+    // revalidatePath("/admin/settings/cache");
+    // revalidateTag("admin-settings-cache");
     return { success: "Keys deleted: " + keyCount };
   }
   return { error: "Invalid action" };

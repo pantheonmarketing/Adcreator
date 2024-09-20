@@ -26,7 +26,7 @@ export default async function () {
               and get a discount).
             </li>
             <li>
-              Open the file: <code className="font-bold text-blue-800">app/modules/core/services/AppConfigurationService.ts</code>.
+              Open the file: <code className="font-bold text-blue-800">src/modules/core/data/defaultAppConfiguration.ts</code>.
             </li>
             <li>
               Set <b>affiliates.providers.rewardfulApiKey</b> <i>(you can find it in your Rewardful company settings)</i>.

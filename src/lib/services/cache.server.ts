@@ -14,13 +14,16 @@ if (!process.env.REDIS_URL && CACHE_ENABLED) {
 const redis = createClient({
   url: process.env.REDIS_URL,
 });
-redis.on("error", function (err: Error) {
-  throw err;
-});
-await redis.connect();
+
+if (CACHE_ENABLED) {
+  redis.on("error", function (err: Error) {
+    throw err;
+  });
+  await redis.connect();
+  await redis.set("rock", "stack");
+}
 
 export const cache = redisCacheAdapter(redis);
-await redis.set("rock", "stack");
 
 export async function cachified<Value>(
   options: Omit<CachifiedOptions<Value>, "cache"> & {
@@ -41,6 +44,9 @@ export async function cachified<Value>(
 }
 
 export async function clearCacheKey(key: string): Promise<void> {
+  if (!CACHE_ENABLED) {
+    return;
+  }
   cache.delete(key);
 }
 
@@ -53,6 +59,9 @@ export type CachedValue = {
 };
 
 export async function getCachedValues() {
+  if (!CACHE_ENABLED) {
+    return [];
+  }
   const allKeys = await redis.keys("*");
   console.log("allKeys", allKeys);
   const cachedValues: CachedValue[] = [];
@@ -81,5 +90,8 @@ export async function getCachedValues() {
 }
 
 export async function clearAllCache() {
+  if (!CACHE_ENABLED) {
+    return;
+  }
   await redis.flushAll();
 }

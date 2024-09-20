@@ -23,6 +23,7 @@ export default function AdminCacheComponent({ data }: { data: CacheLoaderData })
   const search = useSearchParams();
   const searchParams = new URLSearchParams(search);
   const pathname = usePathname();
+  const router = useRouter();
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function AdminCacheComponent({ data }: { data: CacheLoaderData })
     } else if (actionData?.error) {
       toast.error(actionData.error);
     }
+    router.refresh();
   }, [actionData]);
 
   const filteredItems = () => {
@@ -142,8 +144,8 @@ export default function AdminCacheComponent({ data }: { data: CacheLoaderData })
                 name: "value",
                 title: "Value",
                 value: (item) => (
-                  <div className="flex justify-end">
-                    <ShowPayloadModalButton description={getValue(item)} payload={item.value} />
+                  <div className="flex justify-start">
+                    <ShowPayloadModalButton className="max-w-sm truncate" description={getValue(item)} payload={item.value} />
                   </div>
                 ),
               },
