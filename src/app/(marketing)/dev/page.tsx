@@ -2,7 +2,7 @@
 
 import { getUserInfo, resetUserSession } from "@/lib/services/session.server";
 import { getUser } from "@/modules/accounts/services/UserService";
-import { cache, getCachedValues } from "@/lib/services/cache.server";
+import { getCachedValues } from "@/lib/services/cache.server";
 import SeedService from "@/modules/core/services/SeedService";
 import { db } from "@/db";
 import DevComponent from "./component";
@@ -15,7 +15,7 @@ async function load() {
     // return json({ error: "This route is only available in development" }, { status: 404 });
     throw new Error("This route is only available in development");
   }
-  const cachedValues = getCachedValues();
+  const cachedValues = await getCachedValues();
   const users = await db.user.count();
   return {
     cachedValues,

@@ -10,7 +10,6 @@ export async function getAppConfiguration(): Promise<AppConfigurationDto> {
     key: `appConfiguration`,
     ttl: 1000 * 60 * 60 * 24, // 1 day
     getFreshValue: async () => db.appConfiguration.get(),
-    disabled: true,
   });
 
   if (!appConfiguration) {

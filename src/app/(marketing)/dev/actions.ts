@@ -1,16 +1,18 @@
 "use server";
 
-import { cache, getCachedValues } from "@/lib/services/cache.server";
+import {  clearAllCache, getCachedValues } from "@/lib/services/cache.server";
 import { resetUserSession } from "@/lib/services/session.server";
 import { actionLogin } from "@/modules/accounts/services/AuthService";
 import SeedService from "@/modules/core/services/SeedService";
+import { revalidatePath } from "next/cache";
 
 export const actionDev = async (prev: any, form: FormData) => {
   const action = form.get("action")?.toString();
   if (action === "clearCache") {
-    const cachedValues = getCachedValues();
+    const cachedValues = await getCachedValues();
     const keyCount = cachedValues.length;
-    cache.clear();
+    await clearAllCache();
+    revalidatePath("/dev");
     // return json({ success: `Cleared ${keyCount} keys from cache: ${cachedValues.map((cv) => cv.key).join(", ")}` });
     return { success: `Cleared ${keyCount} keys from cache: ${cachedValues.map((cv) => cv.key).join(", ")}` };
   } else if (action === "seed") {

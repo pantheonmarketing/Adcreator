@@ -1,15 +1,26 @@
 "server-only";
 
-import { LRUCache } from "lru-cache";
-import { cachified as originalCachified, CacheEntry, CachifiedOptions, verboseReporter } from "@epic-web/cachified";
+import { cachified as originalCachified, CachifiedOptions, verboseReporter } from "@epic-web/cachified";
+import { createClient } from "redis";
+import { redisCacheAdapter } from "cachified-redis-adapter";
 
-const lru = new LRUCache<string, CacheEntry>({ max: 1000 });
+const CACHE_ENABLED = false;
+const CACHE_LOGGING_ENABLED = true;
 
-// replace this with redisCacheAdapter(redis) if you need to: https://github.com/epicweb-dev/cachified#adapter-for-redis
-export const cache = lru;
+if (!process.env.REDIS_URL && CACHE_ENABLED) {
+  throw new Error("REDIS_URL is required");
+}
 
-const CACHE_ENABLED = true;
-const CACHE_LOGGING_ENABLED = false;
+const redis = createClient({
+  url: process.env.REDIS_URL,
+});
+redis.on("error", function (err: Error) {
+  throw err;
+});
+await redis.connect();
+await redis.set("rock", "stack");
+
+const cache = redisCacheAdapter(redis);
 
 export async function cachified<Value>(
   options: Omit<CachifiedOptions<Value>, "cache"> & {
@@ -20,11 +31,13 @@ export async function cachified<Value>(
     // @ts-ignore
     return options.getFreshValue(options);
   }
-  return originalCachified({
-    ...options,
-    cache,
-    reporter: CACHE_LOGGING_ENABLED ? verboseReporter() : undefined,
-  });
+  return originalCachified(
+    {
+      ...options,
+      cache,
+    },
+    CACHE_LOGGING_ENABLED ? verboseReporter() : undefined
+  );
 }
 
 export async function clearCacheKey(key: string): Promise<void> {
@@ -39,9 +52,11 @@ export type CachedValue = {
   createdTime: number;
 };
 
-export function getCachedValues() {
+export async function getCachedValues() {
+  const allKeys = await redis.keys("*");
+  console.log("allKeys", allKeys);
   const cachedValues: CachedValue[] = [];
-  for (const key of cache.keys()) {
+  for (const key of allKeys) {
     if (cachedValues.find((x) => x.key === key)) {
       continue;
     }
@@ -51,10 +66,15 @@ export function getCachedValues() {
     }
     const sizeBytes = new TextEncoder().encode(JSON.stringify(value)).length;
     const sizeMb = sizeBytes / 1024 / 1024;
-    const createdTime = value.metadata.createdTime;
-    const createdAt = new Date(createdTime);
-    const cachedValue = { key, value: value.value, sizeMb, createdAt, createdTime };
-    cachedValues.push(cachedValue);
+    // const createdTime = value.metadata.createdTime;
+    // const createdAt = new Date(createdTime);
+    // const cachedValue = { key, value: value.value, sizeMb, createdAt, createdTime };
+    cachedValues.push({ key, value, sizeMb, createdAt: new Date(), createdTime: Date.now() });
   }
   return cachedValues;
+}
+
+
+export async function clearAllCache() {
+  await redis.flushAll();
 }

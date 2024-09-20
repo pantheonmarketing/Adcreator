@@ -11,7 +11,6 @@ export async function getUser(userId?: string) {
     key: `user:${userId}`,
     ttl: 1000 * 60 * 60 * 24, // 1 day
     getFreshValue: async () => db.user.get(userId),
-    disabled: true,
   });
 }
 

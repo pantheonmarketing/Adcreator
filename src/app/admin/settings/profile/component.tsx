@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { actionAdminProfile } from "./actions";
 import { languages } from "@/i18n/settings";
 import i18next from "i18next";
+import LoadingButton from "@/components/ui/buttons/LoadingButton";
 
 export default function ProfileComponent() {
   const adminData = useAdminData();
@@ -169,13 +170,13 @@ export default function ProfileComponent() {
                           </p>
                         ) : null}
                       </div>
-                      <button
-                        disabled={pending}
+                      <LoadingButton
+                        actionName="profile"
                         type="submit"
                         className="inline-flex items-center space-x-2 rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                       >
                         {t("shared.save")}
-                      </button>
+                      </LoadingButton>
                     </div>
                   </div>
                 </div>
@@ -260,12 +261,13 @@ export default function ProfileComponent() {
                             </p>
                           ) : null}
                         </div>
-                        <button
+                        <LoadingButton
+                          actionName="password"
                           type="submit"
                           className="inline-flex items-center space-x-2 rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                         >
                           {t("shared.save")}
-                        </button>
+                        </LoadingButton>
                       </div>
                     </div>
                   </div>
