@@ -8,7 +8,7 @@ import CurrentSubscriptionButton from "./buttons/CurrentSubscriptionButton";
 import TenantSelect from "./selectors/TenantSelect";
 import Link from "next/link";
 import LogoDark from "@/assets/img/logo-dark.png";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import clsx from "clsx";
 import ThemeSelector from "../ui/selectors/ThemeSelector";
 import { AppDataDto } from "@/lib/state/useAppData";
@@ -24,7 +24,8 @@ interface Props {
 export default function SidebarLayout({ layout, children, appData }: Props) {
   const { appConfiguration } = useRootData();
   const params = useParams();
-  const title = "TODO: getTitle";
+  // const title = "TODO: getTitle";
+  const title = "";
 
   const mainElement = useRef<HTMLElement>(null);
 

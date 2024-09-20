@@ -15,7 +15,7 @@ import ThemeSelector from "@/components/ui/selectors/ThemeSelector";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
 import { usePathname } from "next/navigation";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 export default function HeaderVariantSimple({ item, width = "7xl" }: { item: HeaderBlockDto; width?: "screen-2xl" | "7xl" }) {
   const { authenticated, appConfiguration } = useRootData();

@@ -4,7 +4,7 @@ import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
 import ConfirmModal, { RefConfirmModal } from "@/components/ui/modals/ConfirmModal";
 import UploadFile from "@/components/ui/uploaders/UploadFile";
 import UploadImage from "@/components/ui/uploaders/UploadImage";
-import { useAdminData } from "@/lib/state/useAdminData";
+import useAdminData from "@/lib/state/useAdminData";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRef, useEffect, useState, useActionState } from "react";
 import { useTranslation } from "react-i18next";

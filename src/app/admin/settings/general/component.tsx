@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import InputGroup from "@/components/ui/forms/InputGroup";
 import InputImage from "@/components/ui/input/InputImage";
-import { useAdminData } from "@/lib/state/useAdminData";
+import useAdminData from "@/lib/state/useAdminData";
 import { getUserHasPermission } from "@/lib/helpers/PermissionsHelper";
 import { defaultThemes } from "@/lib/themes";
 import InputSelect from "@/components/ui/input/InputSelect";
@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import IndexPageLayout from "@/components/ui/layouts/IndexPageLayout";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import { actionAdminGeneralSettings } from "./actions";
 
 export default function AdminSettingsGeneral() {

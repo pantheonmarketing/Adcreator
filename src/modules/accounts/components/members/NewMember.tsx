@@ -5,7 +5,6 @@ import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Form, useActionData, useLocation, useNavigate, useNavigation, useParams } from "@remix-run/react";
 import { PlanFeatureUsageDto } from "@/modules/subscriptions/dtos/PlanFeatureUsageDto";
-import { NewMemberActionData } from "@/routes/app.$tenant/settings/members/new";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import CheckPlanFeatureLimit from "@/modules/subscriptions/components/CheckPlanFeatureLimit";
 import InputCheckboxWithDescription from "@/components/ui/input/InputCheckboxWithDescription";
@@ -18,7 +17,7 @@ interface Props {
 export default function NewMember({ featurePlanUsage }: Props) {
   const params = useParams();
   const location = useLocation();
-  const actionData = useActionData<NewMemberActionData>();
+  const actionData = useActionData<{}>();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -26,8 +25,6 @@ export default function NewMember({ featurePlanUsage }: Props) {
   const loading = navigation.state === "submitting";
 
   const inputEmail = useRef<HTMLInputElement>(null);
-
-  const [sendEmail, setSendEmail] = useState<boolean>(false);
 
   useEffect(() => {
     if (actionData?.success) {
@@ -136,8 +133,7 @@ export default function NewMember({ featurePlanUsage }: Props) {
               name="send-invitation-email"
               title="Send email"
               description="Send an invitation email to the user"
-              value={sendEmail}
-              onChange={setSendEmail}
+              defaultValue={false}
             />
           </div>
         </div>

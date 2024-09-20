@@ -16,14 +16,12 @@ export type AppDataDto = {
   mySubscription: TenantSubscriptionWithDetailsDto | null;
 };
 
-const AppDataContext = createContext<AppDataDto | null>(null);
+export const AppDataContext = createContext<AppDataDto | null>(null);
 
-export function useAppData(): AppDataDto {
+export default function useAppData(): AppDataDto {
   const context = useContext(AppDataContext);
   if (!context) {
     throw new Error("useAppData must be used within a AppDataContext.Provider");
   }
   return context;
 }
-
-export default AppDataContext;

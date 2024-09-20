@@ -1,5 +1,5 @@
 import { TenantDto } from "@/db/models";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 

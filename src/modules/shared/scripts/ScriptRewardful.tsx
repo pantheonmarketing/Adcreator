@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 export default function ScriptRewardful() {
   const rootData = useRootData();

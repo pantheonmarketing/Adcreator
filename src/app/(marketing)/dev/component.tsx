@@ -12,7 +12,7 @@ import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { actionDev } from "./actions";
 import { getRootData } from "@/lib/services/rootData.server";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 export default function DevComponent({
   data,

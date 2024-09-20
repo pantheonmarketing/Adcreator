@@ -142,7 +142,8 @@ export default function PermissionForm({ item, roles, onCancel, canUpdate = true
                 name={role.order + " " + role.name}
                 title={<RoleBadge item={role} />}
                 description={role.description}
-                value={hasRole(role)}
+                defaultValue={hasRole(role)}
+                // value={hasRole(role)}
                 onChange={(e) => setPermission(role, e)}
                 key={idx}
               />

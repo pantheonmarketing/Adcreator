@@ -8,7 +8,7 @@ import UserUtils from "@/modules/accounts/utils/UserUtils";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 interface Props {
   layout?: "/" | "app" | "admin";

@@ -12,7 +12,7 @@ import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/Subscriptio
 import { useNavigation, useSearchParams, useSubmit } from "@remix-run/react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import ErrorModal, { RefErrorModal } from "@/components/ui/modals/ErrorModal";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import { useTranslation } from "react-i18next";
 import Stripe from "stripe";
 import PlanFeatureDescription from "./PlanFeatureDescription";

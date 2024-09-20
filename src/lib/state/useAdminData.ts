@@ -12,14 +12,12 @@ export type AdminDataDto = {
   isSuperAdmin: boolean;
 };
 
-const AdminDataContext = createContext<AdminDataDto | null>(null);
+export const AdminDataContext = createContext<AdminDataDto | null>(null);
 
-export function useAdminData(): AdminDataDto {
+export default function useAdminData(): AdminDataDto {
   const context = useContext(AdminDataContext);
   if (!context) {
     throw new Error("useAdminData must be used within a AdminDataContext.Provider");
   }
   return context;
 }
-
-export default AdminDataContext;

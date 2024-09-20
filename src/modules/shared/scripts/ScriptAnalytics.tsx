@@ -1,4 +1,4 @@
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 export default function ScriptAnalytics() {
   const rootData = useRootData();

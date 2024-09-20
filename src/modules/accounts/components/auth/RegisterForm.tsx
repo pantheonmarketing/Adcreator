@@ -2,7 +2,7 @@
 
 import { Form, useNavigation, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import ExclamationTriangleIcon from "@/components/ui/icons/ExclamationTriangleIcon";
 import { Input } from "@/components/ui/input";

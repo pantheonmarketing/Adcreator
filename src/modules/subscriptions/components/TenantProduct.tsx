@@ -8,7 +8,7 @@ import { Colors } from "@/lib/colors";
 import { SubscriptionBillingPeriod } from "@/modules/subscriptions/enums/SubscriptionBillingPeriod";
 import SimpleBadge from "@/components/ui/badges/SimpleBadge";
 import ConfirmModal, { RefConfirmModal } from "@/components/ui/modals/ConfirmModal";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import PricingUtils from "@/modules/subscriptions/utils/PricingUtils";
 import DateUtils from "@/lib/utils/DateUtils";
 import { TenantSubscriptionProductWithDetailsDto } from "@/db/models";

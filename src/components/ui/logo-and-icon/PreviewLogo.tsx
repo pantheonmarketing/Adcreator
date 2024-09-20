@@ -2,7 +2,7 @@
 
 import LogoLight from "@/assets/img/logo-light.png";
 import LogoDark from "@/assets/img/logo-dark.png";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import Image from "next/image";
 
 export default function PreviewLogo() {

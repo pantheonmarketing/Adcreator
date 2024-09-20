@@ -22,14 +22,12 @@ export type RootDataDto = {
   csrf?: string;
 };
 
-const RootDataContext = createContext<RootDataDto | null>(null);
+export const RootDataContext = createContext<RootDataDto | null>(null);
 
-export function useRootData(): RootDataDto {
+export default function useRootData(): RootDataDto {
   const context = useContext(RootDataContext);
   if (!context) {
     throw new Error("useRootData must be used within a RootDataContext.Provider");
   }
   return context;
 }
-
-export default RootDataContext;

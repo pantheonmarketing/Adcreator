@@ -5,7 +5,7 @@ import { AppSidebar } from "./AppSidebar";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import UrlUtils from "@/lib/utils/UrlUtils";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 import TenantSelector from "./selectors/TenantSelector";
 import { AppDataDto } from "@/lib/state/useAppData";
 import { useParams, usePathname } from "next/navigation";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "@remix-run/react";
-import { useRootData } from "@/lib/state/useRootData";
+import useRootData from "@/lib/state/useRootData";
 
 const START_HIDDEN_IN_ROUTES = ["/admin", "/app"];
 

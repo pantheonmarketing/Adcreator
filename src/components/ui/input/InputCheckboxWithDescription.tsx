@@ -7,29 +7,41 @@ interface Props {
   name?: string;
   title?: string | ReactNode;
   description: string | ReactNode;
-  value?: boolean;
+  // value?: boolean;
   onChange?: (value: boolean) => void;
+  defaultValue?: boolean;
   className?: string;
   help?: string;
   disabled?: boolean;
   autoFocus?: boolean;
 }
-export default function InputCheckboxWithDescription({ name, title, value, onChange, description, className, help, disabled = false, autoFocus }: Props) {
-  const [checked, setChecked] = useState(value ?? false);
+export default function InputCheckboxWithDescription({
+  name,
+  title,
+  // value,
+  onChange,
+  defaultValue,
+  description,
+  className,
+  help,
+  disabled = false,
+  autoFocus,
+}: Props) {
+  // const [checked, setChecked] = useState(value ?? false);
 
-  useEffect(() => {
-    if (value !== checked) {
-      setChecked(value ?? false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  // useEffect(() => {
+  //   if (value !== checked) {
+  //     setChecked(value ?? false);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [value]);
 
-  useEffect(() => {
-    if (onChange && value !== checked) {
-      onChange(checked);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checked]);
+  // useEffect(() => {
+  //   if (onChange && value !== checked) {
+  //     onChange(checked);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [checked]);
 
   return (
     <div className={clsx("relative flex items-start pb-4 pt-2", className)}>
@@ -45,12 +57,15 @@ export default function InputCheckboxWithDescription({ name, title, value, onCha
         </label>
       </div>
       <div className="ml-3 flex h-5 items-center">
-        <Checkbox
+        <input
+          type="checkbox"
           id={name}
           aria-describedby={name + "-description"}
           name={name}
-          checked={checked}
-          onCheckedChange={(e) => setChecked(Boolean(e))}
+          className="peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+          // checked={checked}
+          onChange={onChange ? (e) => onChange(e.target.checked) : undefined}
+          defaultChecked={defaultValue}
           disabled={disabled}
           autoFocus={autoFocus}
           // className={clsx(disabled && "cursor-not-allowed bg-gray-100", "text-accent-600 focus:ring-accent-500 h-4 w-4 cursor-pointer rounded border-gray-300")}

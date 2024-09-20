@@ -9,7 +9,7 @@ import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import { defaultPeriodFilter, PeriodFilters } from "@/lib/helpers/PeriodHelper";
 import { getUserHasPermission } from "@/lib/helpers/PermissionsHelper";
 import { StatDto } from "@/lib/services/adminDashboardService";
-import { useAdminData } from "@/lib/state/useAdminData";
+import useAdminData from "@/lib/state/useAdminData";
 import TenantsTable from "@/modules/accounts/components/tenants/TenantsTable";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";

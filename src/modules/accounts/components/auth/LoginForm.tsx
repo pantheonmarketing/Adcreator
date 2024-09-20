@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import ExclamationTriangleIcon from "@/components/ui/icons/ExclamationTriangleIcon";
 import { Input } from "@/components/ui/input";
-// import { useRootData } from "@/lib/state/useRootData";
+// import useRootData from "@/lib/state/useRootData";
 import { actionLogin } from "../../services/AuthService";
 import { useSearchParams } from "next/navigation";
 import { AppConfigurationDto } from "@/modules/core/dtos/AppConfigurationDto";

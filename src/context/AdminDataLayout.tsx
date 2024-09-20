@@ -1,6 +1,6 @@
 "use client";
 
-import AdminDataContext, { AdminDataDto } from "@/lib/state/useAdminData";
+import { AdminDataContext, AdminDataDto } from "@/lib/state/useAdminData";
 import { useEffect } from "react";
 
 export default function AdminDataLayout({ children, data }: { children: React.ReactNode; data: AdminDataDto }) {
