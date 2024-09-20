@@ -2,7 +2,6 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams, useNavigation } from "@remix-run/react";
 import Modal from "../modals/Modal";
 import { DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from "@/lib/constants";
 import clsx from "clsx";
@@ -10,6 +9,7 @@ import InputNumber from "../input/InputNumber";
 import ButtonPrimary from "../buttons/ButtonPrimary";
 import ButtonSecondary from "../buttons/ButtonSecondary";
 import InputSelect from "../input/InputSelect";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   page: number;
@@ -22,10 +22,10 @@ export default function TablePagination({ page, pageSize, totalItems, totalPages
   const [state, setState] = useState<{ page: number; pageSize: number | undefined }>({ page, pageSize });
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(0);
-  // const submit = useSubmit();
-  const navigation = useNavigation();
-  const loading = navigation.state === "loading" || navigation.state === "submitting";
-  const [searchParams, setSearchParams] = useSearchParams();
+  const search = useSearchParams();
+  const searchParams = new URLSearchParams(search);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [showPageSizeModal, setShowPageSizeModal] = useState(false);
   const [showPageNumberModal, setShowPageNumberModal] = useState(false);
@@ -54,7 +54,8 @@ export default function TablePagination({ page, pageSize, totalItems, totalPages
           searchParams.delete("pageSize");
         }
       }
-      setSearchParams(searchParams);
+      router.replace(`${pathname}?${searchParams.toString()}`);
+      // setSearchParams(searchParams);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
@@ -78,7 +79,7 @@ export default function TablePagination({ page, pageSize, totalItems, totalPages
           name="pageSize"
           className={clsx(
             "focus:border-accent-500 focus:ring-accent-500 inline-flex items-center justify-center rounded border border-gray-200 bg-white text-xs",
-            page === 1 || loading ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
+            page === 1 ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
           )}
           onChange={(e) => setState({ ...state, page: 1, pageSize: Number(e.currentTarget.value) })}
           value={state.pageSize}
@@ -94,11 +95,11 @@ export default function TablePagination({ page, pageSize, totalItems, totalPages
         <div className="inline-flex items-center justify-center gap-2">
           <button
             type="button"
-            disabled={page === 1 || loading}
+            disabled={page === 1}
             onClick={() => setState({ ...state, page: page - 1 })}
             className={clsx(
               "inline-flex h-8 w-8 items-center justify-center rounded border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-500",
-              page === 1 || loading ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
+              page === 1 ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
             )}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -133,9 +134,9 @@ export default function TablePagination({ page, pageSize, totalItems, totalPages
             type="button"
             className={clsx(
               "inline-flex h-8 w-8 items-center justify-center rounded border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-gray-500",
-              page >= totalPages || loading ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
+              page >= totalPages ? "cursor-not-allowed opacity-90" : "hover:border-gray-300 hover:bg-gray-50"
             )}
-            disabled={page >= totalPages || loading}
+            disabled={page >= totalPages}
             onClick={() => setState({ ...state, page: page + 1 })}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">

@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { Link, useParams } from "@remix-run/react";
+import Link from "next/link";
 import UserUtils from "@/modules/accounts/utils/UserUtils";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import { UserDto } from "@/db/models";
+import { useParams } from "next/navigation";
 
 interface Props {
   user: UserDto;
@@ -17,7 +18,7 @@ export default function ProfileBanner({ user }: Props) {
         <div className="min-w-0 flex-1">
           {/*Profile */}
           <div className="flex items-center">
-            <Link to={UrlUtils.currentTenantUrl(params, `settings/profile`)}>
+            <Link href={UrlUtils.currentTenantUrl(params, `settings/profile`)}>
               {user?.avatar && <img className="hidden h-12 w-12 rounded-full sm:block" src={user?.avatar} alt="Profile" />}
             </Link>
             <div>

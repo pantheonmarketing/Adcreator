@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import { Fragment } from "react";
 import { StatDto } from "@/lib/services/adminDashboardService";
 
@@ -25,7 +25,7 @@ export function DashboardStats({ items }: Props) {
         {items.map((item, idx) => (
           <Fragment key={idx}>
             {item.href ? (
-              <Link to={item.href} className="flex justify-between space-x-1 truncate rounded-lg border border-gray-200 bg-white p-5 hover:bg-gray-50">
+              <Link href={item.href} className="flex justify-between space-x-1 truncate rounded-lg border border-gray-200 bg-white p-5 hover:bg-gray-50">
                 <DashboardStat item={item} />
               </Link>
             ) : (

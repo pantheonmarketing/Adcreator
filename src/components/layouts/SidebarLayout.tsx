@@ -1,27 +1,30 @@
+"use client";
+
 import { Transition } from "@headlessui/react";
 import { Fragment, ReactNode, useEffect, useRef, useState } from "react";
 import SidebarMenu from "./SidebarMenu";
 import ProfileButton from "./buttons/ProfileButton";
-// import CurrentSubscriptionButton from "./buttons/CurrentSubscriptionButton";
-// import TenantSelect from "./selectors/TenantSelect";
+import CurrentSubscriptionButton from "./buttons/CurrentSubscriptionButton";
+import TenantSelect from "./selectors/TenantSelect";
 import Link from "next/link";
 import LogoDark from "@/assets/img/logo-dark.png";
-import { useAppOrAdminData } from "@/lib/state/useAppOrAdminData";
 import { useRootData } from "@/lib/state/useRootData";
 import clsx from "clsx";
 import ThemeSelector from "../ui/selectors/ThemeSelector";
-import Image from "next/image";
+import { AppDataDto } from "@/lib/state/useAppData";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 interface Props {
   layout: "app" | "admin";
   children: ReactNode;
+  appData?: AppDataDto;
 }
 
-export default function SidebarLayout({ layout, children }: Props) {
+export default function SidebarLayout({ layout, children, appData }: Props) {
   const { appConfiguration } = useRootData();
   const params = useParams();
-  const title = "TODO";
+  const title = "TODO: getTitle";
 
   const mainElement = useRef<HTMLElement>(null);
 
@@ -97,17 +100,17 @@ export default function SidebarLayout({ layout, children }: Props) {
                   <nav className="space-y-3 px-2">
                     <div className="flex flex-col space-y-2">
                       <Link href={"/"}>
-                        <Image
-                          className={"mx-auto h-8 w-auto"}
-                          src={appConfiguration.branding.logoDarkMode || appConfiguration.branding.logo || LogoDark}
-                          alt="Logo"
-                        />
+                        {appConfiguration.branding.logoDarkMode || appConfiguration.branding.logo ? (
+                          <img className={"mx-auto h-8 w-auto"} src={appConfiguration.branding.logoDarkMode || appConfiguration.branding.logo} alt="Logo" />
+                        ) : (
+                          <Image className={"mx-auto h-8 w-auto"} src={LogoDark} alt="Logo" />
+                        )}
                       </Link>
                     </div>
-                    <SidebarMenu layout={layout} onSelected={() => setSidebarOpen(!sidebarOpen)} />
+                    <SidebarMenu appData={appData} layout={layout} onSelected={() => setSidebarOpen(!sidebarOpen)} />
                   </nav>
                 </div>
-                {/* {layout == "app" && <TenantSelect />} */}
+                {layout == "app" && appData && <TenantSelect currentTenant={appData.currentTenant} />}
               </div>
             </Transition>
             <div className="w-14 flex-shrink-0">{/*Dummy element to force sidebar to shrink to fit close icon */}</div>
@@ -129,15 +132,19 @@ export default function SidebarLayout({ layout, children }: Props) {
               <nav className="flex-1 select-none space-y-3 bg-gray-900 px-2 py-4">
                 <div className="flex flex-col space-y-2">
                   <Link href={"/"}>
-                    <Image className={"mx-auto h-8 w-auto"} src={getLogoDarkMode()} alt="Logo" />
+                    {appConfiguration.branding.logoDarkMode || appConfiguration.branding.logo ? (
+                      <img className={"mx-auto h-8 w-auto"} src={appConfiguration.branding.logoDarkMode || appConfiguration.branding.logo} alt="Logo" />
+                    ) : (
+                      <Image className={"mx-auto h-8 w-auto"} src={LogoDark} alt="Logo" />
+                    )}
                   </Link>
                 </div>
-                <SidebarMenu layout={layout} />
+                <SidebarMenu appData={appData} layout={layout} />
               </nav>
             </div>
           </div>
 
-          {/* {layout == "app" && <TenantSelect />} */}
+          {layout == "app" && appData && <TenantSelect currentTenant={appData.currentTenant} />}
         </div>
       </div>
 
@@ -154,7 +161,7 @@ export default function SidebarLayout({ layout, children }: Props) {
             </svg>
           </button>
 
-          <NavBar layout={layout} title={title} />
+          <NavBar layout={layout} title={title} appData={appData} />
         </div>
 
         <main ref={mainElement} className="flex-1 overflow-y-auto bg-gray-50 focus:outline-none" tabIndex={0}>
@@ -167,33 +174,17 @@ export default function SidebarLayout({ layout, children }: Props) {
   );
 }
 
-function NavBar({ layout, title }: { layout: "app" | "admin"; title?: string }) {
-  const appOrAdminData = useAppOrAdminData();
+function NavBar({ layout, title, appData }: { layout: "app" | "admin"; title?: string; appData?: AppDataDto }) {
   return (
     <div className="flex flex-1 justify-between space-x-2 px-3">
       <div className="flex flex-1 items-center">
         <div className="font-extrabold">{title}</div>
       </div>
       <div className="flex items-center space-x-2 md:ml-6">
-        {/* {layout === "app" && <CurrentSubscriptionButton />} */}
+        {appData?.mySubscription && <CurrentSubscriptionButton mySubscription={appData.mySubscription} />}
         {layout === "admin" && <ThemeSelector variant="secondary" />}
-        <ProfileButton user={appOrAdminData?.user} layout={layout} />
+        <ProfileButton layout={layout} />
       </div>
     </div>
   );
 }
-
-// function getTitle(): string {
-//   try {
-//     const titles = useMatches()
-//       .map((match) => match.data)
-//       .filter((data: any) => Boolean(data.title) || Boolean(data.meta?.title))
-//       .map((data: any) => data.title ?? data.meta?.title);
-//     if (!titles || titles.length === 0) {
-//       return "";
-//     }
-//     return titles[titles.length - 1].split("|")[0].trim() ?? "";
-//   } catch {
-//     return "";
-//   }
-// }

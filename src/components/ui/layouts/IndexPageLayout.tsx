@@ -1,8 +1,10 @@
+"use client";
+
 import { ReactNode } from "react";
-import { useParams } from "@remix-run/react";
 import BreadcrumbSimple from "../breadcrumbs/BreadcrumbSimple";
 import Tabs, { TabItem } from "../tabs/Tabs";
 import clsx from "clsx";
+import { useParams } from "next/navigation";
 
 interface Props {
   title?: ReactNode;

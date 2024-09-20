@@ -1,30 +1,29 @@
+"use client";
+
 import { useTranslation } from "react-i18next";
 import { Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import clsx from "clsx";
 import UserUtils from "@/modules/accounts/utils/UserUtils";
 import UrlUtils from "@/lib/utils/UrlUtils";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useRootData } from "@/lib/state/useRootData";
 
 interface Props {
-  user: { email: string; firstName: string | null; lastName: string | null; avatar: string | null; admin?: boolean } | null | undefined;
   layout?: "/" | "app" | "admin";
   items?: { title: string; path: string; hidden?: boolean; onClick?: () => void }[];
 }
 
-export default function ProfileButton({ user, layout, items }: Props) {
+export default function ProfileButton({ layout, items }: Props) {
+  const { user } = useRootData();
   const params = useParams();
-  const router = useRouter();
   const { t } = useTranslation();
 
   const [opened, setOpened] = useState(false);
 
   function closeDropdownUser() {
     setOpened(false);
-  }
-  function signOut() {
-    router.push("/logout");
   }
 
   return (
@@ -179,14 +178,13 @@ export default function ProfileButton({ user, layout, items }: Props) {
             ) : null}
 
             {!items && (
-              <button
-                onClick={signOut}
+              <Link
+                href="/logout"
                 className="block w-full px-4 py-2 text-left text-sm transition duration-150 ease-in-out hover:bg-secondary focus:outline-none"
                 role="menuitem"
-                disabled={!user}
               >
                 {t("app.navbar.signOut")}
-              </button>
+              </Link>
             )}
           </div>
         </div>

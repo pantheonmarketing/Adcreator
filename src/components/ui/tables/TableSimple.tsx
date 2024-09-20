@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useSearchParams } from "@remix-run/react";
+import Link from "next/link";
 import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import ButtonTertiary from "../buttons/ButtonTertiary";
 import TablePagination from "./TablePagination";
@@ -14,6 +14,7 @@ import { Checkbox } from "../checkbox";
 import { TFunction } from "i18next";
 import InputSelect from "../input/InputSelect";
 import { Input } from "../input";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props<T> {
   headers: RowHeaderDisplayDto<T>[];
@@ -61,11 +62,14 @@ function Table<T>({
   darkMode,
 }: Props<T>) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
+  const search = useSearchParams();
+  const pathname = usePathname();
+
   const [sortBy, setSortBy] = useState<{ by: string; order: "asc" | "desc" }[]>();
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(search.toString());
     let sort = searchParams.get("sort");
     const sortArray = sort?.split(",") ?? [];
     const sortObject = sortArray.map((s) => {
@@ -76,7 +80,7 @@ function Table<T>({
       return { by: s.replace("-", ""), order };
     });
     setSortBy(sortObject);
-  }, [searchParams]);
+  }, [search]);
   // const [selectedRows, setSelectedRows] = useState<T[]>([]);
 
   // useEffect(() => {
@@ -122,6 +126,7 @@ function Table<T>({
   }
 
   function onHeaderClick(header: RowHeaderDisplayDto<T>) {
+    const searchParams = new URLSearchParams(search.toString());
     if (!header.sortBy) {
       return;
     }
@@ -131,7 +136,8 @@ function Table<T>({
       newSort = `-${header.sortBy}`;
     }
     searchParams.set("sort", newSort);
-    setSearchParams(searchParams);
+    // setSearchParams(searchParams);
+    router.replace(`${pathname}?${searchParams.toString()}`);
   }
 
   function getSortDirection(header: RowHeaderDisplayDto<T>) {
@@ -239,7 +245,7 @@ function Table<T>({
                             if (e.ctrlKey || e.metaKey) {
                               window.open(href, "_blank");
                             } else {
-                              navigate(href);
+                              router.push(href);
                             }
                           }
                         : undefined
@@ -341,7 +347,7 @@ function ActionsCells<T>({
                     disabled={action.disabled !== undefined ? action.disabled(item) : action.disabled}
                     key={idx}
                     destructive={action.renderIsDestructive !== undefined ? action.renderIsDestructive(item) : action.destructive}
-                    prefetch={action.prefetch}
+                    // prefetch={action.prefetch}
                     onClick={(e) => {
                       e.stopPropagation();
                       e.preventDefault();
@@ -404,7 +410,7 @@ export interface RowHeaderActionDto<T> {
   firstColumn?: boolean;
   renderTitle?: (item: T) => ReactNode;
   renderIsDestructive?: (item: T) => boolean;
-  prefetch?: "intent" | "render" | "none";
+  // prefetch?: "intent" | "render" | "none";
   confirmation?: (item: T) => {
     title: string;
     description: string;
@@ -421,7 +427,7 @@ function displayRowValue<T>(t: TFunction, header: RowHeaderDisplayDto<T>, item: 
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              to={header.href(item) ?? ""}
+              href={header.href(item) ?? ""}
               className="rounded-md border-b border-dashed border-transparent hover:border-gray-400 focus:bg-gray-100"
             >
               <span>{header.value(item, idxRow)}</span>

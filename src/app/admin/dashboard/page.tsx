@@ -1,3 +1,40 @@
-export default async function () {
-  return <div>Admin Dashboard</div>;
+import { getServerTranslations } from "@/i18n/server";
+import { requireAuth } from "@/lib/services/loaders.middleware";
+import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import PeriodHelper from "@/lib/helpers/PeriodHelper";
+import { getAdminDashboardStats, StatDto } from "@/lib/services/adminDashboardService";
+import { TenantWithDetailsDto } from "@/db/models";
+import { PaginationDto } from "@/lib/dtos/PaginationDto";
+import { getCurrentPagination } from "@/lib/helpers/PaginationHelper";
+import { defaultSiteTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
+import AdminComponent from "./component";
+import { db } from "@/db";
+
+export type AdminLoaderData = {
+  title: string;
+  stats: StatDto[];
+  tenants: {
+    items: TenantWithDetailsDto[];
+    pagination: PaginationDto;
+  };
+};
+
+async function load({ params, searchParams }: ServerComponentsProps): Promise<AdminLoaderData> {
+  await requireAuth({ params });
+  const currentPagination = getCurrentPagination(searchParams);
+
+  const { t } = await getServerTranslations();
+
+  const data: AdminLoaderData = {
+    title: `${t("app.sidebar.dashboard")} | ${defaultSiteTags.title}`,
+    stats: await getAdminDashboardStats({ gte: PeriodHelper.getGreaterThanOrEqualsFromRequest() }),
+    tenants: await db.tenant.getAllWithPagination({ pagination: currentPagination }),
+  };
+  return data;
+}
+
+export default async function (props: ServerComponentsProps) {
+  const data = await load(props);
+
+  return <AdminComponent data={data} />;
 }

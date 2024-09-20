@@ -11,7 +11,7 @@ import SubscriptionUtils from "@/modules/subscriptions/utils/SubscriptionUtils";
 import SimpleBadge from "@/components/ui/badges/SimpleBadge";
 import { Colors } from "@/lib/colors";
 import Stripe from "stripe";
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 
 interface Props {
   items: TenantWithDetailsDto[];
@@ -33,13 +33,13 @@ export default function TenantsTable({ items, pagination, actions = [], tenantIn
       value: (i) => (
         <div className="max-w-sm truncate">
           <div className="flex items-center space-x-1 truncate font-medium text-gray-800">
-            <Link to={`/admin/accounts/${i.id}`} className="hover:underline">
+            <Link href={`/admin/accounts/${i.id}`} className="hover:underline">
               {i.name}
             </Link>
           </div>
 
           <Link
-            to={"/app/" + i.slug}
+            href={"/app/" + i.slug}
             className="rounded-md border-b border-dashed text-xs text-gray-500 hover:border-dashed hover:border-gray-400 focus:bg-gray-100"
           >
             <span>/{i.slug}</span>

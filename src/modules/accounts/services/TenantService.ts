@@ -87,8 +87,8 @@ export async function tenantSlugAlreadyExists(slug: string) {
   return existing > 0;
 }
 
-export async function getTenantIdFromUrl(params: { tenant?: string }) {
-  const { tenant } = params;
+export async function getTenantIdFromUrl(params?: { tenant?: string }) {
+  const tenant = params?.tenant;
   const tenantId = await cachified({
     key: `tenantIdOrSlug:${tenant}`,
     ttl: 1000 * 60 * 60 * 24,

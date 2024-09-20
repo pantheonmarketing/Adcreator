@@ -1,29 +1,28 @@
-import { Link, useLocation, useParams } from "@remix-run/react";
 import { Fragment, useState } from "react";
 import { SidebarItem, SidebarGroup } from "./SidebarItem";
 import { AdminSidebar } from "./AdminSidebar";
 import { AppSidebar } from "./AppSidebar";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { useAppData } from "@/lib/state/useAppData";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import { useRootData } from "@/lib/state/useRootData";
-import { useAdminData } from "@/lib/state/useAdminData";
 import TenantSelector from "./selectors/TenantSelector";
+import { AppDataDto } from "@/lib/state/useAppData";
+import { useParams, usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   layout: "app" | "admin";
   onSelected?: () => void;
+  appData?: AppDataDto;
 }
 
-export default function SidebarMenu({ layout, onSelected }: Props) {
+export default function SidebarMenu({ layout, onSelected, appData }: Props) {
   const params = useParams();
   const { t } = useTranslation();
-  const location = useLocation();
-  const appData = useAppData();
-  const adminData = useAdminData();
+  const pathname = usePathname();
   const rootData = useRootData();
-  const menu = layout === "admin" ? AdminSidebar(t) : AppSidebar({ t, tenantId: params.tenant ?? "" });
+  const menu = layout === "admin" ? AdminSidebar(t) : AppSidebar({ t, tenantId: params.tenant?.toString() ?? "" });
 
   const getMenuItems = () => {
     function clearItemsIfNotCollapsible(items: SidebarItem[]) {
@@ -65,14 +64,14 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
     }
   }
   function getPath(item: SidebarItem) {
-    return item.path.replace(":tenant", params.tenant ?? "");
+    return item.path.replace(":tenant", params.tenant?.toString() ?? "");
   }
   function isCurrent(menuItem: SidebarItem) {
     if (menuItem.path) {
       if (menuItem.exact) {
-        return location.pathname === getPath(menuItem);
+        return pathname === getPath(menuItem);
       }
-      return location.pathname?.includes(getPath(menuItem));
+      return pathname?.includes(getPath(menuItem));
     }
   }
   function currentIsChild(menuItem: SidebarItem) {
@@ -85,17 +84,17 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
     return hasOpenChild;
   }
   function allowCurrentUserType(item: SidebarItem) {
-    if (item.adminOnly && !appData?.user?.admin) {
+    if (item.adminOnly && !rootData?.user?.admin) {
       return false;
     }
     return true;
   }
-  function checkUserRolePermissions(item: SidebarItem) {
-    return !item.permission || appData?.permissions?.includes(item.permission) || adminData?.permissions?.includes(item.permission);
-  }
+  // function checkUserRolePermissions(item: SidebarItem) {
+  //   return !item.permission || appOrAdminData?.permissions?.includes(item.permission) || adminData?.permissions?.includes(item.permission);
+  // }
   const getMenu = (): SidebarGroup[] => {
     function filterItem(f: SidebarItem) {
-      return allowCurrentUserType(f) && checkUserRolePermissions(f);
+      return allowCurrentUserType(f); // && checkUserRolePermissions(f);
     }
     const _menu: SidebarGroup[] = [];
     getMenuItems()
@@ -128,7 +127,7 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
   }
   return (
     <div>
-      {layout === "app" && <div>{appData?.currentTenant && <TenantSelector key={params.tenant} />}</div>}
+      {layout === "app" && <div>{appData && <TenantSelector key={params.tenant?.toString()} appData={appData} />}</div>}
 
       {/* Mobile */}
       <div className="space-y-1 divide-y-2 divide-slate-800 sm:hidden">
@@ -160,9 +159,8 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
                               </a>
                             ) : (
                               <Link
-                                prefetch="intent"
                                 id={UrlUtils.slugify(getPath(menuItem))}
-                                to={menuItem.redirectTo ?? getPath(menuItem)}
+                                href={menuItem.redirectTo ?? getPath(menuItem)}
                                 className={clsx(
                                   "group mt-1 flex items-center space-x-4 rounded-sm px-4 py-2 text-base leading-5 transition duration-150 ease-in-out focus:outline-none",
                                   isCurrent(menuItem) && cssStates().selected,
@@ -221,10 +219,9 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
                                         </a>
                                       ) : (
                                         <Link
-                                          prefetch="intent"
                                           key={index}
                                           id={UrlUtils.slugify(getPath(subItem))}
-                                          to={subItem.redirectTo ?? getPath(subItem)}
+                                          href={subItem.redirectTo ?? getPath(subItem)}
                                           className={clsx(
                                             "group mt-1 flex items-center rounded-sm py-2 pl-14 leading-5 transition duration-150 ease-in-out hover:text-slate-300 focus:text-slate-300 focus:outline-none sm:text-sm",
                                             isCurrent(subItem) && cssStates().selected,
@@ -289,9 +286,8 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
                               </a>
                             ) : (
                               <Link
-                                prefetch="intent"
                                 id={UrlUtils.slugify(getPath(menuItem))}
-                                to={menuItem.redirectTo ?? getPath(menuItem)}
+                                href={menuItem.redirectTo ?? getPath(menuItem)}
                                 className={clsx(
                                   "group mt-1 flex items-center justify-between truncate rounded-sm px-4 py-2 text-sm leading-5 transition duration-150 ease-in-out focus:outline-none",
                                   menuItem.icon !== undefined && "px-4",
@@ -362,9 +358,8 @@ export default function SidebarMenu({ layout, onSelected }: Props) {
                                         </a>
                                       ) : (
                                         <Link
-                                          prefetch="intent"
                                           id={UrlUtils.slugify(getPath(subItem))}
-                                          to={subItem.redirectTo ?? getPath(subItem)}
+                                          href={subItem.redirectTo ?? getPath(subItem)}
                                           className={clsx(
                                             "group mt-1 flex items-center rounded-sm py-2 text-sm leading-5 transition duration-150 ease-in-out focus:outline-none",
                                             menuItem.icon === undefined && "pl-10",

@@ -2,11 +2,8 @@ import { db } from "@/db";
 import { DefaultPermission } from "@/modules/permissions/data/DefaultPermission";
 import { getUserInfo } from "@/lib/services/session.server";
 
-export async function verifyUserHasPermission(request: Request, permissionName: DefaultPermission, tenantId: string | null = null) {
-  if (permissionName.startsWith("entity.")) {
-    return true;
-  }
-  const userInfo = await getUserInfo(request);
+export async function verifyUserHasPermission(permissionName: DefaultPermission, tenantId: string | null = null) {
+  const userInfo = getUserInfo();
   if (!userInfo.userId) {
     throw Error("Unauthorized");
   }

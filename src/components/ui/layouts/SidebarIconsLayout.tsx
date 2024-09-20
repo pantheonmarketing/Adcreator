@@ -1,9 +1,12 @@
-import { Link, useLocation } from "@remix-run/react";
+"use client";
+
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import Tabs from "../tabs/Tabs";
 import SvgOrImg from "@/components/ui/icons/SvgOrImg";
+import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export type IconDto = {
   name: string;
@@ -30,7 +33,9 @@ export default function SidebarIconsLayout({
   };
   scrollRestoration?: boolean;
 }) {
-  const location = useLocation();
+  const pathname = usePathname();
+  const search = useSearchParams();
+  const searchParams = new URLSearchParams(search.toString());
   const [currentTab, setCurrentTab] = useState<IconDto>();
 
   const mainElement = useRef<HTMLDivElement>(null);
@@ -39,14 +44,14 @@ export default function SidebarIconsLayout({
   useEffect(() => {
     function findExactRoute(element: IconDto) {
       if (element.exact) {
-        return UrlUtils.stripTrailingSlash(location.pathname) === UrlUtils.stripTrailingSlash(element.href);
+        return UrlUtils.stripTrailingSlash(pathname) === UrlUtils.stripTrailingSlash(element.href);
       } else {
-        return (location.pathname + location.search).includes(element.href);
+        return (pathname + searchParams).includes(element.href);
       }
     }
     const current = items.find((element) => findExactRoute(element));
     setCurrentTab(current);
-  }, [items, location.pathname, location.search]);
+  }, [items, pathname, searchParams]);
 
   return (
     <div className="sm:flex sm:h-[calc(100vh-56px)] sm:flex-row sm:bg-gray-50">
@@ -120,8 +125,8 @@ function IconLink({
   return (
     <div className={clsx("w-full px-1 py-1")}>
       <Link
-        prefetch={prefetch}
-        to={href}
+        // prefetch={prefetch}
+        href={href}
         className={clsx(
           "flex w-11 items-center justify-center rounded-md border px-2 py-2 text-xs hover:border-gray-300 hover:bg-gray-200 hover:text-gray-900",
           current ? "border-gray-300 bg-gray-200 text-gray-800" : "border-transparent text-gray-500",

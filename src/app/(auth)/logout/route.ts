@@ -3,5 +3,5 @@ import { redirect } from "next/navigation";
 
 export async function GET() {
   resetUserSession();
-  redirect("/");
+  redirect("/login");
 }

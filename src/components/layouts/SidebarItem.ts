@@ -8,7 +8,6 @@ export interface SidebarItem {
   description?: string;
   open?: boolean;
   adminOnly?: boolean;
-  permission?: DefaultPermission;
   items?: SidebarItem[];
   side?: ReactNode;
   exact?: boolean;

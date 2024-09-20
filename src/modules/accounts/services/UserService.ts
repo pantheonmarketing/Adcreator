@@ -9,8 +9,9 @@ export async function getUser(userId?: string) {
   }
   return await cachified({
     key: `user:${userId}`,
-    ttl: 1000 * 60 * 60 * 24,
+    ttl: 1000 * 60 * 60 * 24, // 1 day
     getFreshValue: async () => db.user.get(userId),
+    disabled: true,
   });
 }
 

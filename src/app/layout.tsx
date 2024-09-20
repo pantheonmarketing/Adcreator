@@ -32,8 +32,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: {
+    tenant?: string;
+  };
 }>) {
   const lng = await detectLanguage();
   const userInfo = getUserInfo();
