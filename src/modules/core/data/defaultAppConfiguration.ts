@@ -2,9 +2,10 @@ import { defaultThemeColor, defaultThemeScheme } from "@/lib/themes";
 import { AppConfigurationDto } from "../dtos/AppConfigurationDto";
 
 export const defaultAppConfiguration: AppConfigurationDto = {
-  orm: "prisma",
   app: {
     name: "Next.js RockStack Demo",
+    orm: "prisma",
+    cache: undefined,
   },
   email: {
     provider: "postmark",

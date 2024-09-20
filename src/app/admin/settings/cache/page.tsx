@@ -23,7 +23,6 @@ async function load() {
   await verifyUserHasPermission("admin.settings.general.update");
   const { t } = await getServerTranslations();
   const cachedValues = await getCachedValues();
-  console.log({ cachedValues: cachedValues.length });
 
   const allTenants = await db.tenant.getAllIdsAndNames();
   const allUsers = await db.user.getAll();

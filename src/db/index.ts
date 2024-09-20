@@ -84,9 +84,9 @@ export class Database {
   subscriptionProduct: ISubscriptionProductDb;
   tenantSubscriptionProduct: ITenantSubscriptionProductDb;
   constructor(provider?: DatabaseOrm) {
-    let providerValue = provider || defaultAppConfiguration.orm;
+    let providerValue = provider || defaultAppConfiguration.app.orm;
     if (!providerValue) {
-      throw new Error("defaultAppConfiguration.orm is not defined. Valid values are: prisma, drizzle, mock");
+      throw new Error("defaultAppConfiguration.app.orm is not defined. Valid values are: prisma, drizzle, mock");
     }
     console.log("[RockStack] Using database ORM: " + providerValue);
     switch (providerValue) {
@@ -148,7 +148,7 @@ export class Database {
         this.tenantSubscriptionProduct = new TenantSubscriptionProductDbMock();
         break;
       default:
-        throw new Error("Invalid defaultAppConfiguration.orm: " + providerValue + ". Valid values are: prisma, drizzle, mock");
+        throw new Error("Invalid defaultAppConfiguration.app.orm: " + providerValue + ". Valid values are: prisma, drizzle, mock");
     }
   }
 }

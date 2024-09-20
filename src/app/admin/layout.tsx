@@ -18,7 +18,6 @@ export async function load({ params, searchParams }: ServerComponentsProps): Pro
   const currentUrl = heads.get("x-url")?.toLowerCase() || "/";
   const url = new URL(currentUrl);
   const redirectTo = url.pathname + url.search;
-  console.log({ redirectTo });
   if (!userInfo || !user || !userInfo.userId) {
     let searchParams = new URLSearchParams([["redirect", redirectTo]]);
     throw redirect(`/login?${searchParams}`);

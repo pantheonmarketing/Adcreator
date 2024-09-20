@@ -15,6 +15,8 @@ import DateCell from "@/components/ui/dates/DateCell";
 import RefreshIcon from "@/components/ui/icons/RefreshIcon";
 import InputSearch from "@/components/ui/input/InputSearch";
 import ShowPayloadModalButton from "@/components/ui/json/ShowPayloadModalButton";
+import WarningBanner from "@/components/ui/banners/WarningBanner";
+import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
 
 export default function AdminCacheComponent({ data }: { data: CacheLoaderData }) {
   const { t } = useTranslation();
@@ -113,65 +115,71 @@ export default function AdminCacheComponent({ data }: { data: CacheLoaderData })
         </div>
 
         <div className="flex-grow space-y-2 overflow-auto p-1">
-          <TableSimple
-            items={sortedItems()}
-            noRecords={
-              <div className="flex flex-col space-y-1 py-4 text-sm">
-                <div>{t("shared.noRecords")}</div>
-                {searchInput && (
-                  <div>
-                    <button type="button" className="text-blue-500 underline" onClick={() => setSearchInput("")}>
-                      Clear search
-                    </button>
-                  </div>
-                )}
-              </div>
-            }
-            headers={[
-              {
-                name: "key",
-                title: "Key",
-                value: (item) => <div className="max-w-xs truncate">{item.key}</div>,
-                sortBy: "key",
-                sortable: true,
-              },
-              {
-                name: "type",
-                title: "Type",
-                value: (item) => (Array.isArray(item.value) ? "array" : typeof item.value),
-              },
-              {
-                name: "value",
-                title: "Value",
-                value: (item) => (
-                  <div className="flex justify-start">
-                    <ShowPayloadModalButton className="max-w-sm truncate" description={getValue(item)} payload={item.value} />
-                  </div>
-                ),
-              },
-              {
-                name: "size",
-                title: "Size",
-                value: (item) => <div>{NumberUtils.decimalFormat(item.sizeMb, 4)} MB</div>,
-                sortBy: "sizeMb",
-              },
-              {
-                name: "createdAt",
-                title: "Created at",
-                // value: (item) => item.createdAt,
-                value: (item) => <DateCell date={item.createdAt} displays={["ymdhmsms"]} />,
-                sortBy: "createdTime",
-              },
-            ]}
-            actions={[
-              {
-                title: "Delete",
-                onClick: (_, item) => onDelete(item.key),
-                disabled: (item) => pending,
-                destructive: true,
-              },
-            ]}
-          />
+          {!defaultAppConfiguration.app.cache ? (
+            <WarningBanner title={t("shared.warning")}>
+              Cache is disabled. Enable it on the file: <code>src/lib/services/cache.server.ts</code>
+            </WarningBanner>
+          ) : (
+            <TableSimple
+              items={sortedItems()}
+              noRecords={
+                <div className="flex flex-col space-y-1 py-4 text-sm">
+                  <div>{t("shared.noRecords")}</div>
+                  {searchInput && (
+                    <div>
+                      <button type="button" className="text-blue-500 underline" onClick={() => setSearchInput("")}>
+                        Clear search
+                      </button>
+                    </div>
+                  )}
+                </div>
+              }
+              headers={[
+                {
+                  name: "key",
+                  title: "Key",
+                  value: (item) => <div className="max-w-xs truncate">{item.key}</div>,
+                  sortBy: "key",
+                  sortable: true,
+                },
+                {
+                  name: "type",
+                  title: "Type",
+                  value: (item) => (Array.isArray(item.value) ? "array" : typeof item.value),
+                },
+                {
+                  name: "value",
+                  title: "Value",
+                  value: (item) => (
+                    <div className="flex justify-start">
+                      <ShowPayloadModalButton className="max-w-sm truncate" description={getValue(item)} payload={item.value} />
+                    </div>
+                  ),
+                },
+                {
+                  name: "size",
+                  title: "Size",
+                  value: (item) => <div>{NumberUtils.decimalFormat(item.sizeMb, 4)} MB</div>,
+                  sortBy: "sizeMb",
+                },
+                {
+                  name: "createdAt",
+                  title: "Created at",
+                  // value: (item) => item.createdAt,
+                  value: (item) => <DateCell date={item.createdAt} displays={["ymdhmsms"]} />,
+                  sortBy: "createdTime",
+                },
+              ]}
+              actions={[
+                {
+                  title: "Delete",
+                  onClick: (_, item) => onDelete(item.key),
+                  disabled: (item) => pending,
+                  destructive: true,
+                },
+              ]}
+            />
+          )}
         </div>
       </div>
     </IndexPageLayout>

@@ -1,6 +1,9 @@
 export type AppConfigurationDto = {
-  orm: "prisma" | "drizzle" | "mock";
-  app: { name: string };
+  app: {
+    name: string;
+    orm: "prisma" | "drizzle" | "mock";
+    cache: "redis" | undefined;
+  };
   email: {
     provider: "postmark" | "resend";
     fromName: string;

@@ -3,19 +3,19 @@
 import { cachified as originalCachified, CachifiedOptions, verboseReporter } from "@epic-web/cachified";
 import { createClient } from "redis";
 import { redisCacheAdapter } from "cachified-redis-adapter";
+import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
 
-const CACHE_ENABLED = false;
 const CACHE_LOGGING_ENABLED = true;
 
-if (!process.env.REDIS_URL && CACHE_ENABLED) {
-  throw new Error("REDIS_URL is required when CACHE_ENABLED is true");
+if (!process.env.REDIS_URL && defaultAppConfiguration.app.cache === "redis") {
+  throw new Error("REDIS_URL env var is required when defaultAppConfiguration.app.cache is redis");
 }
 
 const redis = createClient({
   url: process.env.REDIS_URL,
 });
 
-if (CACHE_ENABLED) {
+if (defaultAppConfiguration.app.cache === "redis") {
   redis.on("error", function (err: Error) {
     throw err;
   });
@@ -30,7 +30,7 @@ export async function cachified<Value>(
     disabled?: boolean;
   }
 ): Promise<Value> {
-  if (!CACHE_ENABLED || options.disabled) {
+  if (!defaultAppConfiguration.app.cache || options.disabled) {
     // @ts-ignore
     return options.getFreshValue(options);
   }
@@ -44,7 +44,7 @@ export async function cachified<Value>(
 }
 
 export async function clearCacheKey(key: string): Promise<void> {
-  if (!CACHE_ENABLED) {
+  if (!defaultAppConfiguration.app.cache) {
     return;
   }
   cache.delete(key);
@@ -59,11 +59,10 @@ export type CachedValue = {
 };
 
 export async function getCachedValues() {
-  if (!CACHE_ENABLED) {
+  if (!defaultAppConfiguration.app.cache) {
     return [];
   }
   const allKeys = await redis.keys("*");
-  console.log("allKeys", allKeys);
   const cachedValues: CachedValue[] = [];
   for (const key of allKeys) {
     if (cachedValues.find((x) => x.key === key)) {
@@ -90,7 +89,7 @@ export async function getCachedValues() {
 }
 
 export async function clearAllCache() {
-  if (!CACHE_ENABLED) {
+  if (!defaultAppConfiguration.app.cache) {
     return;
   }
   await redis.flushAll();

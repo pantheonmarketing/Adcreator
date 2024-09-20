@@ -12,8 +12,8 @@ import { defaultAppConfiguration } from "../data/defaultAppConfiguration";
 const ADMIN_EMAIL = "admin@email.com";
 
 async function seed() {
-  if (defaultAppConfiguration.orm === "mock") {
-    throw Error("🌱 Seeding is not supported with defaultAppConfiguration.orm=mock. Use the mock database to develop features without a database.");
+  if (defaultAppConfiguration.app.orm === "mock") {
+    throw Error("🌱 Seeding is not supported with defaultAppConfiguration.app.orm=mock. Use the mock database to develop features without a database.");
   }
   console.log("🌱 Seeding admin user", 1);
   const admin = await createUser({ firstName: "Admin", lastName: "User", email: ADMIN_EMAIL, password: "password", admin: true });
