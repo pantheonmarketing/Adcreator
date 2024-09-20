@@ -19,7 +19,6 @@ export const AdminSidebar = (t: TFunction): SidebarItem[] => [
         title: t("app.sidebar.accountsAndUsers"),
         path: "/admin/accounts",
         isCollapsible: false,
-        permission: "admin.accounts.view",
         icon: <MembershipCardIcon className="h-5 w-5" />,
       },
     ],
