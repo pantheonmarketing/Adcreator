@@ -16,7 +16,7 @@ export async function getAppConfiguration(): Promise<AppConfigurationDto> {
     return defaultAppConfiguration;
   }
 
-  const conf = defaultAppConfiguration;
+  const conf = structuredClone(defaultAppConfiguration);
   conf.app.name = appConfiguration?.name ?? "";
   conf.theme.color = appConfiguration?.theme || defaultThemeColor;
   conf.auth.requireEmailVerification = appConfiguration?.authRequireEmailVerification;

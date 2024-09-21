@@ -9,13 +9,14 @@ import clsx from "clsx";
 import { Toaster as ReactHostToaster } from "react-hot-toast";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { Metadata } from "next";
-import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
 import ScriptInjector from "@/modules/shared/scripts/ScriptInjector";
 import { getRootData } from "@/lib/services/rootData.server";
 import RootDataLayout from "@/context/RootDataLayout";
 import { defaultSiteTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 
 const inter = Inter({ subsets: ["latin"] });
+
+export const revalidate = 0;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslations();
@@ -42,7 +43,6 @@ export default async function RootLayout({
   const lng = await detectLanguage();
   const userInfo = getUserInfo();
   const scheme = userInfo?.scheme || "light";
-  const appConfiguration = await getAppConfiguration();
   const rootData = await getRootData();
 
   return (
@@ -53,7 +53,7 @@ export default async function RootLayout({
             {children}
             <ReactHostToaster />
             <SonnerToaster />
-            <ScriptInjector scripts={appConfiguration?.scripts} />
+            <ScriptInjector scripts={rootData.appConfiguration?.scripts} />
           </RootDataLayout>
         </body>
       </html>
