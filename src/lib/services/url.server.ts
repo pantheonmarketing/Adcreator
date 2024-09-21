@@ -16,3 +16,8 @@ export const getDomainName = () => {
   const url = new URL(getBaseURL());
   return url.host;
 };
+
+export const getCurrentUrl = () => {
+  const heads = headers();
+  return heads.get("x-url")?.toLowerCase() || "/";
+};

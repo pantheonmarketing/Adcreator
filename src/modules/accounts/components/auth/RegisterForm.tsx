@@ -1,34 +1,46 @@
 "use client";
 
-import { Form, useNavigation, useSearchParams } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 import useRootData from "@/lib/state/useRootData";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import ExclamationTriangleIcon from "@/components/ui/icons/ExclamationTriangleIcon";
 import { Input } from "@/components/ui/input";
+import { useActionState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { actionPricingSuccess } from "@/app/(marketing)/pricing/[session]/success/actions";
 
 interface Props {
   isVerifyingEmail?: boolean;
   isSettingUpAccount?: boolean;
   data?: { company?: string; firstName?: string; lastName?: string; email?: string; slug?: string };
-  error: string | undefined;
+  checkoutSessionId?: string;
 }
 
-export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = false, data = {}, error }: Props) => {
+export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = false, data = {}, checkoutSessionId: checkoutSession }: Props) => {
   const { t } = useTranslation();
   const { appConfiguration, csrf } = useRootData();
-  const navigation = useNavigation();
+  const [actionState, action, pending] = useActionState(actionPricingSuccess, null);
 
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? undefined;
   const showPasswordInput = !appConfiguration.auth.requireEmailVerification || isVerifyingEmail || isSettingUpAccount;
+
+  useEffect(() => {
+    try {
+      // @ts-ignore
+      $crisp.push(["do", "chat:hide"]);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   return (
     <div className="mx-auto flex flex-col items-center space-y-6 rounded-lg border border-border p-6">
       <input type="hidden" name="redirectTo" value={redirect} hidden readOnly />
 
-      <Form method="post" className="w-full space-y-3">
+      <form action={action} className="w-full space-y-3">
         <input type="hidden" name="csrf" value={csrf} hidden readOnly />
+        {checkoutSession && <input type="hidden" name="checkoutSessionId" value={checkoutSession} hidden readOnly />}
         {/* Tenant */}
         {appConfiguration.auth.requireOrganization && (
           <div>
@@ -37,7 +49,7 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
             </label>
             <Input
               title={t("models.tenant.object")}
-              disabled={navigation.state !== "idle"}
+              disabled={pending}
               autoFocus
               type="text"
               name="company"
@@ -65,9 +77,9 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
                   id="first-name"
                   required
                   defaultValue={data.firstName}
-                  className="appearance-none rounded-md rounded-r-none"
+                  className="appearance-none rounded-md rounded-r-none focus:z-50"
                   placeholder={t("account.shared.firstNamePlaceholder")}
-                  disabled={navigation.state !== "idle"}
+                  disabled={pending}
                 />
               </div>
             </div>
@@ -82,7 +94,7 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
                   required
                   className="appearance-none rounded-md rounded-l-none"
                   placeholder={t("account.shared.lastNamePlaceholder")}
-                  disabled={navigation.state !== "idle"}
+                  disabled={pending}
                 />
               </div>
             </div>
@@ -103,7 +115,7 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
             readOnly={isVerifyingEmail}
             defaultValue={data.email}
             placeholder="email@address.com"
-            disabled={navigation.state !== "idle"}
+            disabled={pending}
           />
         </div>
 
@@ -119,7 +131,7 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
               name="password"
               required
               placeholder="************"
-              disabled={navigation.state !== "idle"}
+              disabled={pending}
               defaultValue=""
             />
           </div>
@@ -127,20 +139,20 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
         {/* Personal Info: End */}
 
         <div>
-          <LoadingButton disabled={navigation.state !== "idle"} className="w-full" type="submit">
+          <LoadingButton disabled={pending} className="w-full" type="submit">
             {t("account.register.prompts.register.title")}
           </LoadingButton>
         </div>
 
         <div id="form-error-message">
-          {error && navigation.state === "idle" ? (
+          {actionState?.error && !pending ? (
             <div className="flex items-center justify-center space-x-2 text-sm text-red-500 dark:text-red-300" role="alert">
               <ExclamationTriangleIcon className="h-4 w-4" />
-              <div>{error}</div>
+              <div>{actionState.error}</div>
             </div>
           ) : null}
         </div>
-      </Form>
+      </form>
 
       <p className="mt-3 border-t border-border py-2 text-center text-sm">
         {t("account.register.bySigningUp")}{" "}

@@ -360,7 +360,6 @@ export async function getAcquiredItemsFromCheckoutSession(session_id: string | n
 }
 
 export async function addTenantProductsFromCheckoutSession({
-  request,
   tenantId,
   user,
   checkoutSession,
@@ -368,7 +367,6 @@ export async function addTenantProductsFromCheckoutSession({
   createdTenantId,
   t,
 }: {
-  request: Request;
   tenantId: string;
   user: { id: string; email: string };
   checkoutSession: CheckoutSessionResponse;

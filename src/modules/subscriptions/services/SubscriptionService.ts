@@ -300,13 +300,11 @@ export async function reportUsage(tenantId: string, unit: string) {
 }
 
 export async function persistCheckoutSessionStatus({
-  request,
   id,
   fromUrl,
   fromUserId,
   fromTenantId,
 }: {
-  request: Request;
   id: string;
   fromUrl: string;
   fromUserId?: string | null;

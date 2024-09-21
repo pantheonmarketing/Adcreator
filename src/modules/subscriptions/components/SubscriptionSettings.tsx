@@ -1,6 +1,6 @@
 "use client";
 
-import { useSubmit, Link } from "@remix-run/react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import Stripe from "stripe";
 import { PlanFeatureUsageDto } from "@/modules/subscriptions/dtos/PlanFeatureUsageDto";
@@ -12,6 +12,7 @@ import MySubscriptionFeatures from "@/modules/subscriptions/components/MySubscri
 import MyUpcomingInvoice from "@/modules/subscriptions/components/MyUpcomingInvoice";
 import SettingSection from "@/components/ui/sections/SettingSection";
 import { TenantDto, TenantSubscriptionProductWithDetailsDto, TenantSubscriptionWithDetailsDto } from "@/db/models";
+import { useActionState } from "react";
 
 export default function SubscriptionSettings({
   currentTenant,
@@ -33,23 +34,19 @@ export default function SubscriptionSettings({
   };
 }) {
   const { t } = useTranslation();
-  const submit = useSubmit();
+  const [actionData, action, pending] = useActionState(actionSubscriptionSettings, null);
 
   function onCancel(item: TenantSubscriptionProductWithDetailsDto) {
     const form = new FormData();
     form.set("action", "cancel");
     form.set("tenant-subscription-product-id", item.id);
-    submit(form, {
-      method: "post",
-    });
+    action(form);
   }
 
   function onOpenCustomerPortal() {
     const form = new FormData();
     form.set("action", "open-customer-portal");
-    submit(form, {
-      method: "post",
-    });
+    action(form);
   }
 
   return (
@@ -61,7 +58,7 @@ export default function SubscriptionSettings({
             <div>{t("settings.subscription.description")}</div>
             <div>
               {mySubscription?.products && mySubscription.products.length > 0 && (
-                <Link to={`/subscribe/${currentTenant.slug}`} className="text-theme-600 underline">
+                <Link href={`/subscribe/${currentTenant.slug}`} className="text-theme-600 underline">
                   {t("settings.subscription.viewAllProducts")}
                 </Link>
               )}

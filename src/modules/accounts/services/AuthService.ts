@@ -18,6 +18,7 @@ import EmailTemplates from "@/modules/emails/utils/EmailTemplates";
 import { AppConfigurationDto } from "@/modules/core/dtos/AppConfigurationDto";
 import { addTenantUser, createTenant } from "./TenantService";
 import { isRedirectError } from "next/dist/client/components/redirect";
+import { headers } from "next/headers";
 
 function getHome({ isAdmin, defaultTenant }: { isAdmin: boolean; defaultTenant: { slug: string } | null }) {
   let appHome = "";
@@ -159,70 +160,68 @@ export async function actionLogin(prev: any, form: FormData) {
 //   }
 // }
 
-// async function validateRegistration({
-//   request,
-//   registrationData,
-//   addToTrialOrFreePlan,
-//   checkEmailVerification = true,
-//   stripeCustomerId,
-// }: {
-//   request: Request;
-//   registrationData: RegistrationData;
-//   addToTrialOrFreePlan: boolean;
-//   checkEmailVerification?: boolean;
-//   stripeCustomerId?: string;
-// }) {
-//   const { t } = await getServerTranslations();
-//   const appConfiguration = await getAppConfiguration();
-//   const { email, password, company, firstName, lastName, avatar, slug } = registrationData;
-//   if (!email || !AuthUtils.validateEmail(email)) {
-//     throw Error(t("account.register.errors.invalidEmail"));
-//   }
-//   if (!appConfiguration.auth.requireEmailVerification && !AuthUtils.validatePassword(password)) {
-//     throw Error(t("account.register.errors.passwordRequired"));
-//   } else if (appConfiguration.auth.requireOrganization && typeof company !== "string") {
-//     throw Error(t("account.register.errors.organizationRequired"));
-//   } else if (appConfiguration.auth.requireName && (typeof firstName !== "string" || typeof lastName !== "string")) {
-//     throw Error(t("account.register.errors.nameRequired"));
-//   }
+export async function validateRegistration({
+  registrationData,
+  addToTrialOrFreePlan,
+  checkEmailVerification = true,
+  stripeCustomerId,
+}: {
+  registrationData: RegistrationData;
+  addToTrialOrFreePlan: boolean;
+  checkEmailVerification?: boolean;
+  stripeCustomerId?: string;
+}) {
+  const { t } = await getServerTranslations();
+  const appConfiguration = await getAppConfiguration();
+  const { email, password, company, firstName, lastName, avatar, slug } = registrationData;
+  if (!email || !AuthUtils.validateEmail(email)) {
+    throw Error(t("account.register.errors.invalidEmail"));
+  }
+  if (!appConfiguration.auth.requireEmailVerification && !AuthUtils.validatePassword(password)) {
+    throw Error(t("account.register.errors.passwordRequired"));
+  } else if (appConfiguration.auth.requireOrganization && typeof company !== "string") {
+    throw Error(t("account.register.errors.organizationRequired"));
+  } else if (appConfiguration.auth.requireName && (typeof firstName !== "string" || typeof lastName !== "string")) {
+    throw Error(t("account.register.errors.nameRequired"));
+  }
 
-//   if (company && company.length > 100) {
-//     throw Error("Maximum length for company name is 100 characters");
-//   } else if (firstName && firstName.length > 50) {
-//     throw Error("Maximum length for first name is 50 characters");
-//   } else if (lastName && lastName.length > 50) {
-//     throw Error("Maximum length for last name is 50 characters");
-//   }
+  if (company && company.length > 100) {
+    throw Error("Maximum length for company name is 100 characters");
+  } else if (firstName && firstName.length > 50) {
+    throw Error("Maximum length for first name is 50 characters");
+  } else if (lastName && lastName.length > 50) {
+    throw Error("Maximum length for last name is 50 characters");
+  }
 
-//   const ipAddress = getClientIPAddress(request.headers)?.toString() ?? "";
-//   // eslint-disable-next-line no-console
-//   console.log("[REGISTRATION ATTEMPT]", { email, domain: email.substring(email.lastIndexOf("@") + 1), ipAddress });
+  const heads = headers();
+  const ipAddress = getClientIPAddress(heads)?.toString() ?? "";
+  // eslint-disable-next-line no-console
+  console.log("[REGISTRATION ATTEMPT]", { email, domain: email.substring(email.lastIndexOf("@") + 1), ipAddress });
 
-//   const existingUser = await db.user.getByEmail(email);
-//   if (existingUser) {
-//     throw Error(t("api.errors.userAlreadyRegistered"));
-//   }
+  const existingUser = await db.user.getByEmail(email);
+  if (existingUser) {
+    throw Error(t("api.errors.userAlreadyRegistered"));
+  }
 
-//   if (checkEmailVerification && appConfiguration.auth.requireEmailVerification) {
-//     return { email, ipAddress, verificationRequired: true };
-//   }
-//   const registered = await createUserAndTenant({
-//     request,
-//     email,
-//     password,
-//     company,
-//     firstName,
-//     lastName,
-//     stripeCustomerId,
-//     avatar,
-//     slug,
-//     appConfiguration,
-//   });
-//   if (addToTrialOrFreePlan) {
-//     await autosubscribeToTrialOrFreePlan({ tenantId: registered.tenant.id });
-//   }
-//   return { email, ipAddress, verificationRequired: false, registered };
-// }
+  if (checkEmailVerification && appConfiguration.auth.requireEmailVerification) {
+    return { email, ipAddress, verificationRequired: true };
+  }
+  const registered = await createUserAndTenant({
+    email,
+    password,
+    company,
+    firstName,
+    lastName,
+    stripeCustomerId,
+    avatar,
+    slug,
+    appConfiguration,
+  });
+  if (addToTrialOrFreePlan) {
+    await autosubscribeToTrialOrFreePlan({ tenantId: registered.tenant.id });
+  }
+  return { email, ipAddress, verificationRequired: false, registered };
+}
 
 // async function createRegistrationForm({
 //   request,
@@ -290,70 +289,68 @@ export async function actionLogin(prev: any, form: FormData) {
 //   }
 // }
 
-// interface CreateUserAndTenantDto {
-//   request: Request;
-//   email: string;
-//   password?: string;
-//   company?: string;
-//   firstName?: string;
-//   lastName?: string;
-//   stripeCustomerId?: string;
-//   avatar?: string;
-//   locale?: string;
-//   slug?: string;
-//   appConfiguration: AppConfigurationDto;
-// }
-// async function createUserAndTenant({
-//   request,
-//   email,
-//   password,
-//   company,
-//   firstName,
-//   lastName,
-//   stripeCustomerId,
-//   avatar,
-//   locale,
-//   slug,
-//   appConfiguration,
-// }: CreateUserAndTenantDto) {
-//   let tenantName = company ?? email.split("@")[0];
-//   if (!stripeCustomerId && process.env.STRIPE_SK) {
-//     const stripeCustomer = await stripeService.createStripeCustomer(email, tenantName);
-//     if (!stripeCustomer) {
-//       throw Error("Could not create Stripe customer");
-//     }
-//     stripeCustomerId = stripeCustomer.id;
-//   }
+interface CreateUserAndTenantDto {
+  email: string;
+  password?: string;
+  company?: string;
+  firstName?: string;
+  lastName?: string;
+  stripeCustomerId?: string;
+  avatar?: string;
+  locale?: string;
+  slug?: string;
+  appConfiguration: AppConfigurationDto;
+}
+async function createUserAndTenant({
+  email,
+  password,
+  company,
+  firstName,
+  lastName,
+  stripeCustomerId,
+  avatar,
+  locale,
+  slug,
+  appConfiguration,
+}: CreateUserAndTenantDto) {
+  let tenantName = company ?? email.split("@")[0];
+  if (!stripeCustomerId && process.env.STRIPE_SK) {
+    const stripeCustomer = await stripeService.createStripeCustomer(email, tenantName);
+    if (!stripeCustomer) {
+      throw Error("Could not create Stripe customer");
+    }
+    stripeCustomerId = stripeCustomer.id;
+  }
 
-//   const user = await createUser({
-//     email: email,
-//     firstName,
-//     lastName,
-//     password,
-//     avatar,
-//     locale,
-//     defaultTenantId: null,
-//   });
-//   const tenant = await createTenant({ name: tenantName, stripeCustomerId, slug, userId: user.id });
-//   if (!tenant) {
-//     throw Error("Could not create tenant");
-//   }
-//   if (!user) {
-//     throw Error("Could not create user");
-//   }
-//   await addTenantUser({
-//     tenantId: tenant.id,
-//     userId: user.id,
-//   });
+  const user = await createUser({
+    email: email,
+    firstName,
+    lastName,
+    password,
+    avatar,
+    locale,
+    defaultTenantId: null,
+  });
+  const tenant = await createTenant({ name: tenantName, stripeCustomerId, slug, userId: user.id });
+  if (!tenant) {
+    throw Error("Could not create tenant");
+  }
+  if (!user) {
+    throw Error("Could not create user");
+  }
+  await addTenantUser({
+    tenantId: tenant.id,
+    userId: user.id,
+  });
 
-//   await sendEmail({
-//     to: email,
-//     ...EmailTemplates.WELCOME_EMAIL.parse({
-//       name: firstName,
-//       appConfiguration,
-//       action_url: getBaseURL(request) + `/login`,
-//     }),
-//   });
+  await sendEmail({
+    to: email,
+    ...EmailTemplates.WELCOME_EMAIL.parse({
+      name: firstName,
+      appConfiguration,
+      action_url: getBaseURL() + `/login`,
+    }),
+  });
 
-//   return { user, tenant };
-// }
+  return { user, tenant };
+}

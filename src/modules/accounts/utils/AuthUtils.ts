@@ -9,8 +9,7 @@ export type RegistrationData = {
   avatar?: string;
   slug?: string;
 };
-async function getRegistrationFormData(request: Request): Promise<RegistrationData> {
-  const formData = await request.formData();
+async function getRegistrationFormData(formData: FormData): Promise<RegistrationData> {
   const email = formData.get("email")?.toString().toLowerCase().trim();
   const password = formData.get("password")?.toString();
   const company = formData.get("company")?.toString();

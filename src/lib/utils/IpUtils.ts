@@ -1,4 +1,4 @@
-import isIP from "is-ip";
+import { isIP } from "is-ip";
 
 /**
  * This is the list of headers, in order of preference, that will be used to
