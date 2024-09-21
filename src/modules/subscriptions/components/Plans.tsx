@@ -1,3 +1,5 @@
+"use client";
+
 import { SubscriptionBillingPeriod } from "@/modules/subscriptions/enums/SubscriptionBillingPeriod";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -9,8 +11,8 @@ import { PricingModel } from "@/modules/subscriptions/enums/PricingModel";
 import PricingUtils from "@/modules/subscriptions/utils/PricingUtils";
 import { SubscriptionPriceDto } from "@/modules/subscriptions/dtos/SubscriptionPriceDto";
 import Stripe from "stripe";
-import { useSearchParams } from "@remix-run/react";
 import { TenantSubscriptionWithDetailsDto } from "@/db/models";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   items: SubscriptionProductDto[];
@@ -25,7 +27,10 @@ interface Props {
   onClickFeature?: (name: string) => void;
 }
 export default function Plans({ items, tenantSubscription, canSubmit, className, stripeCoupon, currenciesAndPeriod, onClickFeature }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const search = new URLSearchParams(searchParams.toString());
+  const router = useRouter();
+  const pathname = usePathname();
   const [products] = useState(items);
   const [currency, setCurrency] = useState(currenciesAndPeriod.currencies.value);
   const [billingPeriod, setBillingPeriod] = useState<SubscriptionBillingPeriod>(currenciesAndPeriod.billingPeriods.value);
@@ -74,10 +79,12 @@ export default function Plans({ items, tenantSubscription, canSubmit, className,
           <CurrencyToggle
             value={currency}
             onChange={(e) => {
-              searchParams.set("c", e.toString());
-              setSearchParams(searchParams, {
-                preventScrollReset: true,
-              });
+              search.set("c", e);
+              router.replace(`${pathname}?${search.toString()}`);
+              // searchParams.set("c", e.toString());
+              // setSearchParams(searchParams, {
+              //   preventScrollReset: true,
+              // });
               setCurrency(e);
             }}
             possibleCurrencies={currenciesAndPeriod.currencies.options}
@@ -92,10 +99,12 @@ export default function Plans({ items, tenantSubscription, canSubmit, className,
             billingPeriod={billingPeriod}
             onChange={(e) => {
               // console.log("Set billing period: ", SubscriptionBillingPeriod[e]);
-              searchParams.set("b", PricingUtils.getBillingPeriodParams(e));
-              setSearchParams(searchParams, {
-                preventScrollReset: true,
-              });
+              search.set("b", PricingUtils.getBillingPeriodParams(e));
+              router.replace(`${pathname}?${search.toString()}`);
+              // searchParams.set("b", PricingUtils.getBillingPeriodParams(e));
+              // setSearchParams(searchParams, {
+              //   preventScrollReset: true,
+              // });
               setBillingPeriod(e);
             }}
             yearlyDiscount={PricingUtils.getYearlyDiscount(getRecurringPrices(), currency)}

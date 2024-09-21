@@ -3,7 +3,7 @@
 import { useTranslation } from "react-i18next";
 import UserAvatarBadge from "./UserAvatarBadge";
 import { Fragment } from "react";
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import { AdminRoleEnum } from "@/modules/permissions/enums/AdminRoleEnum";
 
 interface Props {
@@ -54,7 +54,7 @@ function Item({ item, admin, withEmail = true, withAvatar, showCurrent, href, ro
       {!withAvatar ? (
         <div className="group">
           {href ? (
-            <Link to={href} className="group-hover:underline">
+            <Link href={href} className="group-hover:underline">
               <span>
                 {item.firstName} {item.lastName} {withEmail && <span className="text-xs font-normal italic opacity-80">({item.email})</span>}
               </span>
@@ -71,7 +71,7 @@ function Item({ item, admin, withEmail = true, withAvatar, showCurrent, href, ro
           <div className="ml-3 truncate">
             <div className="truncate font-medium">
               {href ? (
-                <Link to={href} className="group-hover:underline">
+                <Link href={href} className="group-hover:underline">
                   <span className="truncate">
                     {item.firstName} {item.lastName} {isAdmin() && <span className="text-xs text-teal-500">({t("shared.adminAccess")})</span>}{" "}
                   </span>

@@ -14,7 +14,6 @@ export async function generateMetadata() {
 }
 
 export type CacheLoaderData = {
-  title: string;
   cachedValues: CachedValue[];
   allTenants: { id: string; name: string; slug: string }[];
   allUsers: UserDto[];
@@ -28,7 +27,6 @@ async function load() {
   const allUsers = await db.user.getAll();
 
   const data: CacheLoaderData = {
-    title: `${t("settings.admin.cache.title")} | ${defaultSiteTags.title}`,
     cachedValues,
     allTenants,
     allUsers,

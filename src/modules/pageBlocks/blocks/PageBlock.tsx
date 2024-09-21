@@ -12,6 +12,7 @@ import HeadingBlock from "./marketing/heading/HeadingBlock";
 import HeroBlock from "./marketing/hero/HeroBlock";
 import LogoCloudsBlock from "./marketing/logoClouds/LogoCloudsBlock";
 // import NewsletterBlock from "./marketing/newsletter/NewsletterBlock";
+import PricingBlock from "./marketing/pricing/PricingBlock";
 import TestimonialsBlock from "./marketing/testimonials/TestimonialsBlock";
 import VideoBlock from "./marketing/video/VideoBlock";
 import ContentBlock from "./marketing/markdown/ContentBlock";
@@ -34,7 +35,7 @@ export function PageBlock({ item }: { item: PageBlockDto }) {
       {item.features && <FeaturesBlock item={item.features} />}
       {/* {item.newsletter && <NewsletterBlock item={item.newsletter} />} */}
       {item.faq && <FaqBlock item={item.faq} />}
-      {/* {item.pricing && <PricingBlock item={item.pricing} />} */}
+      {item.pricing && <PricingBlock item={item.pricing} />}
       {item.content && <ContentBlock item={item.content} />}
       {item.contact && <ContactFormBlock item={item.contact} />}
     </>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { DefaultAppFeatures } from "@/modules/subscriptions/data/appFeatures";
@@ -57,7 +57,7 @@ export default function PlanFeatureDescription({ feature, editing, onClickFeatur
               <FeatureTitle feature={feature} />
             </div>
           ) : (
-            <Link to={feature.href} className="ml-2 truncate text-sm font-medium text-gray-600 underline hover:text-primary dark:text-gray-400">
+            <Link href={feature.href} className="ml-2 truncate text-sm font-medium text-gray-600 underline hover:text-primary dark:text-gray-400">
               <FeatureTitle feature={feature} />
             </Link>
           )}

@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import WarningBanner from "@/components/ui/banners/WarningBanner";
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import TenantProduct from "./TenantProduct";
 import { TenantSubscriptionProductWithDetailsDto } from "@/db/models";
 
@@ -20,7 +20,7 @@ export default function MyProducts({ currentTenant, items, onCancel }: Props) {
       {items.length === 0 ? (
         <>
           <WarningBanner title={t("settings.subscription.noSubscription")} text={""}>
-            <Link to={`/subscribe/${currentTenant.slug}`} className="underline">
+            <Link href={`/subscribe/${currentTenant.slug}`} className="underline">
               {t("settings.subscription.viewAllProducts")}.
             </Link>
           </WarningBanner>

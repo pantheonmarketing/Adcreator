@@ -298,5 +298,5 @@ const ONE_TIME_PRICES: SubscriptionProductDto[] = [
   },
 ];
 
-const plans = [...FLAT_RATE_PRICES, ...PER_SEAT_PRICES, ...USAGE_BASED_PRICES, ...FLAT_RATE_PLUS_USAGE_BASED_PRICES, ...ONE_TIME_PRICES];
-export default plans;
+const defaultPlans = [...FLAT_RATE_PRICES, ...PER_SEAT_PRICES, ...USAGE_BASED_PRICES, ...FLAT_RATE_PLUS_USAGE_BASED_PRICES, ...ONE_TIME_PRICES];
+export default defaultPlans;

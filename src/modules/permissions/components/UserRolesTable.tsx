@@ -6,7 +6,7 @@ import UserBadge from "../../accounts/components/users/UserBadge";
 import clsx from "clsx";
 import CheckIcon from "@/components/ui/icons/CheckIcon";
 import XIcon from "@/components/ui/icons/XIcon";
-import { Link } from "@remix-run/react";
+import Link from "next/link";
 import { UserWithRolesDto, RoleWithPermissionsDto } from "@/db/models";
 
 interface Props {
@@ -120,7 +120,7 @@ export default function UserRolesTable({ items, roles, className, onChange, tena
                                     <td className="whitespace-nowrap px-1 py-1 text-center text-sm text-gray-600">
                                       <div className="flex items-center space-x-2">
                                         {actions.onEditRoute && (
-                                          <Link to={actions?.onEditRoute(item)} className="text-gray-500 hover:underline">
+                                          <Link href={actions?.onEditRoute(item)} className="text-gray-500 hover:underline">
                                             {t("shared.edit")}
                                           </Link>
                                         )}

@@ -15,6 +15,7 @@ import { TestimonialsBlockDto } from "./marketing/testimonials/TestimonialsBlock
 import { VideoBlockDto } from "./marketing/video/VideoBlockDto";
 import { ContentBlockDto } from "./marketing/markdown/ContentBlockDto";
 import { ContactFormBlockDto } from "./marketing/contact/ContactFormBlockDto";
+import { PricingBlockDto } from "./marketing/pricing/PricingBlockDto";
 
 export const PageBlockTypes = [
   { title: "Header", type: "header" },
@@ -54,7 +55,7 @@ export type PageBlockDto = {
   testimonials?: TestimonialsBlockDto;
   features?: FeaturesBlockDto;
   // newsletter?: NewsletterBlockDto;
-  // pricing?: PricingBlockDto;
+  pricing?: PricingBlockDto;
   faq?: FaqBlockDto;
   content?: ContentBlockDto;
   contact?: ContactFormBlockDto;

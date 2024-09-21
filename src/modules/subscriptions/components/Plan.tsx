@@ -9,8 +9,7 @@ import NumberUtils from "@/lib/utils/NumberUtils";
 import { SubscriptionPriceDto } from "@/modules/subscriptions/dtos/SubscriptionPriceDto";
 import { SubscriptionUsageBasedPriceDto } from "@/modules/subscriptions/dtos/SubscriptionUsageBasedPriceDto";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
-import { useNavigation, useSearchParams, useSubmit } from "@remix-run/react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useActionState, useEffect, useRef, useState } from "react";
 import ErrorModal, { RefErrorModal } from "@/components/ui/modals/ErrorModal";
 import useRootData from "@/lib/state/useRootData";
 import { useTranslation } from "react-i18next";
@@ -18,6 +17,9 @@ import Stripe from "stripe";
 import PlanFeatureDescription from "./PlanFeatureDescription";
 import PricingUtils from "@/modules/subscriptions/utils/PricingUtils";
 import InputNumber from "@/components/ui/input/InputNumber";
+import { useRouter, useSearchParams } from "next/navigation";
+import { actionPricing } from "@/app/(marketing)/pricing/page";
+import toast from "react-hot-toast";
 
 interface Props {
   product?: SubscriptionProductDto;
@@ -60,16 +62,21 @@ export default function Plan({
   onClickFeature,
 }: Props) {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
-  const submit = useSubmit();
-  const navigation = useNavigation();
-  const isSubscribing = navigation.state === "submitting" && navigation.formData?.get("action") === "subscribe";
-  const isLoading = isSubscribing && navigation.formData?.get("product-id") === product?.id;
+  const search = useSearchParams();
+  const searchParams = new URLSearchParams(search.toString());
+  const router = useRouter();
   const rootData = useRootData();
+  const [actionData, action, pending] = useActionState(actionPricing, null);
 
   const [quantity, setQuantity] = useState(1);
 
   const [referral, setReferral] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (actionData?.error) {
+      toast.error(actionData.error);
+    }
+  }, [actionData]);
 
   useEffect(() => {
     if (!(typeof window === "undefined") && rootData.appConfiguration.affiliates?.provider.rewardfulApiKey) {
@@ -176,9 +183,7 @@ export default function Plan({
     } else if (isDowngrade) {
       form.set("is-downgrade", "true");
     }
-    submit(form, {
-      method: "post",
-    });
+    action(form);
   }
   function isDisabled() {
     if (!canSubmit) {
@@ -188,9 +193,9 @@ export default function Plan({
       if (alreadyOwned && !product?.canBuyAgain) {
         return true;
       }
-      return isSubscribing || !product?.stripeId;
+      return pending || !product?.stripeId;
     }
-    return isSubscribing || !product?.stripeId;
+    return pending || !product?.stripeId;
   }
 
   const getCoupon = () => {
@@ -408,7 +413,7 @@ export default function Plan({
                       price={getFlatPrice()}
                       badge={badge}
                       disabled={isDisabled()}
-                      loading={isLoading}
+                      loading={pending}
                       onClick={onClick}
                       alreadyOwned={alreadyOwned}
                       isUpgrade={isUpgrade}
@@ -422,7 +427,7 @@ export default function Plan({
                     price={getFlatPrice()}
                     badge={badge}
                     disabled={isDisabled()}
-                    loading={isLoading}
+                    loading={pending}
                     onClick={onClick}
                     alreadyOwned={alreadyOwned}
                     isUpgrade={isUpgrade}
