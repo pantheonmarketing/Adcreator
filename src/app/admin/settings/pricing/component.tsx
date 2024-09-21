@@ -21,6 +21,7 @@ import { PricingModel } from "@/modules/subscriptions/enums/PricingModel";
 import clsx from "clsx";
 import { TrashIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import FloatingLoader from "@/components/ui/loaders/FloatingLoader";
 
 export default function AdminPricingComponent({ data }: { data: AdminPricingLoaderData }) {
   const [actionData, action, pending] = useActionState(actionAdminPricing, null);
@@ -81,34 +82,10 @@ export default function AdminPricingComponent({ data }: { data: AdminPricingLoad
     form.set("model", model.toString());
     action(form);
   }
-  // function syncPlanWithPaymentProvider(item: SubscriptionProductDto) {
-  //   const form = new FormData();
-  //   form.set("action", "sync-plan-with-payment-provider");
-  //   form.set("id", item.id?.toString() ?? "");
-  //   submit(form, {
-  //     method: "post",
-  //   });
-  // }
-  // function createPlan(item: SubscriptionProductDto) {
-  //   const form = new FormData();
-  //   form.set("action", "create");
-  //   form.set("order", item.order);
-  //   form.set("order", item.description);
-  //   employees.forEach((item) => {
-  //     form.append("employees[]", JSON.stringify(item));
-  //   });
-  //   submit(form, {
-  //     method: "post",
-  //   });
-  // }
 
   function createdPlans() {
     return data.items.filter((f) => f.id).length;
   }
-
-  // function getFeatureValue(item: SubscriptionProductDto, name: string) {
-  //   return item.features.find((f) => f.name === name);
-  // }
 
   return (
     <IndexPageLayout
@@ -210,6 +187,7 @@ export default function AdminPricingComponent({ data }: { data: AdminPricingLoad
               type="button"
               onClick={createAllPlans}
               disabled={pending || createdPlans() > 0 || !getUserHasPermission(adminData, "admin.pricing.create")}
+              isLoading={pending}
               className="bg-yellow-500 text-yellow-900 hover:bg-yellow-400"
             >
               {t("admin.pricing.generateFromFiles")}
@@ -286,6 +264,8 @@ export default function AdminPricingComponent({ data }: { data: AdminPricingLoad
           },
         ]}
       />
+
+      {pending && <FloatingLoader loading={true} />}
     </IndexPageLayout>
   );
 }

@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
-import { useNavigation } from "@remix-run/react";
 import { useSpinDelay } from "spin-delay";
 import { Transition } from "@headlessui/react";
 import { useTranslation } from "react-i18next";
+import { usePathname } from "next/navigation";
 
 let firstRender = false;
 
@@ -11,19 +11,19 @@ interface Props {
 }
 export default function FloatingLoader({ loading }: Props) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const [, setWords] = useState<Array<string>>([]);
   const [pendingPath, setPendingPath] = useState("");
-  const showLoader = useSpinDelay(Boolean(navigation.state !== "idle" || loading), {
+  const pathname = usePathname();
+  const showLoader = useSpinDelay(Boolean(loading), {
     delay: 400,
     minDuration: 1000,
   });
 
   useEffect(() => {
-    if (navigation.location?.pathname === "/") return;
-    if (navigation.state === "idle") return;
-    if (navigation.state === "loading") setWords(LOADER_WORDS);
-    if (navigation.state === "submitting") setWords(ACTION_WORDS);
+    if (pathname === "/") return;
+    // if (navigation.state === "idle") return;
+    if (loading) setWords(LOADER_WORDS);
+    // if (navigation.state === "submitting") setWords(ACTION_WORDS);
 
     const interval = setInterval(() => {
       setWords(([first, ...rest]) => [...rest, first] as Array<string>);
@@ -31,19 +31,19 @@ export default function FloatingLoader({ loading }: Props) {
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pendingPath, navigation.state]);
+  }, [pendingPath, loading]);
 
   useEffect(() => {
     if (firstRender) return;
-    if (navigation.state === "idle") return;
-    setPendingPath(navigation.location.pathname);
-  }, [navigation]);
+    if (!loading) return;
+    setPendingPath(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     firstRender = false;
   }, []);
 
-  const action = navigation.state === "loading" ? t("shared.loading") : t("shared.processing");
+  const action = loading ? t("shared.loading") : t("shared.processing");
 
   return (
     <div aria-live="assertive" className="pointer-events-none fixed inset-0 z-50 flex items-end px-4 py-6 sm:p-6">
@@ -65,9 +65,9 @@ export default function FloatingLoader({ loading }: Props) {
                 <div className="loader h-10 w-10 flex-shrink-0 rounded-full border-4 border-t-4 border-slate-200 text-left ease-linear"></div>
                 <div className="flex flex-col truncate text-gray-600">
                   <div className="text-left">{action}...</div>
-                  {navigation.location?.pathname && (
+                  {pathname && (
                     <div className="truncate text-left text-xs lowercase text-gray-500">
-                      {t("shared.path")}: {navigation.location?.pathname}
+                      {t("shared.path")}: {pathname}
                     </div>
                   )}
                 </div>

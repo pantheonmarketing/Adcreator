@@ -6,6 +6,7 @@ import { PricingModel } from "@/modules/subscriptions/enums/PricingModel";
 import { db } from "@/db";
 import defaultPlans from "@/modules/subscriptions/data/defaultPlans.server";
 import { createPlans, deletePlan, syncPlan } from "@/modules/subscriptions/services/PricingService";
+import { revalidatePath } from "next/cache";
 
 export const actionAdminPricing = async (prev: any, form: FormData) => {
   await verifyUserHasPermission("admin.pricing.update");
@@ -36,37 +37,13 @@ export const actionAdminPricing = async (prev: any, form: FormData) => {
 
     try {
       await createPlans(defaultPlans.filter((f) => f.model === model || model === PricingModel.ALL));
+      revalidatePath("/admin/settings/pricing");
 
       return {
         items: await db.subscriptionProduct.getAllSubscriptionProducts(),
       };
     } catch (e: any) {
       return { error: e?.toString() };
-    }
-  } else if (action === "sync-plan-with-payment-provider") {
-    const id = form.get("id")?.toString() ?? "";
-    const item = await db.subscriptionProduct.getSubscriptionProduct(id);
-    if (!item) {
-      return { error: "Pricing plan not found" };
-    }
-    try {
-      item.translatedTitle = t(item.title);
-      await syncPlan(
-        item,
-        item.prices.map((price) => {
-          return {
-            id: price.id,
-            billingPeriod: price.billingPeriod,
-            currency: price.currency,
-            price: Number(price.price),
-          };
-        })
-      );
-      return {
-        items: await db.subscriptionProduct.getAllSubscriptionProducts(),
-      };
-    } catch (error: any) {
-      return { error: error.message };
     }
   } else if (action === "bulk-delete") {
     await verifyUserHasPermission("admin.pricing.delete");
@@ -87,6 +64,7 @@ export const actionAdminPricing = async (prev: any, form: FormData) => {
         await deletePlan(item);
       })
     );
+    revalidatePath("/admin/settings/pricing");
     return { success: "Deleted" };
   }
 };
