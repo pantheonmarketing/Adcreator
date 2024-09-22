@@ -28,12 +28,6 @@ export default function InputSearch({ value, onChange, placeholder, className, d
         </div>
         <Input
           type="text"
-          // name="search"
-          // id="search"
-          // className={clsx(
-          //   "focus:border-theme-500 focus:ring-theme-500 block w-full rounded-md border-gray-300 pl-10 sm:text-sm",
-          //   disabled ? "bg-gray-100 text-gray-500" : ""
-          // )}
           className="bg-background pl-9"
           placeholder={placeholder ?? t("shared.searchDot")}
           value={value}

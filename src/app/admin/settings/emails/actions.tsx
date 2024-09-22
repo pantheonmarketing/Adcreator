@@ -1,22 +1,15 @@
 "use server";
 
-import { getAppConfiguration, updateAppConfiguration } from "@/modules/core/services/AppConfigurationService";
+import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
 import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
-import { storeSupabaseFile } from "@/modules/storage/SupabaseStorageService";
-import { promiseHash } from "@/lib/utils";
-import { createUserSession, getUserInfo } from "@/lib/services/session.server";
+import { getUserInfo } from "@/lib/services/session.server";
 import { getServerTranslations } from "@/i18n/server";
-import { revalidatePath } from "next/cache";
 import { getUser } from "@/modules/accounts/services/UserService";
 import EmailTemplates from "@/modules/emails/utils/EmailTemplates";
 import { sendEmail } from "@/modules/emails/services/EmailService";
 
-type ActionData = {
-  success?: string;
-  error?: string;
-};
 export const actionAdminEmails = async (prev: any, form: FormData) => {
-  await verifyUserHasPermission("admin.emails.update");
+  await verifyUserHasPermission("admin.emails.view");
   const { t } = await getServerTranslations();
   const appConfiguration = await getAppConfiguration();
   const userInfo = getUserInfo();

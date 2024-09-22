@@ -73,7 +73,7 @@
     "next-themes": "^0.2.1",
     "numeral": "^2.0.6",
     "pg": "^8.13.0",
-    "postmark": "^3.11.0",
+    "postmark": "^4.0.5",
     "react": "19.0.0-rc-512b09b2-20240718",
     "react-day-picker": "^8.10.0",
     "react-dom": "19.0.0-rc-512b09b2-20240718",

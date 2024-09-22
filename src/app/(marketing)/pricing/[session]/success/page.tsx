@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerTranslations } from "@/i18n/server";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { getCurrentUrl } from "@/lib/services/url.server";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import { getAcquiredItemsFromCheckoutSession } from "@/modules/subscriptions/services/PricingService";
@@ -16,7 +16,7 @@ export async function generateMetadata() {
   });
 }
 
-export const loader = async ({ params }: ServerComponentsProps) => {
+const loader = async ({ params }: IServerComponentsProps) => {
   const { t } = await getServerTranslations();
 
   await persistCheckoutSessionStatus({
@@ -36,7 +36,7 @@ export const loader = async ({ params }: ServerComponentsProps) => {
   };
 };
 
-export default async function ({ params }: ServerComponentsProps) {
+export default async function ({ params }: IServerComponentsProps) {
   const { t } = await getServerTranslations();
   const data = await loader({ params });
 

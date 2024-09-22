@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { getServerTranslations } from "@/i18n/server";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { requireAuth } from "@/lib/services/loaders.middleware";
 import { getUserInfo } from "@/lib/services/session.server";
 import { deleteUserWithItsTenants } from "@/modules/accounts/services/TenantService";

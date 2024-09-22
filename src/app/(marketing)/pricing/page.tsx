@@ -3,7 +3,7 @@
 import PageBlocks from "@/modules/pageBlocks/blocks/PageBlocks";
 import { PricingBlockService } from "@/modules/pageBlocks/blocks/marketing/pricing/PricingBlockService.server";
 import { getServerTranslations } from "@/i18n/server";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { PricingPage } from "@/modules/pageBlocks/pages/PricingPage";
 import { revalidatePath } from "next/cache";
 
@@ -12,7 +12,7 @@ export async function generateMetadata() {
   return PricingPage.metatags({ t });
 }
 
-export const loader = async ({ searchParams }: ServerComponentsProps) => {
+const loader = async ({ searchParams }: IServerComponentsProps) => {
   const { t } = await getServerTranslations();
   const data: PricingPage.LoaderData = {
     metatags: PricingPage.metatags({ t }),
@@ -31,8 +31,8 @@ export const actionPricing = async (prev: any, form: FormData) => {
   }
 };
 
-export default async function ({ searchParams }: ServerComponentsProps) {
+export default async function (props: IServerComponentsProps) {
   const { t } = await getServerTranslations();
-  const data = await loader({ searchParams });
+  const data = await loader(props);
   return <PageBlocks items={PricingPage.blocks({ data, t })} />;
 }

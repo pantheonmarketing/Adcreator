@@ -4,7 +4,6 @@ import { Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, useSearchParams } from "@remix-run/react";
 import { Colors } from "@/lib/colors";
 import { updateItemByIdx } from "@/lib/utils/ObjectUtils";
 import FilterEmptyIcon from "../icons/FilterEmptyIcon";
@@ -14,6 +13,7 @@ import InputSearch from "./InputSearch";
 import InputSelect from "./InputSelect";
 import { Input } from "../input";
 import { Button } from "../button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 type FilterDto = {
   name: string;
@@ -36,7 +36,10 @@ interface Props {
 export default function InputFilters({ filters, withSearch = true }: Props) {
   const { t } = useTranslation();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const search = useSearchParams();
+  const searchParams = new URLSearchParams(search.toString());
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [opened, setOpened] = useState(false);
   const [items, setItems] = useState<FilterValueDto[]>([]);
@@ -105,7 +108,8 @@ export default function InputFilters({ filters, withSearch = true }: Props) {
     searchParams.delete("q");
     setSearchInput("");
 
-    setSearchParams(searchParams);
+    router.replace(`${pathname}?${searchParams.toString()}`);
+    // setSearchParams(searchParams);
   }
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -123,7 +127,8 @@ export default function InputFilters({ filters, withSearch = true }: Props) {
       searchParams.delete("q");
     }
     searchParams.delete("page");
-    setSearchParams(searchParams);
+    // setSearchParams(searchParams);
+    router.replace(`${pathname}?${searchParams.toString()}`);
     setOpened(false);
   }
 
@@ -170,9 +175,9 @@ export default function InputFilters({ filters, withSearch = true }: Props) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Form
-            onSubmit={onSubmit}
+          <form
             method="get"
+            onSubmit={onSubmit}
             className="absolute right-0 z-40 mt-2 w-64 origin-top-right divide-y divide-gray-200 overflow-visible rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
             <div className="flex items-center justify-between px-2 py-2 text-sm">
@@ -291,7 +296,7 @@ export default function InputFilters({ filters, withSearch = true }: Props) {
                 </div>
               )} */}
             </div>
-          </Form>
+          </form>
         </Transition>
       </div>
     </Fragment>

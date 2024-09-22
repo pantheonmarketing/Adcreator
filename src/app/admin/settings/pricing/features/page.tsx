@@ -3,7 +3,7 @@ import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTa
 import { getServerTranslations } from "@/i18n/server";
 import { db } from "@/db";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import AdminPricingFeaturesComponent from "./component";
 
 export async function generateMetadata() {
@@ -16,7 +16,7 @@ export async function generateMetadata() {
 export type PricingFeaturesLoaderData = {
   items: SubscriptionProductDto[];
 };
-async function load({ searchParams }: ServerComponentsProps) {
+async function load({ searchParams }: IServerComponentsProps) {
   await verifyUserHasPermission("admin.pricing.view");
   const ids: string[] = [];
   if (searchParams?.ids) {
@@ -31,7 +31,7 @@ async function load({ searchParams }: ServerComponentsProps) {
   return { items };
 }
 
-export default async function (props: ServerComponentsProps) {
+export default async function (props: IServerComponentsProps) {
   const data = await load(props);
   return <AdminPricingFeaturesComponent data={data} />;
 }

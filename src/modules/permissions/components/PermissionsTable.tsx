@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TableSimple, { RowHeaderDisplayDto } from "@/components/ui/tables/TableSimple";
 import RoleBadge from "./RoleBadge";
-import OrderListButtons from "@/components/ui/sort/OrderListButtons";
 import { PermissionWithRolesDto } from "@/db/models";
 
 interface Props {
@@ -13,10 +12,9 @@ interface Props {
   canCreate: boolean;
   canUpdate: boolean;
   tenantId?: string | null;
-  canReorder?: boolean;
 }
 
-export default function PermissionsTable({ items, className, canCreate, canUpdate = true, tenantId, canReorder }: Props) {
+export default function PermissionsTable({ items, className, canCreate, canUpdate = true, tenantId }: Props) {
   const { t } = useTranslation();
 
   const [actions, setActions] = useState<any[]>([]);
@@ -27,7 +25,7 @@ export default function PermissionsTable({ items, className, canCreate, canUpdat
       setActions([
         {
           title: t("shared.edit"),
-          onClickRoute: (_: any, item: any) => item.id,
+          onClickRoute: (_: any, item: any) => `/admin/accounts/roles-and-permissions/permissions/${item.id}`,
         },
       ]);
     }
@@ -63,19 +61,6 @@ export default function PermissionsTable({ items, className, canCreate, canUpdat
         className: canUpdate ? "max-w-xs truncate" : "",
       },
     ];
-
-    if (canReorder) {
-      headers.unshift({
-        name: "order",
-        title: t("shared.order"),
-        value: (_item, idx) => (
-          <div>
-            {_item.order}
-            <OrderListButtons index={idx} items={items.map((f) => ({ ...f, order: f.order ?? 0 }))} editable={true} />
-          </div>
-        ),
-      });
-    }
 
     setHeaders(headers);
     // eslint-disable-next-line react-hooks/exhaustive-deps

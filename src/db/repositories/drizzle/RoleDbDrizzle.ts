@@ -1,4 +1,4 @@
-import { and, eq, inArray, max, sql, SQL } from "drizzle-orm";
+import { and, eq, inArray, like, max, sql, SQL } from "drizzle-orm";
 import { drizzleDb } from "@/db/config/drizzle/database";
 import { Role, Permission, RolePermission, User } from "@/db/config/drizzle/schema";
 import { IRoleDb } from "@/db/interfaces/permissions/IRoleDb";
@@ -43,11 +43,24 @@ export class RoleDbDrizzle implements IRoleDb {
     return roles;
   }
 
-  async getAllWithUsers(filters?: { type?: "admin" | "app"; permissionId?: string | null }): Promise<RoleWithPermissionsAndUsersDto[]> {
+  async getAllWithUsers(filters?: {
+    type?: "admin" | "app";
+    name?: string;
+    description?: string;
+    permissionId?: string | null;
+  }): Promise<RoleWithPermissionsAndUsersDto[]> {
     const whereConditions: SQL[] = [];
 
     if (filters?.type) {
       whereConditions.push(eq(Role.type, filters.type));
+    }
+
+    if (filters?.name) {
+      whereConditions.push(like(Role.name, `%${filters.name}%`));
+    }
+
+    if (filters?.description) {
+      whereConditions.push(like(Role.description, `%${filters.description}%`));
     }
 
     if (filters?.permissionId) {

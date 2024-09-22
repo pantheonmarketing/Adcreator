@@ -2,7 +2,7 @@ import { SubscriptionPriceDto } from "@/modules/subscriptions/dtos/SubscriptionP
 import { SubscriptionBillingPeriod } from "@/modules/subscriptions/enums/SubscriptionBillingPeriod";
 import billingPeriods from "@/modules/subscriptions/data/billingPeriods";
 import currencies from "@/modules/subscriptions/data/currencies";
-import { NextSearchParams } from "@/lib/dtos/ServerComponentsProps";
+import { ISearchParams } from "@/lib/dtos/ServerComponentsProps";
 
 function getYearlyDiscount(prices: SubscriptionPriceDto[], currency: string) {
   const priceYearly = prices.find((f) => f.billingPeriod === SubscriptionBillingPeriod.YEARLY && Number(f.price) > 0 && f.currency === currency);
@@ -99,7 +99,7 @@ function getBillingPeriodParams(billingPeriod: SubscriptionBillingPeriod) {
   }
 }
 
-function getDefaultCurrency(searchParams?: NextSearchParams) {
+function getDefaultCurrency(searchParams?: ISearchParams) {
   let defaultCurrency = currencies.find((f) => f.default)?.value ?? "";
   if (searchParams?.c) {
     defaultCurrency = searchParams.c?.toString() ?? "";
@@ -107,7 +107,7 @@ function getDefaultCurrency(searchParams?: NextSearchParams) {
   return defaultCurrency;
 }
 
-function getDefaultBillingPeriod(searchParams?: NextSearchParams) {
+function getDefaultBillingPeriod(searchParams?: ISearchParams) {
   let defaultBillingPeriod = billingPeriods.find((f) => f.default)?.value ?? SubscriptionBillingPeriod.MONTHLY;
   if (searchParams?.b) {
     switch (searchParams.b) {

@@ -4,7 +4,7 @@ import { getServerTranslations } from "@/i18n/server";
 import { db } from "@/db";
 import Component from "./component";
 import { redirect } from "next/navigation";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -13,7 +13,7 @@ export async function generateMetadata() {
   });
 }
 
-async function load({ params }: ServerComponentsProps) {
+async function load({ params }: IServerComponentsProps) {
   await verifyUserHasPermission("admin.pricing.view");
 
   const item = await db.subscriptionProduct.getSubscriptionProduct(params?.id ?? "");
@@ -27,7 +27,7 @@ async function load({ params }: ServerComponentsProps) {
   };
 }
 
-export default async function ({ params }: ServerComponentsProps) {
+export default async function ({ params }: IServerComponentsProps) {
   const data = await load({ params });
   return <Component item={data.item} plans={data.plans} />;
 }

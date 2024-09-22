@@ -61,8 +61,16 @@ export class RoleDbPrisma implements IRoleDb {
     });
   }
 
-  async getAllWithUsers(filters?: { type?: "admin" | "app"; permissionId?: string | null }): Promise<RoleWithPermissionsAndUsersDto[]> {
-    let where: Prisma.RoleWhereInput = {};
+  async getAllWithUsers(filters?: {
+    type?: "admin" | "app";
+    name?: string;
+    description?: string;
+    permissionId?: string | null;
+  }): Promise<RoleWithPermissionsAndUsersDto[]> {
+    let where: Prisma.RoleWhereInput = {
+      name: filters?.name ? { contains: filters.name } : undefined,
+      description: filters?.description ? { contains: filters.description } : undefined,
+    };
     if (filters?.type) {
       where.type = filters.type;
     }

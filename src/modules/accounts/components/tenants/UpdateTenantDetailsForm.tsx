@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Link } from "@remix-run/react";
+import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
@@ -10,14 +10,16 @@ import { TenantWithDetailsDto } from "@/db/models";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   tenant: TenantWithDetailsDto;
   disabled: boolean;
   canCreateNew?: boolean;
+  serverAction: IServerAction;
 }
 
-export default function UpdateTenantDetailsForm({ tenant, disabled, canCreateNew }: Props) {
+export default function UpdateTenantDetailsForm({ tenant, disabled, canCreateNew, serverAction }: Props) {
   const { t } = useTranslation();
 
   const [slug, setSlug] = useState<string | undefined>(tenant?.slug ?? "");
@@ -27,8 +29,9 @@ export default function UpdateTenantDetailsForm({ tenant, disabled, canCreateNew
     setIcon(image);
   }
   return (
-    <Form method="post">
+    <form action={serverAction.action}>
       <input type="hidden" name="action" value="edit" hidden readOnly />
+      <input type="hidden" name="id" value={tenant.id} hidden readOnly />
       <div className="p-1">
         <div className="">
           <div className="grid grid-cols-6 gap-2">
@@ -98,16 +101,16 @@ export default function UpdateTenantDetailsForm({ tenant, disabled, canCreateNew
             <div>
               {canCreateNew && (
                 <Button variant="outline" asChild>
-                  <Link to="/new-account">{t("app.tenants.create.title")}</Link>
+                  <Link href="/new-account">{t("app.tenants.create.title")}</Link>
                 </Button>
               )}
             </div>
-            <LoadingButton isLoading={pending} disabled={disabled} type="submit">
+            <LoadingButton isLoading={serverAction.pending} disabled={disabled} type="submit">
               {t("shared.save")}
             </LoadingButton>
           </div>
         </div>
       </div>
-    </Form>
+    </form>
   );
 }

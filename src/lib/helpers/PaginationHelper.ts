@@ -32,21 +32,21 @@ function getCurrentPageSize(searchParams?: { [key: string]: string | string[] | 
   return pageSize;
 }
 
-export function getStringFilter(searchParams: { [key: string]: string | string[] | undefined }, name: string): string | undefined {
-  const value = searchParams[name];
+export function getStringFilter(searchParams: { [key: string]: string | string[] | undefined } | undefined, name: string): string | undefined {
+  const value = searchParams ? searchParams[name] : undefined;
   return value?.toString() ?? undefined;
 }
 
-export function getNullableStringFilter(searchParams: { [key: string]: string | string[] | undefined }, name: string): string | undefined | null {
-  const value = searchParams[name];
+export function getNullableStringFilter(searchParams: { [key: string]: string | string[] | undefined } | undefined, name: string): string | undefined | null {
+  const value = searchParams ? searchParams[name] : undefined;
   if (value === "{null}") {
     return null;
   }
   return value?.toString() ?? undefined;
 }
 
-export function getBooleanFilter(searchParams: { [key: string]: string | string[] | undefined }, name: string): boolean | undefined {
-  const value = searchParams[name];
+export function getBooleanFilter(searchParams: { [key: string]: string | string[] | undefined } | undefined, name: string): boolean | undefined {
+  const value = searchParams ? searchParams[name] : undefined;
   if (value === "true") {
     return true;
   }

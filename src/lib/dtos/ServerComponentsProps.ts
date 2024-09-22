@@ -1,9 +1,10 @@
-export type ServerComponentsProps = {
+export type IServerComponentsProps = {
   params?: { [key: string]: string };
-  searchParams?: NextSearchParams;
+  searchParams?: ISearchParams;
+  children?: React.ReactNode;
 };
 
-export type NextSearchParams = {
+export type ISearchParams = {
   [key: string]: string | string[] | undefined;
 };
 

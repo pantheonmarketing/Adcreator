@@ -1,14 +1,21 @@
 import { getServerTranslations } from "@/i18n/server";
 import { requireAuth } from "@/lib/services/loaders.middleware";
-import { ServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import PeriodHelper from "@/lib/helpers/PeriodHelper";
 import { getAdminDashboardStats, StatDto } from "@/lib/services/adminDashboardService";
 import { TenantWithDetailsDto } from "@/db/models";
 import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import { getCurrentPagination } from "@/lib/helpers/PaginationHelper";
-import { defaultSiteTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
+import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import AdminComponent from "./component";
 import { db } from "@/db";
+
+export async function generateMetadata() {
+  const { t } = await getServerTranslations();
+  return getMetaTags({
+    title: `${t("app.sidebar.dashboard")} | ${defaultSiteTags.title}`,
+  });
+}
 
 export type AdminLoaderData = {
   title: string;
@@ -19,7 +26,7 @@ export type AdminLoaderData = {
   };
 };
 
-async function load({ params, searchParams }: ServerComponentsProps): Promise<AdminLoaderData> {
+async function load({ params, searchParams }: IServerComponentsProps): Promise<AdminLoaderData> {
   await requireAuth({ params });
   const currentPagination = getCurrentPagination(searchParams);
 
@@ -33,7 +40,7 @@ async function load({ params, searchParams }: ServerComponentsProps): Promise<Ad
   return data;
 }
 
-export default async function (props: ServerComponentsProps) {
+export default async function (props: IServerComponentsProps) {
   const data = await load(props);
 
   return <AdminComponent data={data} />;

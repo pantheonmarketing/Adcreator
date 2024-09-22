@@ -9,9 +9,10 @@ import InputRadioGroup from "@/components/ui/input/InputRadioGroup";
 import InputSearch from "@/components/ui/input/InputSearch";
 import { RoleWithPermissionsDto, PermissionWithRolesDto } from "@/db/models";
 import { Input } from "@/components/ui/input";
-import { Form, useSubmit } from "@remix-run/react";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import ButtonSecondary from "@/components/ui/buttons/ButtonSecondary";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Props {
   item?: RoleWithPermissionsDto;
@@ -19,11 +20,11 @@ interface Props {
   onCancel: () => void;
   canUpdate?: boolean;
   canDelete?: boolean;
+  serverAction: IServerAction;
 }
 
-export default function RoleForm({ item, permissions, onCancel, canUpdate = true, canDelete }: Props) {
+export default function RoleForm({ item, permissions, onCancel, canUpdate = true, canDelete, serverAction }: Props) {
   const { t } = useTranslation();
-  const submit = useSubmit();
 
   const [rolePermissions, setRolePermissions] = useState<string[]>([]);
   const [type, setType] = useState<string | number | undefined>(item?.type ?? "admin");
@@ -74,14 +75,13 @@ export default function RoleForm({ item, permissions, onCancel, canUpdate = true
     const form = new FormData();
     form.set("action", "delete");
     form.set("id", item?.id || "");
-    submit(form, {
-      method: "post",
-    });
+    serverAction.action(form);
   }
 
   return (
-    <Form method="post" className="space-y-3 px-4 pb-4">
+    <form action={serverAction.action} className="space-y-3 px-4 pb-4">
       <input type="hidden" name="action" value={item ? "edit" : "create"} readOnly hidden />
+      {item && <input type="hidden" name="id" value={item.id} readOnly hidden />}
       <div className="text-lg font-bold text-gray-900">Role Details</div>
 
       <div>
@@ -144,15 +144,31 @@ export default function RoleForm({ item, permissions, onCancel, canUpdate = true
           })}
           {filteredItems().map((permission, idx) => {
             return (
-              <InputCheckboxWithDescription
-                disabled={!canUpdate}
-                name={permission.order + " " + permission.name}
-                title={permission.description}
-                description={permission.name}
-                value={hasPermission(permission)}
-                onChange={(e) => setPermission(permission, e)}
-                key={idx}
-              />
+              <div>
+                {/* <InputCheckboxWithDescription
+                  disabled={!canUpdate}
+                  name={permission.order + " " + permission.name}
+                  title={permission.description}
+                  description={permission.name}
+                  defaultValue={hasPermission(permission)}
+                  onChange={(e) => setPermission(permission, e)}
+                  key={idx}
+                /> */}
+                <div className="items-top flex space-x-2 py-2">
+                  <Checkbox
+                    id={permission.name}
+                    name={permission.name}
+                    checked={hasPermission(permission)}
+                    onCheckedChange={(e) => setPermission(permission, e)}
+                  />
+                  <div className="grid gap-1.5 leading-none">
+                    <label htmlFor={permission.name} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      {permission.name}
+                    </label>
+                    <p className="text-sm text-muted-foreground">{permission.description}</p>
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>
@@ -172,11 +188,11 @@ export default function RoleForm({ item, permissions, onCancel, canUpdate = true
           <ButtonSecondary type="button" onClick={onCancel}>
             {t("shared.cancel")}
           </ButtonSecondary>
-          <LoadingButton isLoading={pending} type="submit">
+          <LoadingButton isLoading={serverAction.pending} type="submit">
             {t("shared.save")}
           </LoadingButton>
         </div>
       </div>
-    </Form>
+    </form>
   );
 }

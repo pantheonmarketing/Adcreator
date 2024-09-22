@@ -31,7 +31,7 @@ export default function RolesTable({ items, canUpdate = true, tenantId = null }:
       setActions([
         {
           title: t("shared.edit"),
-          onClickRoute: (_: any, item: any) => item.id,
+          onClickRoute: (_: any, item: any) => `/admin/accounts/roles-and-permissions/roles/${item.id}`,
         },
       ]);
     }

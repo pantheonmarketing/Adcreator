@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useSubmit } from "@remix-run/react";
+import Link from "next/link";
 import ConfirmModal, { RefConfirmModal } from "@/components/ui/modals/ConfirmModal";
 import TableSimple, { RowHeaderActionDto, RowHeaderDisplayDto } from "@/components/ui/tables/TableSimple";
 import DateUtils from "@/lib/utils/DateUtils";
 import UserBadge from "./UserBadge";
 import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import { RoleModel, UserWithDetailsDto } from "@/db/models";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   items: UserWithDetailsDto[];
@@ -16,10 +17,10 @@ interface Props {
   canSetUserRoles?: boolean;
   canDelete: boolean;
   pagination?: PaginationDto;
+  serverAction?: IServerAction;
 }
-export default function UsersTable({ items, canChangePassword, canSetUserRoles, canDelete, pagination }: Props) {
+export default function UsersTable({ items, canChangePassword, canSetUserRoles, canDelete, pagination, serverAction }: Props) {
   const { t } = useTranslation();
-  const submit = useSubmit();
 
   const confirmDelete = useRef<RefConfirmModal>(null);
 
@@ -73,7 +74,7 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
               return (
                 <div key={f.id} className="truncate">
                   <Link
-                    to={"/app/" + f.tenant.slug}
+                    href={"/app/" + f.tenant.slug}
                     className="border-b border-dashed border-transparent hover:border-dashed hover:border-gray-400 focus:bg-gray-100"
                   >
                     <span>{f.tenant.name}</span>
@@ -114,7 +115,7 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
     ];
 
     const actions: RowHeaderActionDto<UserWithDetailsDto>[] = [];
-    if (canChangePassword) {
+    if (canChangePassword && serverAction) {
       actions.push({
         title: t("settings.profile.changePassword"),
         onClick: (_, item) => changePassword(item),
@@ -127,7 +128,7 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
         onClickRoute: (_, item) => `/admin/accounts/users/${item.email}/roles`,
       });
     }
-    if (canDelete) {
+    if (canDelete && serverAction) {
       actions.push({
         title: t("shared.delete"),
         onClick: (_, item) => deleteUser(item),
@@ -147,10 +148,11 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
       form.set("action", "change-password");
       form.set("user-id", user.id);
       form.set("password-new", password);
-      submit(form, {
-        action: "/admin/accounts/users",
-        method: "post",
-      });
+      serverAction?.action(form);
+      // submit(form, {
+      //   action: "/admin/accounts/users",
+      //   method: "post",
+      // });
     }
   }
   function deleteUser(item: UserWithDetailsDto) {
@@ -163,10 +165,11 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
     const form = new FormData();
     form.set("action", "delete-user");
     form.set("user-id", item.id);
-    submit(form, {
-      action: "/admin/accounts/users",
-      method: "post",
-    });
+    // submit(form, {
+    //   action: "/admin/accounts/users",
+    //   method: "post",
+    // });
+    serverAction?.action(form);
   }
 
   return (

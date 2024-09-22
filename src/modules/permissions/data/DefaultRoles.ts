@@ -11,10 +11,6 @@ export interface CreateRoleDto {
 export const defaultAdminRoles: CreateRoleDto[] = [
   // /admin
   { name: AdminRoleEnum.SuperAdmin, description: "Has all admin permissions", type: "admin", assignToNewUsers: false },
-  { name: AdminRoleEnum.ProductDesigner, description: "Manages entities", type: "admin", assignToNewUsers: false },
-  { name: AdminRoleEnum.Developer, description: "Manages API Keys", type: "admin", assignToNewUsers: false },
-  { name: AdminRoleEnum.Auditor, description: "Views application audit trails", type: "admin", assignToNewUsers: false },
-  { name: AdminRoleEnum.Marketing, description: "Manages blog", type: "admin", assignToNewUsers: false },
   { name: AdminRoleEnum.Guest, description: "Views admin pages, but cannot update or delete", type: "admin", assignToNewUsers: true },
 ];
 
@@ -22,7 +18,6 @@ export const defaultAppRoles: CreateRoleDto[] = [
   // /app
   { name: AppRoleEnum.SuperUser, description: "Has all app permissions", type: "app", assignToNewUsers: false },
   { name: AppRoleEnum.Admin, description: "Has all app permissions but account deletion", type: "app", assignToNewUsers: false },
-  { name: AppRoleEnum.BillingAdmin, description: "Has subscription permissions", type: "app", assignToNewUsers: false },
   { name: AppRoleEnum.User, description: "Has regular permissions", type: "app", assignToNewUsers: true },
 ];
 
@@ -34,14 +29,7 @@ export interface CreatePermissionDto {
 }
 export const defaultPermissions: CreatePermissionDto[] = [
   {
-    inRoles: [
-      AdminRoleEnum.SuperAdmin,
-      AdminRoleEnum.Marketing,
-      AdminRoleEnum.ProductDesigner,
-      AdminRoleEnum.Developer,
-      AdminRoleEnum.Auditor,
-      AdminRoleEnum.Guest,
-    ],
+    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.Guest],
     name: "admin.dashboard.view",
     description: "View dashboard page",
     type: "admin",
@@ -68,33 +56,20 @@ export const defaultPermissions: CreatePermissionDto[] = [
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.roles.delete", description: "Delete role & permission", type: "admin" },
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.roles.set", description: "Set user roles", type: "admin" },
   {
-    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner, AdminRoleEnum.Guest],
+    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.Guest],
     name: "admin.pricing.view",
     description: "View pricing page",
     type: "admin",
   },
-  { inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner], name: "admin.pricing.create", description: "Create plan", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner], name: "admin.pricing.update", description: "Update plan", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner], name: "admin.pricing.delete", description: "Delete plan", type: "admin" },
+  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pricing.create", description: "Create plan", type: "admin" },
+  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pricing.update", description: "Update plan", type: "admin" },
+  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pricing.delete", description: "Delete plan", type: "admin" },
   {
-    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner, AdminRoleEnum.Guest],
+    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.Guest],
     name: "admin.emails.view",
     description: "View email templates page",
     type: "admin",
   },
-  {
-    inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner],
-    name: "admin.emails.create",
-    description: "Create email template",
-    type: "admin",
-  },
-  { inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner], name: "admin.emails.update", description: "Update email", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin, AdminRoleEnum.ProductDesigner], name: "admin.emails.delete", description: "Delete delete", type: "admin" },
-
-  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pages.view", description: "View page blocks", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pages.create", description: "Create page", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pages.update", description: "Update page", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.pages.delete", description: "Delete page", type: "admin" },
 
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.general.view", description: "View general settings", type: "admin" },
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.general.update", description: "Update general settings", type: "admin" },
@@ -102,7 +77,6 @@ export const defaultPermissions: CreatePermissionDto[] = [
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.authentication.update", description: "Update authentication settings", type: "admin" },
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.analytics.view", description: "View analytics settings", type: "admin" },
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.analytics.update", description: "Update analytics settings", type: "admin" },
-  { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.seo.update", description: "Update SEO settings", type: "admin" },
 
   { inRoles: [AdminRoleEnum.SuperAdmin], name: "admin.settings.danger.reset", description: "Reset settings", type: "admin" },
   {
@@ -115,28 +89,26 @@ export const defaultPermissions: CreatePermissionDto[] = [
   { inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin], name: "app.settings.members.create", description: "Create member", type: "app" },
   { inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin], name: "app.settings.members.update", description: "Update member", type: "app" },
   { inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin], name: "app.settings.members.delete", description: "Delete member", type: "app" },
-  { inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin], name: "app.settings.roles.view", description: "View user roles", type: "app" },
-  { inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin], name: "app.settings.roles.set", description: "Set user roles", type: "app" },
   {
-    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin, AppRoleEnum.BillingAdmin],
+    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin],
     name: "app.settings.subscription.view",
     description: "View account's subscription page",
     type: "app",
   },
   {
-    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin, AppRoleEnum.BillingAdmin],
+    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin],
     name: "app.settings.subscription.update",
     description: "Subscribe to plan",
     type: "app",
   },
   {
-    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin, AppRoleEnum.BillingAdmin],
+    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin],
     name: "app.settings.subscription.delete",
     description: "Cancel subscription",
     type: "app",
   },
   {
-    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin, AppRoleEnum.BillingAdmin],
+    inRoles: [AppRoleEnum.SuperUser, AppRoleEnum.Admin],
     name: "app.settings.subscription.invoices.view",
     description: "Views invoices",
     type: "app",
