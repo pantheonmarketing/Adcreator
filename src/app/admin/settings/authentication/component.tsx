@@ -80,7 +80,7 @@ export default function AuthenticationComponent() {
         </div>
 
         <div className="flex justify-end pt-8">
-          <LoadingButton type="submit" disabled={!canUpdate}>
+          <LoadingButton isLoading={pending} type="submit" disabled={!canUpdate}>
             {t("shared.save")}
           </LoadingButton>
         </div>

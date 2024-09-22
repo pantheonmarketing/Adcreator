@@ -102,7 +102,7 @@ export default function UpdateTenantDetailsForm({ tenant, disabled, canCreateNew
                 </Button>
               )}
             </div>
-            <LoadingButton disabled={disabled} type="submit">
+            <LoadingButton isLoading={pending} disabled={disabled} type="submit">
               {t("shared.save")}
             </LoadingButton>
           </div>

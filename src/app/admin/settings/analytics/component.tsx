@@ -74,7 +74,7 @@ export default function AdminSettingsAnalytics() {
         </div>
 
         <div className="flex justify-end pt-8">
-          <LoadingButton disabled={!canUpdate} type="submit">
+          <LoadingButton isLoading={pending} disabled={!canUpdate} type="submit">
             {t("shared.save")}
           </LoadingButton>
         </div>

@@ -135,7 +135,7 @@ export default function AdminPricingComponent({ data }: { data: AdminPricingLoad
               {t("shared.reload")}
             </ButtonSecondary> */}
 
-                  <ButtonPrimary to="new" disabled={pending || !getUserHasPermission(adminData, "admin.pricing.create")}>
+                  <ButtonPrimary to="/admin/settings/pricing/new" disabled={pending || !getUserHasPermission(adminData, "admin.pricing.create")}>
                     {t("shared.new")}
                   </ButtonPrimary>
                 </Fragment>
@@ -256,7 +256,7 @@ export default function AdminPricingComponent({ data }: { data: AdminPricingLoad
                 <ButtonTertiary disabled={!item.id} to={"/pricing?plan=" + item.id} target="_blank">
                   {t("shared.preview")}
                 </ButtonTertiary>
-                <ButtonTertiary disabled={!item.id} to={"edit/" + item.id}>
+                <ButtonTertiary disabled={!item.id} to={`/admin/settings/pricing/edit/${item.id}`}>
                   {t("shared.edit")}
                 </ButtonTertiary>
               </div>

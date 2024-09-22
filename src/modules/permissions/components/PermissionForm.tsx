@@ -166,7 +166,9 @@ export default function PermissionForm({ item, roles, onCancel, canUpdate = true
           <ButtonSecondary type="button" onClick={onCancel}>
             {t("shared.cancel")}
           </ButtonSecondary>
-          <LoadingButton type="submit">{t("shared.save")}</LoadingButton>
+          <LoadingButton isLoading={pending} type="submit">
+            {t("shared.save")}
+          </LoadingButton>
         </div>
       </div>
     </Form>

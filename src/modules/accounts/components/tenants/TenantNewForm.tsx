@@ -48,7 +48,9 @@ export default function TenantNewForm() {
           <div className="space-y-4 pb-6 pt-4 text-right">
             <div className="right-0 text-sm leading-5">
               <span className="ml-2 inline-flex rounded-sm shadow-sm">
-                <LoadingButton type="submit">{t("shared.create")}</LoadingButton>
+                <LoadingButton isLoading={pending} type="submit">
+                  {t("shared.create")}
+                </LoadingButton>
               </span>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 import clsx from "clsx";
 
 interface OrderType {
@@ -13,11 +14,7 @@ interface Props<OrderType> {
     [key: string]: string;
   };
   onChange?: (items: OrderType[]) => void;
-  serverAction: {
-    actionData: any;
-    action: (form: FormData) => void;
-    pending: boolean;
-  };
+  serverAction: IServerAction;
 }
 export default function OrderListButtons({ index, items, editable = true, actionName = "set-orders", formData, onChange, serverAction }: Props<OrderType>) {
   function changeOrder(forward: boolean) {

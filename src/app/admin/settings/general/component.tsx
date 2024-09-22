@@ -141,7 +141,7 @@ your scripts here
         </InputGroup>
 
         <div className="flex justify-end">
-          <LoadingButton type="submit" disabled={!getUserHasPermission(adminData, "admin.settings.general.update")}>
+          <LoadingButton isLoading={pending} type="submit" disabled={!getUserHasPermission(adminData, "admin.settings.general.update")}>
             {t("shared.save")}
           </LoadingButton>
         </div>

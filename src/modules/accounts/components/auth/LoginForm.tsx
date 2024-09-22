@@ -81,7 +81,7 @@ export default function LoginForm({ appConfiguration, redirectTo }: { appConfigu
             <Link href="/forgot-password" className="inline-block align-baseline text-xs font-medium text-foreground hover:underline">
               {t("account.login.forgot")}
             </Link>
-            <LoadingButton disabled={pending} className="block w-full" type="submit" actionName="login">
+            <LoadingButton isLoading={pending} disabled={pending} className="block w-full" type="submit" actionName="login">
               {t("account.login.button")}
             </LoadingButton>
           </div>

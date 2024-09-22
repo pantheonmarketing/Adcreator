@@ -82,7 +82,9 @@ export default function NewsletterComponent() {
 
               <div className="flex items-baseline justify-between space-x-2 sm:col-span-2">
                 <div></div>
-                <LoadingButton type="submit">{pending ? t("front.newsletter.subscribing") + "..." : t("front.newsletter.subscribe")}</LoadingButton>
+                <LoadingButton isLoading={pending} type="submit">
+                  {pending ? t("front.newsletter.subscribing") + "..." : t("front.newsletter.subscribe")}
+                </LoadingButton>
               </div>
             </form>
             <div className="mt-2">

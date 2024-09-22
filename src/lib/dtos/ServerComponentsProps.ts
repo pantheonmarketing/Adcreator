@@ -6,3 +6,9 @@ export type ServerComponentsProps = {
 export type NextSearchParams = {
   [key: string]: string | string[] | undefined;
 };
+
+export interface IServerAction {
+  actionData: any;
+  action: (form: FormData) => void;
+  pending: boolean;
+}

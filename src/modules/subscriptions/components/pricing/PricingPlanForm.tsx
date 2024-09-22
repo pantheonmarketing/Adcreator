@@ -2,7 +2,6 @@
 
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, useNavigate, useNavigation, useSubmit } from "@remix-run/react";
 import { SubscriptionFeatureDto } from "@/modules/subscriptions/dtos/SubscriptionFeatureDto";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
 import { SubscriptionBillingPeriod } from "@/modules/subscriptions/enums/SubscriptionBillingPeriod";
@@ -26,6 +25,8 @@ import { SubscriptionUsageBasedPriceDto } from "@/modules/subscriptions/dtos/Sub
 import billingPeriods from "@/modules/subscriptions/data/billingPeriods";
 import PricingUtils from "@/modules/subscriptions/utils/PricingUtils";
 import { Input } from "@/components/ui/input";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
+import { useRouter } from "next/navigation";
 
 interface Props {
   plans?: SubscriptionProductDto[];
@@ -33,14 +34,12 @@ interface Props {
   canUpdate?: boolean;
   canDelete?: boolean;
   isPortalPlan?: boolean;
+  serverAction: IServerAction;
 }
 
-export default function PricingPlanForm({ plans, item, canUpdate = true, canDelete, isPortalPlan }: Props) {
+export default function PricingPlanForm({ plans, item, canUpdate = true, canDelete, isPortalPlan, serverAction }: Props) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
-  const loading = navigation.state === "submitting";
-  const navigate = useNavigate();
-  const submit = useSubmit();
+  const router = useRouter();
 
   let pricingModels = [
     {
@@ -162,7 +161,8 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
   }, []);
 
   function close() {
-    navigate("/admin/settings/pricing", { replace: true });
+    router.push("/admin/settings/pricing");
+    // navigate("/admin/settings/pricing", { replace: true });
   }
 
   function remove() {
@@ -189,9 +189,8 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
   function yesRemove() {
     const form = new FormData();
     form.set("action", "delete");
-    submit(form, {
-      method: "post",
-    });
+    form.set("id", item?.id ?? "");
+    serverAction.action(form);
   }
 
   const possibleBillingPeriods = () => {
@@ -213,8 +212,9 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
 
   return (
     <>
-      <Form method="post">
+      <form action={serverAction.action}>
         <input hidden readOnly name="action" value={item ? "edit" : "create"} />
+        {item && <input hidden readOnly name="id" value={item.id} />}
 
         <div className="col-span-2 mx-auto max-w-5xl">
           <div className="divide-y divide-gray-200 sm:space-y-4">
@@ -240,7 +240,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                       title={t("models.subscriptionProduct.order")}
                       value={order}
                       onChange={(e) => setOrder(Number(e.currentTarget.value))}
-                      disabled={loading}
+                      disabled={serverAction.pending}
                       required
                     />
                   </div>
@@ -256,7 +256,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                       title={t("models.subscriptionProduct.title")}
                       value={title}
                       onChange={(e) => setTitle(e.currentTarget.value)}
-                      disabled={loading}
+                      disabled={serverAction.pending}
                       autoComplete="off"
                       minLength={1}
                       maxLength={99}
@@ -274,7 +274,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                       title={t("models.subscriptionProduct.badge")}
                       value={badge}
                       onChange={(e) => setBadge(e.currentTarget.value)}
-                      disabled={loading}
+                      disabled={serverAction.pending}
                       autoComplete="off"
                     />
                   </div>
@@ -292,7 +292,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                           title={t("models.subscriptionProduct.groupTitle")}
                           value={groupTitle}
                           onChange={(e) => setGroupTitle(e.currentTarget.value)}
-                          disabled={loading}
+                          disabled={serverAction.pending}
                           autoComplete="off"
                         />
                       </div>
@@ -308,7 +308,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                           title={t("models.subscriptionProduct.groupDescription")}
                           value={groupDescription}
                           onChange={(e) => setGroupDescription(e.currentTarget.value)}
-                          disabled={loading}
+                          disabled={serverAction.pending}
                           autoComplete="off"
                         />
                       </div>
@@ -325,7 +325,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                       title={t("models.subscriptionProduct.description")}
                       value={description}
                       onChange={(e) => setDescription(e.currentTarget.value)}
-                      disabled={loading}
+                      disabled={serverAction.pending}
                       minLength={1}
                       maxLength={999}
                       autoComplete="off"
@@ -492,25 +492,25 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
           <div className="flex justify-between space-x-2 py-5">
             <div>
               {item && (
-                <ButtonSecondary destructive={true} disabled={loading || !canDelete} type="button" onClick={remove}>
+                <ButtonSecondary destructive={true} disabled={serverAction.pending || !canDelete} type="button" onClick={remove}>
                   <div>{t("shared.delete")}</div>
                 </ButtonSecondary>
               )}
             </div>
 
             <div className="flex items-center space-x-2">
-              <ButtonSecondary disabled={loading} onClick={close}>
+              <ButtonSecondary disabled={serverAction.pending} onClick={close}>
                 <div>{t("shared.cancel")}</div>
               </ButtonSecondary>
-              <LoadingButton type="submit" disabled={loading || !canUpdate}>
+              <LoadingButton isLoading={serverAction.pending} type="submit" disabled={serverAction.pending || !canUpdate}>
                 {t("shared.save")}
               </LoadingButton>
             </div>
           </div>
         </div>
-      </Form>
+      </form>
 
-      <ConfirmModal ref={confirmRemove} onYes={yesRemove} />
+      <ConfirmModal ref={confirmRemove} onYes={yesRemove} destructive />
     </>
   );
 }

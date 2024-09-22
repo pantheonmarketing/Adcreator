@@ -417,7 +417,7 @@ export default function ({ data }: { data: PricingFeaturesLoaderData }) {
               <div>{t("shared.preview")}</div>
             </ButtonSecondary>
             <ButtonSecondary onClick={() => setItems(getInitialItems(selectedPlans))}>{t("shared.reset")}</ButtonSecondary>
-            <LoadingButton disabled={getErrors().length > 0 || !getUserHasPermission(adminData, "admin.pricing.update")} onClick={onSave}>
+            <LoadingButton isLoading={pending} disabled={getErrors().length > 0 || !getUserHasPermission(adminData, "admin.pricing.update")} onClick={onSave}>
               {t("shared.save")}
             </LoadingButton>
           </>

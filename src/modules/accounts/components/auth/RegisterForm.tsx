@@ -139,7 +139,7 @@ export const RegisterForm = ({ isVerifyingEmail = false, isSettingUpAccount = fa
         {/* Personal Info: End */}
 
         <div>
-          <LoadingButton disabled={pending} className="w-full" type="submit">
+          <LoadingButton isLoading={pending} disabled={pending} className="w-full" type="submit">
             {t("account.register.prompts.register.title")}
           </LoadingButton>
         </div>
