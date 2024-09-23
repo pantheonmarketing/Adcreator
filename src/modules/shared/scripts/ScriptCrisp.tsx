@@ -1,12 +1,14 @@
+"use client";
+
 import { useEffect } from "react";
-import { useLocation } from "@remix-run/react";
 import useRootData from "@/lib/state/useRootData";
+import { usePathname } from "next/navigation";
 
 const START_HIDDEN_IN_ROUTES = ["/admin", "/app"];
 
 export default function ScriptCrisp() {
   const rootData = useRootData();
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (rootData.chatWebsiteId && !window.$crisp) {
@@ -18,7 +20,7 @@ export default function ScriptCrisp() {
       s.async = true;
       d.getElementsByTagName("head")[0].appendChild(s);
     }
-    if (window.$crisp && START_HIDDEN_IN_ROUTES.some((p) => location.pathname.startsWith(p))) {
+    if (window.$crisp && START_HIDDEN_IN_ROUTES.some((p) => pathname.startsWith(p))) {
       try {
         // @ts-ignore
         window.$crisp.push(["do", "chat:hide"]);
@@ -26,7 +28,7 @@ export default function ScriptCrisp() {
         // ignore
       }
     }
-  }, [rootData.chatWebsiteId, location.pathname]);
+  }, [rootData.chatWebsiteId, pathname]);
 
   return null;
 }

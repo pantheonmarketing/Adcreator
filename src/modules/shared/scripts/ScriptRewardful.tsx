@@ -1,5 +1,8 @@
+"use client";
+
 import { Fragment } from "react";
 import useRootData from "@/lib/state/useRootData";
+import Script from "next/script";
 
 export default function ScriptRewardful() {
   const rootData = useRootData();
@@ -12,14 +15,10 @@ export default function ScriptRewardful() {
   }
   return (
     <Fragment>
-      <script
-        async
-        id="rewardful-init"
-        dangerouslySetInnerHTML={{
-          __html: `(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');`,
-        }}
-      />
-      <script async src="https://r.wdfl.co/rw.js" data-rewardful={affiliates.provider.rewardfulApiKey}></script>
+      <Script src={"https://r.wdfl.co/rw.js"} data-rewardful={affiliates.provider.rewardfulApiKey}></Script>
+      <Script id="rewardful-queue" strategy="beforeInteractive">
+        {`(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');`}
+      </Script>
     </Fragment>
   );
 }

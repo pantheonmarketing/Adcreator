@@ -1,3 +1,5 @@
+"use client";
+
 import useRootData from "@/lib/state/useRootData";
 
 export default function ScriptAnalytics() {

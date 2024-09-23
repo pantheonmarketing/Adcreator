@@ -13,13 +13,15 @@ import ScriptInjector from "@/modules/shared/scripts/ScriptInjector";
 import { getRootData } from "@/lib/services/rootData.server";
 import RootDataLayout from "@/context/RootDataLayout";
 import { defaultSiteTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
+import ScriptCrisp from "@/modules/shared/scripts/ScriptCrisp";
+import ScriptAnalytics from "@/modules/shared/scripts/ScriptAnalytics";
+import ScriptRewardful from "@/modules/shared/scripts/ScriptRewardful";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const revalidate = 0;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = await getServerTranslations();
   return {
     title: defaultSiteTags.title,
     icons: [
@@ -51,6 +53,9 @@ export default async function RootLayout({
         <body className={clsx(`theme-${userInfo.theme}`, "max-h-full min-h-screen max-w-full bg-background text-foreground", inter.style)}>
           <RootDataLayout data={rootData}>
             {children}
+            <ScriptCrisp />
+            <ScriptAnalytics />
+            <ScriptRewardful />
             <ReactHostToaster />
             <SonnerToaster />
             <ScriptInjector scripts={rootData.appConfiguration?.scripts} />

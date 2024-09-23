@@ -484,6 +484,7 @@ export default function PricingPlanForm({ plans, item, canUpdate = true, canDele
                   usageBasedPrices={usageBasedPrices}
                   stripeCoupon={null}
                   isPreview={true}
+                  serverAction={null}
                 />
               </div>
             </div>
