@@ -10,6 +10,7 @@ export function middleware(request: Request) {
     tenantSlug = tenantMatch[1];
   }
   requestHeaders.set("x-tenant-slug", tenantSlug);
+
   return NextResponse.next({
     request: {
       headers: requestHeaders,
