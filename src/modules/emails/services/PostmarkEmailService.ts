@@ -1,4 +1,5 @@
-import postmark from "postmark";
+const postmark = require("postmark");
+// import postmark from "postmark";
 
 export async function sendEmailPostmark(
   data: { to: string; subject: string; body: string },

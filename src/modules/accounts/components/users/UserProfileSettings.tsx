@@ -1,7 +1,6 @@
 "use client";
 
-import { Form, useNavigation, useSearchParams, useSubmit } from "@remix-run/react";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
@@ -14,18 +13,28 @@ import UploadFile from "@/components/ui/uploaders/UploadFile";
 import UploadImage from "@/components/ui/uploaders/UploadImage";
 import { UserDto } from "@/db/models";
 import { languages } from "@/i18n/settings";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
+import { useRouter } from "next/navigation";
+import i18next from "i18next";
 
-export default function UserProfileSettings({ user }: { user: UserDto }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+export default function UserProfileSettings({ user, serverAction }: { user: UserDto; serverAction: IServerAction }) {
   const { t, i18n } = useTranslation();
-  const navigation = useNavigation();
-  const submit = useSubmit();
+  const router = useRouter();
 
   const errorModal = useRef<RefErrorModal>(null);
   const successModal = useRef<RefSuccessModal>(null);
   const confirmModal = useRef<RefConfirmModal>(null);
 
   const inputFirstName = useRef<HTMLInputElement>(null);
+
+  const [isPending, startTransition] = useTransition();
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    startTransition(async () => {
+      serverAction.action(new FormData(form));
+    });
+  }
 
   useEffect(() => {
     inputFirstName.current?.focus();
@@ -36,9 +45,9 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
   const [showUploadImage, setShowUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  function changedLocale(locale: string) {
-    searchParams.set("lng", locale);
-    setSearchParams(searchParams);
+  function changedLocale(lang: string) {
+    i18next.changeLanguage(lang);
+    router.refresh();
   }
 
   function deleteAccount() {
@@ -51,7 +60,8 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
   function confirmDelete() {
     const form = new FormData();
     form.set("action", "deleteAccount");
-    submit(form, { method: "post" });
+    // submit(form, { method: "post" });
+    serverAction.action(form);
   }
   function loadedImage(image: string | undefined) {
     setAvatar(image);
@@ -63,7 +73,7 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
       <div>
         <SettingSection title={t("settings.profile.profileTitle")} description={t("settings.profile.profileText")}>
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <Form method="post">
+            <form onSubmit={onSubmit} action={serverAction.action}>
               <input hidden type="text" name="action" value="profile" readOnly />
               <div className="">
                 <div className="">
@@ -123,7 +133,7 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
                   <div className="flex justify-between">
                     <div id="form-success-message" className="flex items-center space-x-2"></div>
                     <button
-                      disabled={navigation.state === "submitting"}
+                      disabled={serverAction.pending}
                       type="submit"
                       className="inline-flex items-center space-x-2 rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     >
@@ -132,7 +142,7 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
                   </div>
                 </div>
               </div>
-            </Form>
+            </form>
           </div>
         </SettingSection>
 
@@ -156,7 +166,7 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
         >
           {/*Security */}
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <Form method="post">
+            <form onSubmit={onSubmit} action={serverAction.action}>
               <input hidden type="text" name="action" value="password" readOnly />
               <div className="">
                 <div>
@@ -216,7 +226,7 @@ export default function UserProfileSettings({ user }: { user: UserDto }) {
                   </div>
                 </div>
               </div>
-            </Form>
+            </form>
           </div>
         </SettingSection>
 

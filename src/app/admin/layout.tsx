@@ -10,14 +10,13 @@ import AdminDataLayout from "@/context/AdminDataLayout";
 import { redirect } from "next/navigation";
 import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { headers } from "next/headers";
+import { getCurrentUrl } from "@/lib/services/url.server";
 
 export async function load({ params, searchParams }: IServerComponentsProps): Promise<AdminDataDto> {
   const userInfo = getUserInfo();
   const user = userInfo.userId ? await getUser(userInfo.userId) : null;
-  const heads = headers();
-  const currentUrl = heads.get("x-url")?.toLowerCase() || "/";
-  const url = new URL(currentUrl);
-  const redirectTo = url.pathname + url.search;
+  const url = getCurrentUrl();
+  const redirectTo = url + url.search;
   if (!userInfo || !user || !userInfo.userId) {
     let searchParams = new URLSearchParams([["redirect", redirectTo]]);
     throw redirect(`/login?${searchParams}`);

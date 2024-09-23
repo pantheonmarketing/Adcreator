@@ -21,3 +21,12 @@ export const getCurrentUrl = () => {
   const heads = headers();
   return heads.get("x-url")?.toLowerCase() || "/";
 };
+
+export const requireTenantSlug = () => {
+  const heads = headers();
+  const id = heads.get("x-tenant-slug");
+  if (!id) {
+    throw new Error("Tenant ID not found");
+  }
+  return id;
+};

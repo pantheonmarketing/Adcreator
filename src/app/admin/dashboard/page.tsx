@@ -26,8 +26,8 @@ export type AdminLoaderData = {
   };
 };
 
-async function load({ params, searchParams }: IServerComponentsProps): Promise<AdminLoaderData> {
-  await requireAuth({ params });
+async function load({ searchParams }: IServerComponentsProps): Promise<AdminLoaderData> {
+  await requireAuth();
   const currentPagination = getCurrentPagination(searchParams);
 
   const { t } = await getServerTranslations();

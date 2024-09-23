@@ -1,3 +1,5 @@
+"use client";
+
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import UserUtils from "@/modules/accounts/utils/UserUtils";

@@ -7,6 +7,7 @@ import { createUserRole } from "@/modules/permissions/services/UserRolesService"
 import { RoleModel, TenantDto, TenantModel, TenantWithDetailsDto } from "@/db/models";
 import { cachified, clearCacheKey } from "@/lib/services/cache.server";
 import { deleteUser, getUser, updateUser } from "./UserService";
+import { requireTenantSlug } from "@/lib/services/url.server";
 
 export async function getTenant(id: string): Promise<TenantWithDetailsDto | null> {
   return await cachified({
@@ -87,8 +88,7 @@ export async function tenantSlugAlreadyExists(slug: string) {
   return existing > 0;
 }
 
-export async function getTenantIdFromUrl(params?: { tenant?: string }) {
-  const tenant = params?.tenant;
+export async function getTenantIdFromUrl(tenant: string) {
   const tenantId = await cachified({
     key: `tenantIdOrSlug:${tenant}`,
     ttl: 1000 * 60 * 60 * 24,

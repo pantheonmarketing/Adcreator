@@ -1,3 +1,5 @@
+"use client";
+
 import EmptyResultsIcon from "@/components/ui/icons/EmptyResultsIcon";
 import clsx from "clsx";
 
