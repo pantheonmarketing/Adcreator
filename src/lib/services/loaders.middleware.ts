@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { getTenantIdFromUrl } from "@/modules/accounts/services/TenantService";
 import { getCurrentUrl, requireTenantSlug } from "./url.server";
 
-export async function requireAuth() {
+export async function requireAuth(options?: { tenantSlug?: string }) {
   // const heads = headers();
   // const currentUrl = heads.get("x-url")?.toLowerCase() || "/";
   // const currentUrl = getCurrentUrl();
@@ -16,7 +16,7 @@ export async function requireAuth() {
   } else if ((currentPath.startsWith("/app") && currentPath !== "/app") || (currentPath.startsWith("/subscribe") && currentPath !== "/subscribe")) {
     console.log("[requireAuth.app]", currentPath);
     const userInfo = getUserInfo();
-    const tenantSlug = requireTenantSlug();
+    const tenantSlug = options?.tenantSlug || requireTenantSlug();
     const tenantId = await getTenantIdFromUrl(tenantSlug);
     if (!userInfo.userId || !tenantId) {
       throw new Error("Unauthorized");

@@ -88,7 +88,7 @@ export class Database {
     if (!providerValue) {
       throw new Error("defaultAppConfiguration.app.orm is not defined. Valid values are: prisma, drizzle, mock");
     }
-    console.log("[RockStack] Using database ORM: " + providerValue);
+    // console.log("[RockStack] Using database ORM: " + providerValue);
     switch (providerValue) {
       case "prisma":
         this.provider = "prisma";

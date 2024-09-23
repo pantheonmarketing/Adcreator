@@ -11,10 +11,10 @@ import { db } from "@/db";
 import { getServerTranslations } from "@/i18n/server";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { ISearchParams } from "@/lib/dtos/ServerComponentsProps";
+import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 
 export namespace PricingBlockService {
-  export async function load({ searchParams }: { searchParams?: ISearchParams }) {
+  export async function load({ searchParams }: IServerComponentsProps) {
     const { t } = await getServerTranslations();
     let items = await db.subscriptionProduct.getAllSubscriptionProducts(true);
     const couponParam = searchParams?.coupon?.toString();

@@ -103,28 +103,28 @@ ${appConfiguration.email.supportEmail && `<p>If you have any questions, feel fre
   },
 };
 
-const ACCOUNT_SETUP_EMAIL = {
-  name: "account-setup",
-  description: "Email sent to users to set up their account",
-  parse: ({ appConfiguration, action_url }: { appConfiguration: AppConfigurationDto; action_url: string }) => {
-    const subject = `Set up your account for ${appConfiguration.app.name}`;
-    const body = `<p>Thank you for subscribing to ${appConfiguration.app.name}!</p>
+// const ACCOUNT_SETUP_EMAIL = {
+//   name: "account-setup",
+//   description: "Email sent to users to set up their account",
+//   parse: ({ appConfiguration, action_url }: { appConfiguration: AppConfigurationDto; action_url: string }) => {
+//     const subject = `Set up your account for ${appConfiguration.app.name}`;
+//     const body = `<p>Thank you for subscribing to ${appConfiguration.app.name}!</p>
 
-If you haven't already, <a href="${action_url}" target="_blank">click here to</a> set up your account.
+// If you haven't already, <a href="${action_url}" target="_blank">click here to</a> set up your account.
 
-<p>Thanks,
-<br>-
-<br>${appConfiguration.email.fromName}</p>`;
-    return { subject, body };
-  },
-};
+// <p>Thanks,
+// <br>-
+// <br>${appConfiguration.email.fromName}</p>`;
+//     return { subject, body };
+//   },
+// };
 
 const allTemplates: EmailTemplate[] = [
   WELCOME_EMAIL, // Welcome email with login link
   PASSWORD_RESET_EMAIL, // Token to reset password
   USER_INVITATION_EMAIL, // Link to join an account
   VERIFICATION_EMAIL, // Token to verify email
-  ACCOUNT_SETUP_EMAIL, // Link after checkout
+  // ACCOUNT_SETUP_EMAIL, // Link after checkout
 ];
 
 export default {
@@ -133,5 +133,5 @@ export default {
   PASSWORD_RESET_EMAIL,
   USER_INVITATION_EMAIL,
   VERIFICATION_EMAIL,
-  ACCOUNT_SETUP_EMAIL,
+  // ACCOUNT_SETUP_EMAIL,
 };

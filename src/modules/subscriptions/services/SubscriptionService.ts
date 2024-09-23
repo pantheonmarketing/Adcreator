@@ -326,14 +326,14 @@ export async function persistCheckoutSessionStatus({
       if (session && !session.fromUserId && !session.fromTenantId) {
         const sessionResponse = await getAcquiredItemsFromCheckoutSession(session.id);
         if (sessionResponse && sessionResponse.products.length > 0) {
-          await sendEmail({
-            to: session.email,
-            ...EmailTemplates.ACCOUNT_SETUP_EMAIL.parse({
-              // plan: sessionResponse.products[0].title,
-              appConfiguration,
-              action_url: `${getBaseURL()}/pricing/${session.id}/success`,
-            }),
-          });
+          // await sendEmail({
+          //   to: session.email,
+          //   ...EmailTemplates.ACCOUNT_SETUP_EMAIL.parse({
+          //     // plan: sessionResponse.products[0].title,
+          //     appConfiguration,
+          //     action_url: `${getBaseURL()}/pricing/${session.id}/success`,
+          //   }),
+          // });
         }
       }
     }

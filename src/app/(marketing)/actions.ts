@@ -1,7 +1,6 @@
 "use server";
 
 import { getUserInfo, createUserSession } from "@/lib/services/session.server";
-import { redirect } from "next/navigation";
 
 export async function actionToggleScheme(formData: FormData) {
   const redirectTo = formData.get("redirectTo") as string;

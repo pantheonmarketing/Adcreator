@@ -13,6 +13,7 @@ import { SubscriptionPriceDto } from "@/modules/subscriptions/dtos/SubscriptionP
 import Stripe from "stripe";
 import { TenantSubscriptionWithDetailsDto } from "@/db/models";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   items: SubscriptionProductDto[];
@@ -25,8 +26,9 @@ interface Props {
     billingPeriods: { value: SubscriptionBillingPeriod; options: SubscriptionBillingPeriod[] };
   };
   onClickFeature?: (name: string) => void;
+  serverAction: IServerAction | null;
 }
-export default function Plans({ items, tenantSubscription, canSubmit, className, stripeCoupon, currenciesAndPeriod, onClickFeature }: Props) {
+export default function Plans({ items, tenantSubscription, canSubmit, className, stripeCoupon, currenciesAndPeriod, onClickFeature, serverAction }: Props) {
   const searchParams = useSearchParams();
   const search = new URLSearchParams(searchParams.toString());
   const router = useRouter();
@@ -147,6 +149,7 @@ export default function Plans({ items, tenantSubscription, canSubmit, className,
               isDowngrade={checkUpgradeDowngrade(plan)?.downgrade}
               stripeCoupon={stripeCoupon}
               onClickFeature={onClickFeature}
+              serverAction={serverAction}
             />
           );
         })}

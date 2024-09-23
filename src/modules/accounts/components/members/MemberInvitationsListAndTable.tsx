@@ -3,19 +3,19 @@
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { TenantUserInvitationModel } from "@/db/models";
-import { useSubmit } from "@remix-run/react";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
 import UserBadge from "../users/UserBadge";
 import clsx from "clsx";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   appUrl: string;
   items: TenantUserInvitationModel[];
   canDelete: boolean;
+  serverAction: IServerAction;
 }
-export default function MemberInvitationsListAndTable({ appUrl, items, canDelete }: Props) {
+export default function MemberInvitationsListAndTable({ appUrl, items, canDelete, serverAction }: Props) {
   const { t } = useTranslation();
-  const submit = useSubmit();
 
   const [sortByColumn, setSortByColumn] = useState("");
   const [sortDirection, setSortDirection] = useState(1);
@@ -41,9 +41,10 @@ export default function MemberInvitationsListAndTable({ appUrl, items, canDelete
     const form = new FormData();
     form.set("action", "delete-invitation");
     form.set("invitation-id", invitation.id);
-    submit(form, {
-      method: "post",
-    });
+    // submit(form, {
+    //   method: "post",
+    // });
+    serverAction.action(form);
   }
 
   function getInvitationLink(invitation: TenantUserInvitationModel) {

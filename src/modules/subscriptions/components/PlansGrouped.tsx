@@ -7,6 +7,7 @@ import Modal from "@/components/ui/modals/Modal";
 import { DefaultAppFeatures } from "@/modules/subscriptions/data/appFeatures";
 import CreditsTableInfo from "@/modules/credits/components/CreditsTableInfo";
 import { TenantSubscriptionWithDetailsDto } from "@/db/models";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   items: SubscriptionProductDto[];
@@ -17,8 +18,9 @@ interface Props {
     currencies: { value: string; options: string[] };
     billingPeriods: { value: SubscriptionBillingPeriod; options: SubscriptionBillingPeriod[] };
   };
+  serverAction: IServerAction | null;
 }
-export default function PlansGrouped({ items, tenantSubscription, canSubmit, stripeCoupon, currenciesAndPeriod }: Props) {
+export default function PlansGrouped({ items, tenantSubscription, canSubmit, stripeCoupon, currenciesAndPeriod, serverAction }: Props) {
   const [showFeatureInfoModal, setShowFeatureInfoModal] = useState<boolean>(false);
   const [showFeatureInfo, setShowFeatureInfo] = useState<string | null>(null);
   const groups = () => {
@@ -70,6 +72,7 @@ export default function PlansGrouped({ items, tenantSubscription, canSubmit, str
                     setShowFeatureInfo(name);
                     setShowFeatureInfoModal(true);
                   }}
+                  serverAction={serverAction}
                 />
               </div>
             </Fragment>

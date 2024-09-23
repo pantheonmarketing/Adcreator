@@ -11,8 +11,9 @@ import { PricingBlockDto } from "./PricingBlockDto";
 import PricingContactUs from "./shared/PricingContactUs";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
-export default function PricingVariantSimple({ item }: { item: PricingBlockDto }) {
+export default function PricingVariantSimple({ item, serverAction }: { item: PricingBlockDto; serverAction: IServerAction }) {
   const { t } = useTranslation();
   const rootData = useRootData();
 
@@ -78,6 +79,7 @@ export default function PricingVariantSimple({ item }: { item: PricingBlockDto }
               canSubmit={!rootData.authenticated && rootData.appConfiguration.subscription.allowSubscribeBeforeSignUp}
               stripeCoupon={item.data.coupon?.stripeCoupon || null}
               currenciesAndPeriod={item.data.currenciesAndPeriod}
+              serverAction={serverAction}
             />
           </main>
         )}

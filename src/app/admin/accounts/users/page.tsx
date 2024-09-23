@@ -13,6 +13,7 @@ import Component from "./component";
 import { getUser, updateUser } from "@/modules/accounts/services/UserService";
 import bcrypt from "bcryptjs";
 import { deleteUserWithItsTenants } from "@/modules/accounts/services/TenantService";
+import { getUserInfo } from "@/lib/services/session.server";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -73,6 +74,7 @@ const loader = async ({ searchParams }: IServerComponentsProps) => {
 
 export const actionAdminUsers = async (prev: any, form: FormData) => {
   await verifyUserHasPermission("admin.users.view");
+  const userInfo = getUserInfo();
   const { t } = await getServerTranslations();
 
   const action = form.get("action")?.toString();
@@ -88,7 +90,7 @@ export const actionAdminUsers = async (prev: any, form: FormData) => {
       const passwordNew = form.get("password-new")?.toString();
       if (!passwordNew || passwordNew.length < 8) {
         return { error: "Set a password with 8 characters minimum" };
-      } else if (user?.admin) {
+      } else if (user?.admin && user.id !== userInfo.userId) {
         return { error: "You cannot change password for admin user" };
       }
 

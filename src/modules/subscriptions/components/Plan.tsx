@@ -9,7 +9,7 @@ import NumberUtils from "@/lib/utils/NumberUtils";
 import { SubscriptionPriceDto } from "@/modules/subscriptions/dtos/SubscriptionPriceDto";
 import { SubscriptionUsageBasedPriceDto } from "@/modules/subscriptions/dtos/SubscriptionUsageBasedPriceDto";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
-import { Fragment, useActionState, useEffect, useRef, useState } from "react";
+import { Fragment, useActionState, useEffect, useRef, useState, useTransition } from "react";
 import ErrorModal, { RefErrorModal } from "@/components/ui/modals/ErrorModal";
 import useRootData from "@/lib/state/useRootData";
 import { useTranslation } from "react-i18next";
@@ -17,9 +17,10 @@ import Stripe from "stripe";
 import PlanFeatureDescription from "./PlanFeatureDescription";
 import PricingUtils from "@/modules/subscriptions/utils/PricingUtils";
 import InputNumber from "@/components/ui/input/InputNumber";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { actionPricing } from "@/app/(marketing)/pricing/page";
 import toast from "react-hot-toast";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
   product?: SubscriptionProductDto;
@@ -40,6 +41,7 @@ interface Props {
   stripeCoupon: Stripe.Coupon | null;
   isPreview?: boolean;
   onClickFeature?: (name: string) => void;
+  serverAction: IServerAction | null;
 }
 
 export default function Plan({
@@ -60,23 +62,18 @@ export default function Plan({
   isDowngrade,
   stripeCoupon,
   onClickFeature,
+  serverAction,
 }: Props) {
   const { t } = useTranslation();
   const search = useSearchParams();
   const searchParams = new URLSearchParams(search.toString());
-  const router = useRouter();
   const rootData = useRootData();
-  const [actionData, action, pending] = useActionState(actionPricing, null);
+  const params = useParams();
 
+  const [loadingProductId, setLoadingProductId] = useState<string>();
   const [quantity, setQuantity] = useState(1);
 
   const [referral, setReferral] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (actionData?.error) {
-      toast.error(actionData.error);
-    }
-  }, [actionData]);
 
   useEffect(() => {
     if (!(typeof window === "undefined") && rootData.appConfiguration.affiliates?.provider.rewardfulApiKey) {
@@ -166,6 +163,7 @@ export default function Plan({
   const errorModal = useRef<RefErrorModal>(null);
   async function onClick() {
     const form = new FormData();
+    setLoadingProductId(product?.id);
     form.set("action", "subscribe");
     form.set("product-id", product?.id?.toString() ?? "");
     form.set("billing-period", billingPeriod.toString());
@@ -183,7 +181,10 @@ export default function Plan({
     } else if (isDowngrade) {
       form.set("is-downgrade", "true");
     }
-    action(form);
+    if (params?.tenant.toString()) {
+      form.set("tenantSlug", params.tenant.toString());
+    }
+    serverAction?.action(form);
   }
   function isDisabled() {
     if (!canSubmit) {
@@ -193,9 +194,9 @@ export default function Plan({
       if (alreadyOwned && !product?.canBuyAgain) {
         return true;
       }
-      return pending || !product?.stripeId;
+      return serverAction?.pending || !product?.stripeId;
     }
-    return pending || !product?.stripeId;
+    return serverAction?.pending || !product?.stripeId;
   }
 
   const getCoupon = () => {
@@ -413,7 +414,7 @@ export default function Plan({
                       price={getFlatPrice()}
                       badge={badge}
                       disabled={isDisabled()}
-                      loading={pending}
+                      loading={serverAction?.pending && loadingProductId === product?.id}
                       onClick={onClick}
                       alreadyOwned={alreadyOwned}
                       isUpgrade={isUpgrade}
@@ -427,7 +428,7 @@ export default function Plan({
                     price={getFlatPrice()}
                     badge={badge}
                     disabled={isDisabled()}
-                    loading={pending}
+                    loading={serverAction?.pending && loadingProductId === product?.id}
                     onClick={onClick}
                     alreadyOwned={alreadyOwned}
                     isUpgrade={isUpgrade}
@@ -451,7 +452,7 @@ interface SubscribeOrBuyButtonProps {
   model: PricingModel;
   badge?: string;
   disabled: boolean;
-  loading: boolean;
+  loading: boolean | undefined;
   onClick: () => void;
   alreadyOwned?: boolean;
   price?: SubscriptionPriceDto;

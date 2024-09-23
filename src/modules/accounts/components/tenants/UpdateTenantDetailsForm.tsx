@@ -6,14 +6,14 @@ import { useTranslation } from "react-i18next";
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
 import UploadFile from "@/components/ui/uploaders/UploadFile";
 import UrlUtils from "@/lib/utils/UrlUtils";
-import { TenantWithDetailsDto } from "@/db/models";
+import { TenantDto } from "@/db/models";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
 
 interface Props {
-  tenant: TenantWithDetailsDto;
+  tenant: TenantDto;
   disabled: boolean;
   canCreateNew?: boolean;
   serverAction: IServerAction;

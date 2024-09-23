@@ -25,10 +25,10 @@ export default function GlobalError({
   let errorTitle = error?.message || error?.message || "Error";
   let errorStack = error?.stack;
 
-  if (error?.status === 404 || error.message === "404") {
+  if (error?.status === 404 || error.message === "404" || error.message === t("shared.notFound")) {
     return <Page404 title={errorTitle} withFooter={false} />;
   }
-  if (error?.status === 401 || error.message === "401") {
+  if (error?.status === 401 || error.message === "401" || error.message === "Unauthorized") {
     return <Page401 withFooter={false} />;
   }
 

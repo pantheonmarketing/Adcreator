@@ -1,38 +1,37 @@
 "use client";
 
 import clsx from "clsx";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useActionState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, useActionData, useLocation, useNavigate, useNavigation, useParams } from "@remix-run/react";
 import { PlanFeatureUsageDto } from "@/modules/subscriptions/dtos/PlanFeatureUsageDto";
 import UrlUtils from "@/lib/utils/UrlUtils";
 import CheckPlanFeatureLimit from "@/modules/subscriptions/components/CheckPlanFeatureLimit";
 import InputCheckboxWithDescription from "@/components/ui/input/InputCheckboxWithDescription";
 import toast from "react-hot-toast";
+import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
+import { useParams, useRouter } from "next/navigation";
 
 interface Props {
   featurePlanUsage: PlanFeatureUsageDto | undefined;
+  serverAction: IServerAction;
 }
 
-export default function NewMember({ featurePlanUsage }: Props) {
-  const params = useParams();
-  const location = useLocation();
-  const actionData = useActionData<{}>();
+export default function NewMember({ featurePlanUsage, serverAction }: Props) {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const navigation = useNavigation();
+  const params = useParams();
+  const router = useRouter();
 
-  const loading = navigation.state === "submitting";
+  const loading = serverAction.pending;
 
   const inputEmail = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (actionData?.success) {
-      toast.success(actionData.success);
-    } else if (actionData?.error) {
-      toast.error(actionData.error);
+    if (serverAction.actionData?.success) {
+      toast.success(serverAction.actionData.success);
+    } else if (serverAction.actionData?.error) {
+      toast.error(serverAction.actionData.error);
     }
-  }, [actionData]);
+  }, [serverAction.actionData]);
 
   useEffect(() => {
     // nextTick(() => {
@@ -44,16 +43,12 @@ export default function NewMember({ featurePlanUsage }: Props) {
   }, []);
 
   function close() {
-    if (location.pathname.startsWith("/app")) {
-      navigate(UrlUtils.currentTenantUrl(params, "settings/members"), { replace: true });
-    } else {
-      navigate("/admin/members", { replace: true });
-    }
+    router.push(UrlUtils.currentTenantUrl(params, "settings/members"));
   }
 
   return (
     <CheckPlanFeatureLimit item={featurePlanUsage}>
-      <Form method="post" className="space-y-4">
+      <form action={serverAction.action} className="space-y-4">
         <div className="grid grid-cols-2 gap-2">
           {/*Email */}
           <div className="col-span-2">
@@ -71,7 +66,7 @@ export default function NewMember({ featurePlanUsage }: Props) {
                 id="email"
                 autoComplete="off"
                 required
-                defaultValue={actionData?.fields?.email}
+                defaultValue=""
                 disabled={loading}
                 className={clsx(
                   "focus:border-theme-500 focus:ring-theme-500 block w-full min-w-0 flex-1 rounded-md border-gray-300 lowercase sm:text-sm",
@@ -97,7 +92,7 @@ export default function NewMember({ featurePlanUsage }: Props) {
                 name="first-name"
                 autoComplete="off"
                 required
-                defaultValue={actionData?.fields?.firstName}
+                defaultValue=""
                 className={clsx(
                   "focus:border-theme-500 focus:ring-theme-500 block w-full min-w-0 flex-1 rounded-md border-gray-300 sm:text-sm",
                   loading && "cursor-not-allowed bg-gray-100"
@@ -118,7 +113,7 @@ export default function NewMember({ featurePlanUsage }: Props) {
                 id="last-name"
                 name="last-name"
                 autoComplete="off"
-                defaultValue={actionData?.fields?.lastName}
+                defaultValue=""
                 className={clsx(
                   "focus:border-theme-500 focus:ring-theme-500 block w-full min-w-0 flex-1 rounded-md border-gray-300 sm:text-sm",
                   loading && "cursor-not-allowed bg-gray-100"
@@ -165,7 +160,7 @@ export default function NewMember({ featurePlanUsage }: Props) {
             </button>
           </div>
         </div>
-      </Form>
+      </form>
     </CheckPlanFeatureLimit>
   );
 }

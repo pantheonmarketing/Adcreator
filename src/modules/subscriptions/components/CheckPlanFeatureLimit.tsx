@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { useParams } from "@remix-run/react";
+import { useParams } from "next/navigation";
 import { PlanFeatureUsageDto } from "@/modules/subscriptions/dtos/PlanFeatureUsageDto";
 import WarningBanner from "@/components/ui/banners/WarningBanner";
 import UrlUtils from "@/lib/utils/UrlUtils";

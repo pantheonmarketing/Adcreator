@@ -12,7 +12,9 @@ import MySubscriptionFeatures from "@/modules/subscriptions/components/MySubscri
 import MyUpcomingInvoice from "@/modules/subscriptions/components/MyUpcomingInvoice";
 import SettingSection from "@/components/ui/sections/SettingSection";
 import { TenantDto, TenantSubscriptionProductWithDetailsDto, TenantSubscriptionWithDetailsDto } from "@/db/models";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { actionAppSettingsSubscription } from "@/app/app/[tenant]/settings/subscription/page";
+import { toast } from "sonner";
 
 export default function SubscriptionSettings({
   currentTenant,
@@ -21,7 +23,6 @@ export default function SubscriptionSettings({
   myPayments,
   myFeatures,
   myUpcomingInvoice,
-  permissions,
 }: {
   currentTenant: TenantDto;
   mySubscription: TenantSubscriptionWithDetailsDto | null;
@@ -29,12 +30,17 @@ export default function SubscriptionSettings({
   myPayments: Stripe.PaymentIntent[];
   myFeatures: PlanFeatureUsageDto[];
   myUpcomingInvoice: Stripe.Invoice | null;
-  permissions: {
-    viewInvoices: boolean;
-  };
 }) {
   const { t } = useTranslation();
-  const [actionData, action, pending] = useActionState(actionSubscriptionSettings, null);
+  const [actionData, action, pending] = useActionState(actionAppSettingsSubscription, null);
+
+  useEffect(() => {
+    if (actionData?.error) {
+      toast.error(actionData.error);
+    } else if (actionData?.success) {
+      toast.success(actionData.success);
+    }
+  }, [actionData]);
 
   function onCancel(item: TenantSubscriptionProductWithDetailsDto) {
     const form = new FormData();
@@ -84,23 +90,19 @@ export default function SubscriptionSettings({
         </>
       )}
 
-      {permissions.viewInvoices && (
-        <>
-          <div className="hidden sm:block" aria-hidden="true">
-            <div className="py-4">
-              <div className="border-t border-border"></div>
-            </div>
-          </div>
+      <div className="hidden sm:block" aria-hidden="true">
+        <div className="py-4">
+          <div className="border-t border-border"></div>
+        </div>
+      </div>
 
-          <SettingSection title={t("app.subscription.invoices.title")} description={t("app.subscription.invoices.description")}>
-            <div className="space-y-2">
-              <MyUpcomingInvoice item={myUpcomingInvoice} />
-              <MyInvoices items={myInvoices} />
-              <MyPayments items={myPayments} />
-            </div>
-          </SettingSection>
-        </>
-      )}
+      <SettingSection title={t("app.subscription.invoices.title")} description={t("app.subscription.invoices.description")}>
+        <div className="space-y-2">
+          <MyUpcomingInvoice item={myUpcomingInvoice} />
+          <MyInvoices items={myInvoices} />
+          <MyPayments items={myPayments} />
+        </div>
+      </SettingSection>
 
       <div className="hidden sm:block" aria-hidden="true">
         <div className="py-4">

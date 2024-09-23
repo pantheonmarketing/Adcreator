@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
 import { SubscriptionUsageBasedPriceDto } from "@/modules/subscriptions/dtos/SubscriptionUsageBasedPriceDto";
 import { SubscriptionBillingPeriod } from "@/modules/subscriptions/enums/SubscriptionBillingPeriod";
+import { getCurrentUrl } from "@/lib/services/url.server";
 
 class StripeService {
   stripe: Stripe;
@@ -62,11 +63,11 @@ class StripeService {
       });
   }
 
-  async createStripeSetupSession(request: Request, customer: string) {
+  async createStripeSetupSession(customer: string) {
     return await this.stripe.checkout.sessions.create({
       customer,
-      success_url: `${request.url}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${request.url}`,
+      success_url: `${getCurrentUrl()}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${getCurrentUrl()}`,
       mode: "setup",
       payment_method_types: ["card"],
     });
@@ -381,10 +382,10 @@ class StripeService {
     });
   }
 
-  async createCustomerPortalSession(request: Request, id: string) {
+  async createCustomerPortalSession(id: string) {
     return await this.stripe.billingPortal.sessions.create({
       customer: id,
-      return_url: `${request.url}`,
+      return_url: `${getCurrentUrl()}`,
     });
   }
 }

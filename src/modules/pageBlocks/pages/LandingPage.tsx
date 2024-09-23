@@ -5,9 +5,12 @@ import { defaultFooter } from "../defaultBlocks/defaultFooter";
 import { defaultHeader } from "../defaultBlocks/defaultHeader";
 import { TFunction } from "i18next";
 import { getMetaTags } from "../seo/SeoMetaTagsUtils";
+import { PricingBlockData } from "../blocks/marketing/pricing/PricingBlockDto";
 
 export namespace LandingPage {
-  export type LoaderData = {};
+  export type LoaderData = {
+    pricingBlockData: PricingBlockData;
+  };
   export async function metatags({ t }: { t: TFunction }) {
     return getMetaTags();
   }
@@ -126,14 +129,14 @@ export namespace LandingPage {
         },
       },
       // Pricing
-      // {
-      //   pricing: {
-      //     style: "simple",
-      //     headline: t("front.pricing.title"),
-      //     subheadline: t("front.pricing.headline"),
-      //     data: data.pricingBlockData,
-      //   },
-      // },
+      {
+        pricing: {
+          style: "simple",
+          headline: t("front.pricing.title"),
+          subheadline: t("front.pricing.headline"),
+          data: data.pricingBlockData,
+        },
+      },
       // Newsletter
       // {
       //   newsletter: {
