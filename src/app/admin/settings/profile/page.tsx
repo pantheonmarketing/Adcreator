@@ -1,6 +1,6 @@
 import { getServerTranslations } from "@/i18n/server";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
-import ProfileComponent from "./component";
+import Component from "./component";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -10,5 +10,5 @@ export async function generateMetadata() {
 }
 
 export default async function () {
-  return <ProfileComponent />;
+  return <Component />;
 }

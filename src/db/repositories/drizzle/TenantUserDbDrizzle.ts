@@ -24,7 +24,7 @@ export class TenantUserDbDrizzle implements ITenantUserDb {
     return items;
   }
 
-  async get(tenantId: string, userId: string): Promise<TenantUserModel | null> {
+  async get({ tenantId, userId }: { tenantId: string; userId: string }): Promise<TenantUserModel | null> {
     const items = await drizzleDb.query.TenantUser.findMany({
       where: and(eq(TenantUser.tenantId, tenantId), eq(TenantUser.userId, userId)),
     });

@@ -10,7 +10,7 @@ import TableSimple from "@/components/ui/tables/TableSimple";
 import EmailTemplates from "@/modules/emails/utils/EmailTemplates";
 import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
 
-export default function AdminEmailsSettings() {
+export default function () {
   const adminData = useAdminData();
   const [actionData, action, pending] = useActionState(actionAdminEmails, null);
   const { t } = useTranslation();

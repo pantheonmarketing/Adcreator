@@ -1,17 +1,26 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
-import { Form } from "@remix-run/react";
 import { Input } from "@/components/ui/input";
+import { actionNewAccount } from "@/app/(app)/new-account/page";
+import toast from "react-hot-toast";
 
 export default function TenantNewForm() {
   const { t } = useTranslation();
 
+  const [actionData, action, pending] = useActionState(actionNewAccount, null);
+
   const inputName = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState("");
+
+  useEffect(() => {
+    if (actionData?.error) {
+      toast.error(actionData.error);
+    }
+  }, [actionData]);
 
   useEffect(() => {
     inputName.current?.focus();
@@ -21,7 +30,7 @@ export default function TenantNewForm() {
   return (
     <div>
       <div className="flex flex-1 flex-col justify-between">
-        <Form method="post" className="divide-y divide-gray-100">
+        <form action={action} className="divide-y divide-gray-100">
           <input type="hidden" name="action" value="create" hidden readOnly />
           <div className="space-y-3 pb-5 pt-6">
             <div>
@@ -54,7 +63,7 @@ export default function TenantNewForm() {
               </span>
             </div>
           </div>
-        </Form>
+        </form>
       </div>
     </div>
   );

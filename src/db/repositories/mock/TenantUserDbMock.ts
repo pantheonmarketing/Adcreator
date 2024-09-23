@@ -15,7 +15,7 @@ export class TenantUserDbMock implements ITenantUserDb {
   getAll(tenantId: string): Promise<TenantUserWithUserDto[]> {
     return Promise.resolve(mockDb.tenantUser.filter((tu) => tu.tenantId === tenantId).map((tu) => this.withDetails(tu)));
   }
-  get(tenantId: string, userId: string): Promise<TenantUserModel | null> {
+  get({ tenantId, userId }: { tenantId: string; userId: string }): Promise<TenantUserModel | null> {
     const item = mockDb.tenantUser.find((tu) => tu.tenantId === tenantId && tu.userId === userId);
     return item ? Promise.resolve(item) : Promise.resolve(null);
   }

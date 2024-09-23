@@ -3,6 +3,7 @@
 import FooterBlock from "@/modules/pageBlocks/blocks/marketing/footer/FooterBlock";
 import Logo from "@/components/brand/Logo";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 interface Props {
   title?: string;
@@ -14,8 +15,9 @@ interface Props {
 }
 export default function Page404({ title, withLogo = true, withFooter = true, withGoBack = true, customBackButton, logo }: Props) {
   const { t } = useTranslation();
+  const router = useRouter();
   function goBack() {
-    window.history.back();
+    router.back();
   }
   return (
     <>

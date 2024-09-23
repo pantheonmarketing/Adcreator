@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import IndexPageLayout from "@/components/ui/layouts/IndexPageLayout";
 import InputCheckboxWithDescription from "@/components/ui/input/InputCheckboxWithDescription";
 
-export default function AuthenticationComponent() {
+export default function () {
   const { t } = useTranslation();
   const [actionData, action, pending] = useActionState(actionAuthenticationSettings, null);
   const { appConfiguration } = useRootData();

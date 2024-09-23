@@ -4,7 +4,7 @@ import { getServerTranslations } from "@/i18n/server";
 import { db } from "@/db";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
 import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
-import AdminPricingFeaturesComponent from "./component";
+import Component from "./component";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -33,5 +33,5 @@ async function load({ searchParams }: IServerComponentsProps) {
 
 export default async function (props: IServerComponentsProps) {
   const data = await load(props);
-  return <AdminPricingFeaturesComponent data={data} />;
+  return <Component data={data} />;
 }

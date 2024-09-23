@@ -48,7 +48,7 @@ const loader = async () => {
   }
 
   if (!user?.admin) {
-    const tenantUser = await db.tenantUser.get(tenantId, userInfo.userId);
+    const tenantUser = await db.tenantUser.get({ tenantId, userId: userInfo.userId });
     if (!tenantUser) {
       throw redirect("/app");
     }

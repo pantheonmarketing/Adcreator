@@ -2,7 +2,7 @@ import { verifyUserHasPermission } from "@/modules/permissions/services/UserPerm
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import { getServerTranslations } from "@/i18n/server";
 import { db } from "@/db";
-import AdminPricingFeaturesComponent from "./component";
+import Component from "./component";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -11,13 +11,13 @@ export async function generateMetadata() {
   });
 }
 
-async function load() {
+const loader = async () => {
   await verifyUserHasPermission("admin.pricing.create");
   const items = await db.subscriptionProduct.getAllSubscriptionProducts();
   return { plans: items };
-}
+};
 
 export default async function () {
-  const data = await load();
-  return <AdminPricingFeaturesComponent plans={data.plans} />;
+  const data = await loader();
+  return <Component plans={data.plans} />;
 }

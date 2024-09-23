@@ -1,7 +1,7 @@
 import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import { getServerTranslations } from "@/i18n/server";
-import AdminCacheComponent from "./component";
+import Component from "./component";
 import { CachedValue, getCachedValues } from "@/lib/services/cache.server";
 import { UserDto } from "@/db/models";
 import { db } from "@/db";
@@ -18,7 +18,7 @@ export type CacheLoaderData = {
   allTenants: { id: string; name: string; slug: string }[];
   allUsers: UserDto[];
 };
-async function load() {
+const loader = async () => {
   await verifyUserHasPermission("admin.settings.general.update");
   const { t } = await getServerTranslations();
   const cachedValues = await getCachedValues();
@@ -32,9 +32,9 @@ async function load() {
     allUsers,
   };
   return data;
-}
+};
 
 export default async function () {
-  const data = await load();
-  return <AdminCacheComponent data={data} />;
+  const data = await loader();
+  return <Component data={data} />;
 }

@@ -32,14 +32,17 @@ iterateORMs((db, orm) => {
       await prisma.tenant.create({ data: mockDb.tenant[0] });
       await prisma.user.create({ data: mockDb.user[0] });
       await prisma.tenantUser.create({ data: mockDb.tenantUser[0] });
-      const tenantUser = await db.tenantUser.get(mockDb.tenantUser[0].tenantId, mockDb.tenantUser[0].userId);
+      const tenantUser = await db.tenantUser.get({
+        tenantId: mockDb.tenantUser[0].tenantId,
+        userId: mockDb.tenantUser[0].userId,
+      });
       expect(tenantUser).not.toBeNull();
       expect(tenantUser?.userId).toBe(mockDb.user[0].id);
       expect(tenantUser?.tenantId).toBe(mockDb.tenant[0].id);
     });
 
     it(`get: should return null if tenant user not found`, async () => {
-      const tenantUser = await db.tenantUser.get("1", "1");
+      const tenantUser = await db.tenantUser.get({ tenantId: "1", userId: "1" });
       expect(tenantUser).toBeNull();
     });
 

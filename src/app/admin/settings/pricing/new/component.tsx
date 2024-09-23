@@ -9,7 +9,7 @@ import PricingPlanForm from "@/modules/subscriptions/components/pricing/PricingP
 import IndexPageLayout from "@/components/ui/layouts/IndexPageLayout";
 import FloatingLoader from "@/components/ui/loaders/FloatingLoader";
 
-export default function NewPricingPlanRoute({ plans }: { plans: SubscriptionProductDto[] }) {
+export default function ({ plans }: { plans: SubscriptionProductDto[] }) {
   const [actionData, action, pending] = useActionState(actionAdminPricingNew, null);
   const { t } = useTranslation();
 

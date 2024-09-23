@@ -7,7 +7,7 @@ import { TenantWithDetailsDto } from "@/db/models";
 import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import { getCurrentPagination } from "@/lib/helpers/PaginationHelper";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
-import AdminComponent from "./component";
+import Component from "./component";
 import { db } from "@/db";
 
 export async function generateMetadata() {
@@ -43,5 +43,5 @@ async function load({ searchParams }: IServerComponentsProps): Promise<AdminLoad
 export default async function (props: IServerComponentsProps) {
   const data = await load(props);
 
-  return <AdminComponent data={data} />;
+  return <Component data={data} />;
 }

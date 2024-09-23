@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { actionAdminUsers, AdminUsersLoaderData } from "./page";
+import { actionAdminUsers, AdminUsersLoaderData } from "./layout";
 import { useActionState, useEffect } from "react";
 import useAdminData from "@/lib/state/useAdminData";
 import { usePathname, useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import InputFilters from "@/components/ui/input/InputFilters";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 import UsersTable from "@/modules/accounts/components/users/UsersTable";
 import SlideOverWideEmpty from "@/components/ui/slideOvers/SlideOverWideEmpty";
+import { getUserHasPermission } from "@/lib/helpers/PermissionsHelper";
 
 export default function ({ data, children }: { data: AdminUsersLoaderData; children: React.ReactNode }) {
   const { t } = useTranslation();
@@ -33,32 +34,19 @@ export default function ({ data, children }: { data: AdminUsersLoaderData; child
       buttons={
         <>
           <InputFilters filters={data.filterableProperties} />
-          <ButtonPrimary to="new">{t("shared.new")}</ButtonPrimary>
+          <ButtonPrimary to="/admin/accounts/users/new">{t("shared.new")}</ButtonPrimary>
         </>
       }
     >
       <UsersTable
         items={data.items}
-        canChangePassword={true}
-        canDelete={true}
-        canSetUserRoles={adminData.isSuperAdmin}
+        canChangePassword={getUserHasPermission(adminData, "admin.users.changePassword")}
+        canDelete={getUserHasPermission(adminData, "admin.users.delete")}
+        canSetUserRoles={getUserHasPermission(adminData, "admin.roles.set")}
         pagination={data.pagination}
         serverAction={{ actionData, action, pending }}
       />
-
-      <SlideOverWideEmpty
-        open={!!children}
-        onClose={() => {
-          // navigate(".", { replace: true });
-          router.replace(pathname);
-        }}
-        className="sm:max-w-sm"
-        overflowYScroll={true}
-      >
-        <div className="-mx-1 -mt-3">
-          <div className="space-y-4">{children}</div>
-        </div>
-      </SlideOverWideEmpty>
+      {children}
     </IndexPageLayout>
   );
 }

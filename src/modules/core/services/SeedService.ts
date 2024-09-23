@@ -98,7 +98,7 @@ async function createTenant(slug: string, name: string, users: { id: string; rol
   });
 
   for (const user of users) {
-    const tenantUser = await db.tenantUser.get(tenantId, user.id);
+    const tenantUser = await db.tenantUser.get({ tenantId, userId: user.id });
     if (tenantUser) {
       console.log(`ℹ️ User already in tenant`, user.id, tenantId);
       continue;

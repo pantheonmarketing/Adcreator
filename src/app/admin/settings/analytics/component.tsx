@@ -10,7 +10,7 @@ import useRootData from "@/lib/state/useRootData";
 import { actionAnalyticsSettings } from "./actions";
 import { Input } from "@/components/ui/input";
 
-export default function AdminSettingsAnalytics() {
+export default function () {
   const { t } = useTranslation();
   const { appConfiguration } = useRootData();
   const [actionData, action, pending] = useActionState(actionAnalyticsSettings, null);

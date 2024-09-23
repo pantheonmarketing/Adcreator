@@ -7,7 +7,7 @@ import { actionAdminDangerSettings } from "./actions";
 import useRootData from "@/lib/state/useRootData";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 
-export default function AdminSettingsDanger({}) {
+export default function Component({}) {
   const { t } = useTranslation();
   const { appConfiguration } = useRootData();
   const [actionData, action, pending] = useActionState(actionAdminDangerSettings, null);

@@ -13,7 +13,7 @@ import { languages } from "@/i18n/settings";
 import i18next from "i18next";
 import LoadingButton from "@/components/ui/buttons/LoadingButton";
 
-export default function ProfileComponent() {
+export default function () {
   const adminData = useAdminData();
   const search = useSearchParams();
   const searchParams = new URLSearchParams(search.toString());

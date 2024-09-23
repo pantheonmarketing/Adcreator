@@ -1,7 +1,7 @@
 import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import { getServerTranslations } from "@/i18n/server";
-import AdminSettingsDanger from "./component";
+import Component from "./component";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -12,5 +12,5 @@ export async function generateMetadata() {
 
 export default async function () {
   await verifyUserHasPermission("admin.emails.view");
-  return <AdminSettingsDanger />;
+  return <Component />;
 }

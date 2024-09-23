@@ -1,7 +1,7 @@
 import { verifyUserHasPermission } from "@/modules/permissions/services/UserPermissionsService";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import { getServerTranslations } from "@/i18n/server";
-import AdminPricingComponent from "./component";
+import Component from "./component";
 import { db } from "@/db";
 import { SubscriptionProductDto } from "@/modules/subscriptions/dtos/SubscriptionProductDto";
 import defaultPlans from "@/modules/subscriptions/data/defaultPlans.server";
@@ -17,7 +17,7 @@ export type PricingLoaderData = {
   isStripeTest: boolean;
   items: SubscriptionProductDto[];
 };
-async function load() {
+const loader = async () => {
   if (!process.env.STRIPE_SK) {
     throw new Error("Stripe is not configured: STRIPE_SK is not set.");
   }
@@ -32,9 +32,9 @@ async function load() {
   }
 
   return data;
-}
+};
 
 export default async function () {
-  const data = await load();
-  return <AdminPricingComponent data={data} />;
+  const data = await loader();
+  return <Component data={data} />;
 }

@@ -3,12 +3,10 @@
 import { getUserInfo, resetUserSession } from "@/lib/services/session.server";
 import { getUser } from "@/modules/accounts/services/UserService";
 import { getCachedValues } from "@/lib/services/cache.server";
-import SeedService from "@/modules/core/services/SeedService";
 import { db } from "@/db";
 import DevComponent from "./component";
-import { actionLogin } from "@/modules/accounts/services/AuthService";
 
-async function load() {
+const loader = async () => {
   const userInfo = getUserInfo();
   const user = await getUser(userInfo.userId || "");
   if (process.env.NODE_ENV !== "development" && !user?.admin) {
@@ -25,9 +23,9 @@ async function load() {
       tenants: await db.tenant.count(),
     },
   };
-}
+};
 
 export default async function DevRoute() {
-  const data = await load();
+  const data = await loader();
   return <DevComponent data={data} />;
 }

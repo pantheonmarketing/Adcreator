@@ -13,7 +13,7 @@ import MyUpcomingInvoice from "@/modules/subscriptions/components/MyUpcomingInvo
 import SettingSection from "@/components/ui/sections/SettingSection";
 import { TenantDto, TenantSubscriptionProductWithDetailsDto, TenantSubscriptionWithDetailsDto } from "@/db/models";
 import { useActionState, useEffect } from "react";
-import { actionAppSettingsSubscription } from "@/app/app/[tenant]/settings/subscription/page";
+import { actionAppSettingsSubscription } from "@/app/(app)/app/[tenant]/settings/subscription/page";
 import { toast } from "sonner";
 
 export default function SubscriptionSettings({

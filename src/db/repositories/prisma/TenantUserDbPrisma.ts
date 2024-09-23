@@ -17,7 +17,7 @@ export class TenantUserDbPrisma implements ITenantUserDb {
       },
     });
   }
-  async get(tenantId: string, userId: string): Promise<TenantUserModel | null> {
+  async get({ tenantId, userId }: { tenantId: string; userId: string }): Promise<TenantUserModel | null> {
     return await prisma.tenantUser.findUnique({
       where: {
         tenantId_userId: {

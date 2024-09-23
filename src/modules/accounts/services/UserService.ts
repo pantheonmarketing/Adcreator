@@ -3,7 +3,7 @@ import { cachified, clearCacheKey } from "@/lib/services/cache.server";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
 
-export async function getUser(userId?: string) {
+export async function getUser(userId: string | undefined) {
   if (!userId) {
     return null;
   }

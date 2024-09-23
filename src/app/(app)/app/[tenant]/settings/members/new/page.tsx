@@ -68,7 +68,7 @@ export const actionAppSettingsMembersNew = async (prev: any, form: FormData) => 
   try {
     const user = await db.user.getByEmail(email);
     if (user) {
-      const tenantUser = await db.tenantUser.get(tenantId, user.id);
+      const tenantUser = await db.tenantUser.get({ tenantId, userId: user.id });
       if (tenantUser) {
         return { error: "User already in organization" };
       }

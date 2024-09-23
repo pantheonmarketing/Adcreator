@@ -4,18 +4,15 @@ import { DashboardStats } from "@/components/app/DashboardStats";
 import ProfileBanner from "@/components/app/ProfileBanner";
 import ButtonSecondary from "@/components/ui/buttons/ButtonSecondary";
 import InputSelect from "@/components/ui/input/InputSelect";
-import { TenantWithDetailsDto } from "@/db/models";
-import { PaginationDto } from "@/lib/dtos/PaginationDto";
 import { defaultPeriodFilter, PeriodFilters } from "@/lib/helpers/PeriodHelper";
 import { getUserHasPermission } from "@/lib/helpers/PermissionsHelper";
-import { StatDto } from "@/lib/services/adminDashboardService";
 import useAdminData from "@/lib/state/useAdminData";
 import TenantsTable from "@/modules/accounts/components/tenants/TenantsTable";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AdminLoaderData } from "./page";
 
-export default function AdminComponent({ data }: { data: AdminLoaderData }) {
+export default function ({ data }: { data: AdminLoaderData }) {
   const { t } = useTranslation();
   const adminData = useAdminData();
   const searchParams = useSearchParams();

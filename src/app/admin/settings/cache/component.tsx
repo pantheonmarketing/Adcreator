@@ -18,7 +18,7 @@ import ShowPayloadModalButton from "@/components/ui/json/ShowPayloadModalButton"
 import WarningBanner from "@/components/ui/banners/WarningBanner";
 import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfiguration";
 
-export default function AdminCacheComponent({ data }: { data: CacheLoaderData }) {
+export default function ({ data }: { data: CacheLoaderData }) {
   const { t } = useTranslation();
   const [actionData, action, pending] = useActionState(actionAdminCache, null);
 

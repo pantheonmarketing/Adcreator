@@ -115,7 +115,7 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
     ];
 
     const actions: RowHeaderActionDto<UserWithDetailsDto>[] = [];
-    if (canChangePassword && serverAction) {
+    if (serverAction) {
       actions.push({
         title: t("settings.profile.changePassword"),
         onClick: (_, item) => changePassword(item),
@@ -128,7 +128,7 @@ export default function UsersTable({ items, canChangePassword, canSetUserRoles, 
         onClickRoute: (_, item) => `/admin/accounts/users/${item.email}/roles`,
       });
     }
-    if (canDelete && serverAction) {
+    if (serverAction) {
       actions.push({
         title: t("shared.delete"),
         onClick: (_, item) => deleteUser(item),

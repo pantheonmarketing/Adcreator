@@ -118,13 +118,6 @@ export async function getTenantByIdOrSlug(id: string): Promise<TenantDto | null>
 
 export async function updateTenant(before: { id: string; slug: string }, data: { name?: string; icon?: string; slug?: string }): Promise<void> {
   await db.tenant.update(before.id, { name: data.name, icon: data.icon, slug: data.slug }).then((item) => {
-    console.log("clearing", {
-      tenant: `tenant:${before.slug}`,
-      tenantId: `tenant:${before.id}`,
-      tenantIdOrSlug: `tenantIdOrSlug:${before.id}`,
-      tenantIdOrSlug2: `tenantIdOrSlug:${before.slug}`,
-      tenantSimple: `tenantSimple:${before.id}`,
-    });
     clearCacheKey(`tenant:${before.slug}`);
     clearCacheKey(`tenant:${before.id}`);
     clearCacheKey(`tenantIdOrSlug:${before.id}`);
@@ -188,7 +181,7 @@ export async function deleteTenant(id: string): Promise<void> {
   });
 }
 
-export async function addTenantUser({ tenantId, userId }: { tenantId: string; userId: string }) {
+export async function addTenantUser({ tenantId, userId, roles }: { tenantId: string; userId: string; roles?: RoleModel[] }) {
   const tenantUserId = await db.tenantUser.create({
     tenantId,
     userId,
@@ -198,11 +191,11 @@ export async function addTenantUser({ tenantId, userId }: { tenantId: string; us
     throw Error("Could not create tenant user");
   }
 
-  const roles = await db.role.getAll("app");
-  const assignToNewUsersRoles = roles.filter((f) => f.assignToNewUsers);
-
+  if (!roles) {
+    roles = (await db.role.getAll("app")).filter((f) => f.assignToNewUsers);
+  }
   await Promise.all(
-    assignToNewUsersRoles.map(async (role) => {
+    roles.map(async (role) => {
       return await createUserRole({
         userId: tenantUser.userId,
         roleId: role.id,

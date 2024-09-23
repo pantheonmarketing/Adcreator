@@ -12,7 +12,7 @@ import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { headers } from "next/headers";
 import { getCurrentUrl } from "@/lib/services/url.server";
 
-export async function load({ params, searchParams }: IServerComponentsProps): Promise<AdminDataDto> {
+const loader = async ({ params, searchParams }: IServerComponentsProps): Promise<AdminDataDto> => {
   const userInfo = getUserInfo();
   const user = userInfo.userId ? await getUser(userInfo.userId) : null;
   const url = getCurrentUrl();
@@ -38,13 +38,13 @@ export async function load({ params, searchParams }: IServerComponentsProps): Pr
     isSuperAdmin: !!superAdminRole,
   };
   return data;
-}
+};
 
-export default async function ({ children, params }: { children: React.ReactNode; params: { [key: string]: string } }) {
-  const adminData = await load({ params });
+export default async function (props: IServerComponentsProps) {
+  const adminData = await loader(props);
   return (
     <AdminDataLayout data={adminData}>
-      <SidebarLayout layout="admin">{children}</SidebarLayout>
+      <SidebarLayout layout="admin">{props.children}</SidebarLayout>
     </AdminDataLayout>
   );
 }

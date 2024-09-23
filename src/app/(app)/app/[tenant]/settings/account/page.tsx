@@ -28,7 +28,6 @@ export const actionAppSettingsAccount = async (prev: any, form: FormData) => {
   const action = form.get("action")?.toString() ?? "";
 
   if (action === "edit") {
-    await verifyUserHasPermission("app.settings.account.update", tenantId);
     const name = form.get("name")?.toString() ?? "";
     const slug = form.get("slug")?.toString().toLowerCase() ?? "";
     const icon = form.get("icon")?.toString() ?? "";
