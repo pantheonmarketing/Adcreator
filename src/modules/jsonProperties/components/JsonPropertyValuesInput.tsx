@@ -190,7 +190,7 @@ function JsonPropertyInput({ prefix, property, attributes }: { prefix: string; p
       if (stringValue === undefined && defaultStringValue !== undefined) {
         stringValue = defaultStringValue;
       }
-      return <ContentForm value={stringValue} title={t(property.title)} required={property.required} />;
+      return <ContentForm name={`${prefix}[${property.name}]`} value={stringValue} title={t(property.title)} required={property.required} />;
     }
     default:
       return null;
@@ -217,7 +217,7 @@ function JsonMultiSelectInput({ prefix, property, initial }: { prefix: string; p
   );
 }
 
-function ContentForm({ value, title, required }: { value: string | undefined; title: string; required: boolean }) {
+function ContentForm({ name, value, title, required }: { name: string; value: string | undefined; title: string; required: boolean }) {
   const [content, setContent] = useState(value);
 
   return (
@@ -228,9 +228,9 @@ function ContentForm({ value, title, required }: { value: string | undefined; ti
             {title} {required && <span className="text-red-500">*</span>}
           </label>
           <Textarea
+            name={name}
             className="col-span-12 h-[calc(100vh-320px)] overflow-y-auto"
             rows={6}
-            name="content"
             value={content}
             onChange={(e) => setContent(e.currentTarget.value)}
           />
