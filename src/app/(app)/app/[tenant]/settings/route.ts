@@ -1,5 +1,7 @@
+import { requireTenantSlug } from "@/lib/services/url.server";
 import { redirect } from "next/navigation";
 
-export async function GET({ params }: { params: { tenant: string } }) {
-  redirect(`/app/${params.tenant}/settings/profile`);
+export async function GET() {
+  const tenantSlug = requireTenantSlug();
+  redirect(`/app/${tenantSlug}/settings/profile`);
 }

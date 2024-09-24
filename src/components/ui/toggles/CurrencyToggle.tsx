@@ -19,7 +19,7 @@ export default function CurrencyToggle({ className, value, onChange, possibleCur
         <div className={className}>
           <InputSelect
             value={value}
-            setValue={(e) => onChange(e?.toString() ?? "")}
+            onChange={(e) => onChange(e?.toString() ?? "")}
             options={possibleCurrencies.map((item) => {
               return {
                 value: item,

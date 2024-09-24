@@ -1,12 +1,9 @@
 "use client";
 
-import { useSubmit, useNavigation, useParams, useSearchParams, Link } from "@remix-run/react";
-import { useState } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { FilterablePropertyDto } from "@/lib/dtos/FilterablePropertyDto";
 import { PaginationDto } from "@/lib/dtos/PaginationDto";
-import ButtonSecondary from "@/components/ui/buttons/ButtonSecondary";
-import RefreshIcon from "@/components/ui/icons/RefreshIcon";
 import InputFilters from "@/components/ui/input/InputFilters";
 import InputSearchWithURL from "@/components/ui/input/InputSearchWithURL";
 import { FilterableValueLink } from "@/components/ui/links/FilterableValueLink";
@@ -19,81 +16,27 @@ interface Props {
     items: CreditWithDetailsDto[];
     filterableProperties: FilterablePropertyDto[];
     pagination: PaginationDto;
-    canDelete: boolean;
   };
 }
 export default function CreditsList({ data }: Props) {
   const { t } = useTranslation();
-  const submit = useSubmit();
-  const navigation = useNavigation();
-  const params = useParams();
-
-  const canDelete = data.canDelete;
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [selectedRows, setSelectedRows] = useState<CreditWithDetailsDto[]>([]);
-  function onDelete(ids: string[]) {
-    if (!canDelete) {
-      return;
-    }
-    const form = new FormData();
-    form.set("action", "delete");
-    form.set("ids", ids.join(","));
-    submit(form, {
-      method: "post",
-    });
-  }
   return (
     <div className="space-y-2">
       <div className="flex w-full items-center space-x-2">
         <div className="flex-grow">
           <InputSearchWithURL />
         </div>
-        {canDelete && selectedRows.length > 0 && (
-          <ButtonSecondary
-            destructive
-            onClick={() => {
-              onDelete(selectedRows.map((x) => x.id));
-              setSelectedRows([]);
-            }}
-          >
-            {t("shared.delete")} {selectedRows.length}
-          </ButtonSecondary>
-        )}
-        <ButtonSecondary onClick={() => setSearchParams(searchParams)} isLoading={navigation.state === "loading"}>
-          <RefreshIcon className="h-4 w-4" />
-        </ButtonSecondary>
         <InputFilters filters={data.filterableProperties} />
       </div>
       <TableSimple
-        selectedRows={canDelete ? selectedRows : undefined}
-        onSelected={canDelete ? setSelectedRows : undefined}
         items={data.items}
         pagination={data.pagination}
-        actions={[
-          {
-            title: t("shared.delete"),
-            onClick: (_, item) => onDelete([item.id]),
-            hidden: () => !canDelete,
-            disabled: () => !canDelete,
-            destructive: true,
-          },
-        ]}
         headers={[
           {
             name: "createdAt",
             title: t("shared.createdAt"),
-            // value: (item) => DateUtils.dateYMDHMS(item.createdAt),
             value: (item) => <div className="text-xs text-gray-600">{item.createdAt && <span>{DateUtils.dateYMDHMS(item.createdAt)}</span>}</div>,
           },
-          {
-            name: "tenant",
-            title: "Tenant",
-            value: (item) => <FilterableValueLink name="tenantId" value={item?.tenant?.name} param={item?.tenantId} />,
-            hidden: !!params.tenant,
-          },
-
           {
             name: "type",
             title: t("shared.type"),
@@ -106,7 +49,7 @@ export default function CreditsList({ data }: Props) {
             value: (item) => (
               <div className="max-w-xs truncate">
                 {item.objectId ? (
-                  <Link to={item.objectId} className="truncate underline">
+                  <Link href={item.objectId} className="truncate underline">
                     {item.objectId}
                   </Link>
                 ) : (

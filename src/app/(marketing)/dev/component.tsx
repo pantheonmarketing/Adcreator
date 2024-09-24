@@ -1,5 +1,3 @@
-// src/app/(marketing)/dev/component.tsx
-
 "use client";
 
 import ButtonSecondary from "@/components/ui/buttons/ButtonSecondary";
@@ -8,10 +6,8 @@ import { CachedValue } from "@/lib/services/cache.server";
 import HeaderBlock from "@/modules/pageBlocks/blocks/marketing/header/HeaderBlock";
 import HeadingBlock from "@/modules/pageBlocks/blocks/marketing/heading/HeadingBlock";
 import { useActionState, useEffect } from "react";
-// import toast from "react-hot-toast";
 import { toast } from "sonner";
-import { actionDev } from "./actions";
-import { getRootData } from "@/lib/services/rootData.server";
+import { actionDev } from "./page";
 import useRootData from "@/lib/state/useRootData";
 
 export default function DevComponent({

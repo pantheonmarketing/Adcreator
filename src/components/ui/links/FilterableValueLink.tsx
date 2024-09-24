@@ -1,7 +1,12 @@
-import { useSearchParams } from "@remix-run/react";
+"use client";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export function FilterableValueLink({ name, value, param, children }: { name: string; value: string | undefined; param?: string; children?: React.ReactNode }) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const search = useSearchParams();
+  const searchParams = new URLSearchParams(search);
+  const router = useRouter();
+  const pathname = usePathname();
   function isFiltered() {
     if (param) {
       return searchParams.get(name) === param;
@@ -16,7 +21,8 @@ export function FilterableValueLink({ name, value, param, children }: { name: st
           onClick={() => {
             searchParams.set(name, param ?? value ?? "");
             searchParams.delete("page");
-            setSearchParams(searchParams);
+            // setSearchParams(searchParams);
+            router.replace(`${pathname}?${searchParams.toString()}`);
           }}
           className="hover:text-blue-700 hover:underline"
         >
@@ -28,7 +34,8 @@ export function FilterableValueLink({ name, value, param, children }: { name: st
           onClick={() => {
             searchParams.delete(name);
             searchParams.delete("page");
-            setSearchParams(searchParams);
+            // setSearchParams(searchParams);
+            router.replace(`${pathname}?${searchParams.toString()}`);
           }}
           className="underline hover:text-gray-500 hover:line-through"
         >

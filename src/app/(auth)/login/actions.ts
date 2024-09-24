@@ -1,7 +1,6 @@
 "use server";
 
 import { getUserInfo, createUserSession } from "@/lib/services/session.server";
-import { redirect } from "next/navigation";
 
 export async function authenticate(prev: any, formData: FormData) {
   const userInfo = getUserInfo();
