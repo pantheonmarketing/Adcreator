@@ -8,7 +8,6 @@ import { createContext, useContext } from "react";
 export type AdminDataDto = {
   user: UserDto;
   permissions: DefaultPermission[];
-  isSuperUser: boolean;
   isSuperAdmin: boolean;
 };
 

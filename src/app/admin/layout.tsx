@@ -34,7 +34,6 @@ const loader = async ({ params, searchParams }: IServerComponentsProps): Promise
   const data: AdminDataDto = {
     user,
     permissions: allPermissions.map((f) => f as DefaultPermission),
-    isSuperUser: !!superAdminRole,
     isSuperAdmin: !!superAdminRole,
   };
   return data;
