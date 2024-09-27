@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { ContactFormBlockDto } from "./ContactFormBlockDto";
-import { ContactPage } from "@/modules/pageBlocks/pages/ContactPage";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { actionContact } from "@/app/(marketing)/contact/actions";
