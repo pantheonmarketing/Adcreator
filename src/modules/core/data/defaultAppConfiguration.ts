@@ -40,6 +40,14 @@ export const defaultAppConfiguration: AppConfigurationDto = {
     favicon: undefined,
   },
   affiliates: undefined,
-  launches: undefined,
+  launches: {
+    producthunt: {
+      url: "https://www.producthunt.com/posts/rockstack?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-rockstack",
+      title: "RockStack",
+      postId: "491901",
+      end: new Date("2024-10-10"),
+      theme: "light",
+    },
+  },
   scripts: { head: null, body: null },
 };

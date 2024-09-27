@@ -13,7 +13,7 @@ export default function HeroVariantSimple({ item }: { item: HeroBlockDto }) {
       <div className="mx-auto flex max-w-screen-xl px-4 py-16 lg:items-center">
         <div className="mx-auto max-w-7xl text-center md:max-w-6xl">
           <div className="mb-4">
-            <ProductHuntBadge theme="light" />
+            <ProductHuntBadge />
             {item.topText && (
               <span className="block text-sm font-semibold uppercase tracking-wide sm:text-base lg:text-sm xl:text-base">
                 {t(item.topText.text ?? "")}{" "}

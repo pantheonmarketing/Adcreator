@@ -20,7 +20,7 @@ export default function HeroVariantTopImage({ item }: { item: HeroBlockDto }) {
         />
         <div className="w-full text-center lg:w-2/3">
           <div className="mb-4">
-            <ProductHuntBadge theme="light" />
+            <ProductHuntBadge />
             {item.topText && (
               <span className="block text-sm font-semibold uppercase tracking-wide text-muted-foreground sm:text-base lg:text-sm xl:text-base">
                 {t(item.topText.text ?? "")}{" "}

@@ -39,11 +39,8 @@ export type AppConfigurationDto = {
     percentage: number;
     plans: { title: string; price: number }[];
   };
-  reviews?: {
-    trustpilot?: { href: string; templateId: string; businessUnitId: string };
-  };
   launches?: {
-    producthunt?: { title: string; url: string; postId: string };
+    producthunt?: { title: string; url: string; postId: string; start?: Date; end?: Date; theme?: "light" | "neutral" | "dark" };
   };
   // portals: PortalConfiguration;
   scripts: { head: string | null; body: string | null };

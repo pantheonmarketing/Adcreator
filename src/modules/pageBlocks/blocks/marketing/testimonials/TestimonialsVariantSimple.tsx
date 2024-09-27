@@ -4,7 +4,6 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import ButtonEvent from "@/components/ui/buttons/ButtonEvent";
 import { TestimonialsBlockDto } from "@/modules/pageBlocks/blocks/marketing/testimonials/TestimonialsBlockDto";
-import TrustpilotBox from "./TrustpilotBox";
 import DateUtils from "@/lib/shared/DateUtils";
 import LinkOrAhref from "@/components/ui/buttons/LinkOrAhref";
 
@@ -17,7 +16,6 @@ export default function TestimonialsVariantSimple({ item }: { item: Testimonials
           <div className="space-y-5 sm:mx-auto sm:max-w-xl sm:space-y-4 lg:max-w-5xl">
             <h2 className="text-center text-3xl font-extrabold tracking-tight sm:text-4xl">{t(item.headline)}</h2>
             <p className="text-center text-xl">{t(item.subheadline)}</p>
-            {item.reviews?.trustpilot && <TrustpilotBox trustpilot={item.reviews?.trustpilot} />}
           </div>
         )}
         <div className="m-4 flex flex-wrap">

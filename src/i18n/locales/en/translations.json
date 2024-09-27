@@ -351,7 +351,7 @@
     },
     "hero": {
       "heading": "Full-stack SaaS kit for Next.js",
-      "subheading": "Code your SaaS fast: Auth & User Management, Stripe Subscriptions & Payments, Roles & Permissions, Page Blocks, SEO Optimized, Multi-tenant, Cache, Multi-theme, and Internationalization (i18n).",
+      "subheading": "The quickest way to build a full-stack SaaS app with Next.js, Remix or SvelteKit.",
       "topText": "Next.js RockStack Demo",
       "cta1": "Pricing",
       "cta2": "Contact us"

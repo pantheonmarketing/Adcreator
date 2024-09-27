@@ -1,3 +1,6 @@
+export const defaultThemeColor = "zinc";
+export const defaultThemeScheme = "light";
+
 export const defaultThemes: { name: string; value: string }[] = [
   { name: "Zinc", value: "zinc" },
   { name: "Slate", value: "slate" },
@@ -12,6 +15,3 @@ export const defaultThemes: { name: string; value: string }[] = [
   { name: "Yellow", value: "yellow" },
   { name: "Violet", value: "violet" },
 ];
-
-export const defaultThemeColor = "zinc";
-export const defaultThemeScheme = "light";

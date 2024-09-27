@@ -355,7 +355,7 @@
     },
     "hero": {
       "heading": "Desarrolla tu SaaS con Next.js",
-      "subheading": "Lanza aplicaciones SaaS listas para producción: Autenticación y gestión de usuarios, Suscripciones y pagos de Stripe, Roles y permisos, Page Blocks, SEO optimizado, Multi-cuentas, Caché, Multi-tema e Internacionalización (i18n).",
+      "subheading": "La manera más rápida de desarrollar un SaaS en Next.js, Remix, o SvelteKit.",
       "topText": "Next.js RockStack Demo",
       "cta1": "Ver precios",
       "cta2": "Contáctanos"

@@ -13,9 +13,9 @@ export default function HeroVariantBottomImage({ item }: { item: HeroBlockDto })
   return (
     <section className="body-font">
       <div className="container mx-auto flex flex-col items-center justify-center px-5 py-16">
-        <div className="w-full text-center lg:w-2/3">
+        <div className="flex w-full flex-col items-center text-center">
           <div className="mb-4">
-            <ProductHuntBadge theme="light" />
+            <ProductHuntBadge />
             {item.topText && (
               <span className="block text-sm font-semibold uppercase tracking-wide text-gray-500 sm:text-base lg:text-sm xl:text-base">
                 {t(item.topText.text ?? "")}{" "}
@@ -28,8 +28,8 @@ export default function HeroVariantBottomImage({ item }: { item: HeroBlockDto })
               </span>
             )}
           </div>
-          {item.heading && <h1 className="title-font mb-4 max-w-4xl text-4xl font-bold sm:text-5xl md:text-6xl md:font-black">{t(item.heading)}</h1>}
-          {item.subheading && <h2 className="mb-8 max-w-4xl text-lg leading-relaxed md:text-xl">{t(item.subheading)}</h2>}
+          {item.heading && <h1 className="title-font mb-4 max-w-5xl text-4xl font-bold sm:text-5xl md:text-6xl md:font-black">{t(item.heading)}</h1>}
+          {item.subheading && <h2 className="mb-8 max-w-5xl text-lg leading-relaxed md:text-xl">{t(item.subheading)}</h2>}
 
           <div className="flex flex-wrap justify-center gap-4">
             {item.cta.map((item, idx) => {

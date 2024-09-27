@@ -1,11 +1,21 @@
 import { Fragment } from "react";
 import ButtonEvent from "@/components/ui/buttons/ButtonEvent";
+import useRootData from "@/lib/state/useRootData";
 
-interface Props {
-  theme?: "light" | "neutral" | "dark";
-}
-export default function ProductHuntBadge({ theme }: Props) {
-  const producthunt: any = null;
+export default function ProductHuntBadge() {
+  const rootData = useRootData();
+  const producthunt = rootData?.appConfiguration.launches?.producthunt;
+  if (!producthunt) {
+    return null;
+  }
+  const theme = producthunt.theme || "neutral";
+  const today = new Date();
+  if (producthunt.start && today < producthunt.start) {
+    return null;
+  }
+  if (producthunt.end && today > producthunt.end) {
+    return null;
+  }
   return (
     <Fragment>
       {producthunt ? (

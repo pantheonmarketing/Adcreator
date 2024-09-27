@@ -30,10 +30,10 @@ export namespace LandingPage {
       // Hero
       {
         hero: {
-          style: "simple",
+          style: "bottomImage",
           heading: t("front.hero.heading"),
           subheading: t("front.hero.subheading"),
-          image: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1718755479116-rockstack-cover-2.png",
+          image: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1727286645348-rockstack-og.png",
           cta: [
             {
               text: t("front.hero.cta1"),
@@ -46,18 +46,18 @@ export namespace LandingPage {
               isPrimary: false,
             },
           ],
-          topText: {
-            text: t("front.hero.topText"),
-          },
+          // topText: {
+          //   text: t("front.hero.topText"),
+          // },
         },
       },
       // Logo Clouds
-      {
-        logoClouds: {
-          style: "custom",
-          headline: t("front.logoClouds.title"),
-        },
-      },
+      // {
+      //   logoClouds: {
+      //     style: "custom",
+      //     headline: t("front.logoClouds.title"),
+      //   },
+      // },
       // Features
       {
         layout: { css: "py-8" },
@@ -153,6 +153,7 @@ export namespace LandingPage {
           items: [
             { name: "John Doe", quote: "This is the best piece of software I've ever seen in my entire life.", stars: 5 },
             { name: "Jane Doe", quote: "I can't believe how easy it is to use RockStack. It's amazing!", stars: 5 },
+            { name: "Jack Smith", quote: "I've been using RockStack for 1 day and it's the best day of my life.", stars: 5 },
           ],
         },
       },

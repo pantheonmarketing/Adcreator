@@ -10,12 +10,11 @@ type SiteTags = {
   twitterSite?: string;
 };
 export const defaultSiteTags: SiteTags = {
-  title: "RockStack Next.js Demo",
-  description:
-    "Launch production-ready SaaS apps: Auth & User Management, Stripe Subscriptions & Payments, Roles & Permissions, Credits Management, Page Blocks, SEO Optimized, Multi-tenant, Cache, Multi-theme, and Internationalization (i18n).",
-  keywords: "remix,nextjs,astro,nuxt,svelte,saas,tailwindcss,prisma,react,typescript,boilerplate,saas-kit,saas-boilerplate,saas-starter-kit,stripe",
-  image: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1718755479116-rockstack-cover-2.png",
-  thumbnail: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1718755479116-rockstack-cover-2.png",
+  title: "Next.js RockStack Demo",
+  description: "Build, launch, fail, repeat with Next.js, Remix, SvelteKit, Tailwind CSS, shadcn/ui, Prisma, Drizzle, Stripe, Postmark. and Resend.",
+  keywords: "remix,nextjs,svelte,saas,tailwindcss,prisma,react,typescript,boilerplate,saas-kit,saas-boilerplate,saas-starter-kit,stripe,postmark,drizzle",
+  image: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1727286645348-rockstack-og.png",
+  thumbnail: "https://qwcsbptoezmuwgyijrxp.supabase.co/storage/v1/object/public/novel/1727460068835-rockstack-thumbnail.jpg.jpeg",
   twitterCreator: "@AlexandroMtzG",
   twitterSite: "",
 };

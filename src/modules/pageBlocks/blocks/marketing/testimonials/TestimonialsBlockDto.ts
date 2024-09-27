@@ -3,13 +3,6 @@ export type TestimonialsBlockDto = {
   headline: string;
   subheadline: string;
   items: TestimonialDto[];
-  reviews?: {
-    trustpilot?: {
-      href: string;
-      templateId: string;
-      businessUnitId: string;
-    };
-  };
 };
 export type TestimonialDto = {
   quote: string;
