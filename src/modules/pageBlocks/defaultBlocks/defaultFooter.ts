@@ -16,7 +16,6 @@ export function defaultFooter({ t }: { t: TFunction }): FooterBlockDto {
           { name: t("front.footer.pricing"), href: "/pricing" },
           { name: t("front.footer.signIn"), href: "/login" },
           { name: t("front.footer.signUp"), href: "/register" },
-          { name: t("front.footer.blog"), href: "/blog" },
         ],
       },
       {
