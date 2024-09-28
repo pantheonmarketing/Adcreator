@@ -14,7 +14,6 @@ import currencies from "@/modules/subscriptions/data/currencies";
 import { getOrPersistTenantSubscription } from "./TenantSubscriptionService";
 import { db } from "@/db";
 import { CheckoutSessionStatusModel, SubscriptionPriceModel, SubscriptionUsageBasedPriceModel } from "@/db/models";
-import Decimal from "decimal.js";
 
 export async function createPlans(plans: SubscriptionProductDto[]) {
   let idx = 0;
@@ -81,7 +80,7 @@ export async function createPlan(
         stripeId: stripePrice?.id ?? "",
         type: SubscriptionPriceType.RECURRING,
         billingPeriod: price.billingPeriod,
-        price: new Decimal(price.price),
+        price: price.price,
         currency: price.currency,
         trialDays: price.trialDays ?? 0,
         active: true,
@@ -130,8 +129,8 @@ export async function createPlan(
               subscriptionUsageBasedPriceId: createdPrice.id,
               from: tierPrice.from,
               to: tierPrice.to !== null && tierPrice.to !== undefined ? Number(tierPrice.to) : null,
-              perUnitPrice: tierPrice.perUnitPrice !== null && tierPrice.perUnitPrice !== undefined ? new Decimal(tierPrice.perUnitPrice) : null,
-              flatFeePrice: tierPrice.flatFeePrice !== null && tierPrice.flatFeePrice !== undefined ? new Decimal(tierPrice.flatFeePrice) : null,
+              perUnitPrice: tierPrice.perUnitPrice !== null && tierPrice.perUnitPrice !== undefined ? tierPrice.perUnitPrice : null,
+              flatFeePrice: tierPrice.flatFeePrice !== null && tierPrice.flatFeePrice !== undefined ? tierPrice.flatFeePrice : null,
             });
           })
         );

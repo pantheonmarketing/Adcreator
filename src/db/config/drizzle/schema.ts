@@ -1,6 +1,5 @@
 import { pgTable, uniqueIndex, foreignKey, text, timestamp, integer, numeric, boolean, varchar, index, date, decimal } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
-import Decimal from "decimal.js";
 
 export const TenantUser = pgTable(
   "TenantUser",
@@ -29,7 +28,7 @@ export const SubscriptionPrice = pgTable("SubscriptionPrice", {
   stripeId: text("stripeId").notNull(),
   type: integer("type").notNull(),
   billingPeriod: integer("billingPeriod").notNull(),
-  price: decimal("price", { precision: 65, scale: 30 }).$type<Decimal>().notNull(),
+  price: decimal("price", { precision: 65, scale: 30 }).$type<number>().notNull(),
   currency: text("currency").notNull(),
   trialDays: integer("trialDays").notNull(),
   active: boolean("active").notNull(),
@@ -278,8 +277,8 @@ export const SubscriptionUsageBasedTier = pgTable("SubscriptionUsageBasedTier", 
     .references(() => SubscriptionUsageBasedPrice.id, { onDelete: "cascade", onUpdate: "cascade" }),
   from: integer("from").notNull(),
   to: integer("to"),
-  perUnitPrice: decimal("perUnitPrice", { precision: 65, scale: 30 }).$type<Decimal>(),
-  flatFeePrice: decimal("flatFeePrice", { precision: 65, scale: 30 }).$type<Decimal>(),
+  perUnitPrice: decimal("perUnitPrice", { precision: 65, scale: 30 }).$type<number>(),
+  flatFeePrice: decimal("flatFeePrice", { precision: 65, scale: 30 }).$type<number>(),
 });
 
 export const SubscriptionFeature = pgTable("SubscriptionFeature", {
