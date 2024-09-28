@@ -16,7 +16,7 @@ export default function BannerVariantBottom({ item, onClose }: { item: BannerBlo
     <>
       {item && open && (
         <div className="fixed inset-x-0 bottom-0 z-30 pb-2 sm:pb-5">
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-2 sm:px-6 lg:px-8">
             <div className="rounded-lg border border-primary bg-primary p-2 text-primary-foreground shadow-lg sm:p-3">
               <div className="flex flex-wrap items-center justify-between">
                 <div className="flex w-0 flex-1 items-center">

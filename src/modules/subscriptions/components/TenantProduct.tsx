@@ -117,7 +117,6 @@ export default function TenantProduct({ item, onCancel }: Props) {
                 {price.subscriptionPrice && (
                   <div className="flex items-baseline space-x-1 text-sm text-gray-500">
                     <span>{getFormattedPrice(price)}</span>
-                    {/* <span className="text-xs uppercase">{price.subscriptionPrice.currency}</span> */}
                   </div>
                 )}
                 {price.subscriptionUsageBasedPrice && (
