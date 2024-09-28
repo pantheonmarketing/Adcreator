@@ -166,6 +166,14 @@ export namespace LandingPage {
           items: defaultFaq({ t }),
         },
       },
+      {
+        video: {
+          style: "simple",
+          headline: "Watch RockStack in action",
+          subheadline: "Learn more about RockStack in this short video.",
+          src: "https://www.youtube.com/embed/eONZr7TJK6o?si=pmKQ8oZdiL2GH_f5",
+        },
+      },
       // Footer
       {
         footer: defaultFooter({ t }),
