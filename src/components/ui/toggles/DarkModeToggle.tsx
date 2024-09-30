@@ -19,7 +19,7 @@ export default function DarkModeToggle({ className, disabled, currentScheme }: P
       <input type="hidden" name="redirectTo" value={pathname || "/"} readOnly hidden />
       <Button type="submit" variant="ghost" disabled={disabled} className={clsx("flex w-10 space-x-2", className)}>
         <div>
-          {isDarkMode ? (
+          {!isDarkMode ? (
             <svg
               className="h-5 w-5 text-muted-foreground"
               xmlns="http://www.w3.org/2000/svg"
