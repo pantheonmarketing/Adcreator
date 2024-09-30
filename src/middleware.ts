@@ -11,9 +11,5 @@ export function middleware(request: Request) {
   }
   requestHeaders.set("x-tenant-slug", tenantSlug);
 
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }

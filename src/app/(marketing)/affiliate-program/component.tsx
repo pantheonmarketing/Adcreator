@@ -1,43 +1,69 @@
 "use client";
 
-import NumberUtils from "@/lib/utils/NumberUtils";
-import { Fragment, useState } from "react";
-import { AffiliateProgramDataDto } from "./page";
+import Page404 from "@/components/pages/Page404";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
+import NumberUtils from "@/lib/utils/NumberUtils";
+import FooterBlock from "@/modules/pageBlocks/blocks/marketing/footer/FooterBlock";
+import HeaderBlock from "@/modules/pageBlocks/blocks/marketing/header/HeaderBlock";
+import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AffiliateProgramLoaderData } from "./page";
 
-export default function AffiliateProgramComponent({ data }: { data: AffiliateProgramDataDto }) {
+export default function ({ data }: { data: AffiliateProgramLoaderData }) {
   const { t } = useTranslation();
   return (
-    <div className="space-y-4">
+    <div>
       <div>
-        <AffiliatesCalculator percentage={data.affiliates.percentage} plans={data.affiliates.plans} />
-      </div>
+        <HeaderBlock />
+        <div className="bg-background">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="sm:align-center sm:flex sm:flex-col">
+              <div className="relative mx-auto w-full max-w-7xl overflow-hidden px-2 py-12 sm:py-6">
+                <div className="mb-10 text-center">
+                  <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t("affiliates.program")}</h1>
+                  <h2 className="mt-4 text-lg leading-6 text-muted-foreground">{t("affiliates.description")}</h2>
+                </div>
+                <div className="mx-auto max-w-3xl space-y-4">
+                  <div>
+                    <h3 className="text-xl font-bold">{t("affiliates.how.title")}</h3>
+                    <p className="mt-2 text-muted-foreground">{t("affiliates.how.description", { 0: data.affiliates.percentage })}</p>
+                  </div>
 
-      {data.affiliates.signUpLink && (
-        <div className="mt-4">
-          <ButtonPrimary
-            event={{ action: "click", category: "affiliate", label: "sign-up", value: data.affiliates.signUpLink }}
-            to={data.affiliates.signUpLink}
-            target="_blank"
-          >
-            {t("affiliates.signUp")}
-          </ButtonPrimary>
+                  <div>
+                    <AffiliatesCalculator percentage={data.affiliates.percentage} plans={data.affiliates.plans} />
+                  </div>
+
+                  {data.affiliates.signUpLink && (
+                    <div className="mt-4">
+                      <ButtonPrimary
+                        event={{ action: "click", category: "affiliate", label: "sign-up", value: data.affiliates.signUpLink }}
+                        to={data.affiliates.signUpLink}
+                        target="_blank"
+                      >
+                        {t("affiliates.signUp")}
+                      </ButtonPrimary>
+                    </div>
+                  )}
+
+                  {data.contactEmail && (
+                    <Fragment>
+                      <h3 className="text-xl font-bold">{t("front.contact.title")}</h3>
+                      <p className="mt-1 text-muted-foreground">
+                        If you have any questions, contact us at{" "}
+                        <a href={`mailto:${data.contactEmail}`} className="text-primary">
+                          {data.contactEmail}
+                        </a>
+                        .
+                      </p>
+                    </Fragment>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-
-      {data.contactEmail && (
-        <Fragment>
-          <h3 className="text-xl font-bold">{t("front.contact.title")}</h3>
-          <p className="mt-1 text-muted-foreground">
-            If you have any questions, contact us at{" "}
-            <a href={`mailto:${data.contactEmail}`} className="text-primary">
-              {data.contactEmail}
-            </a>
-            .
-          </p>
-        </Fragment>
-      )}
+        <FooterBlock />
+      </div>
     </div>
   );
 }
@@ -75,8 +101,8 @@ function AffiliatesCalculator({
             value={plan.title}
             onChange={(e) => setPlan(plans.find((p) => p.title === e.currentTarget.value)!)}
           >
-            {plans.map((plan, idx) => (
-              <option key={idx} value={plan.title}>
+            {plans.map((plan) => (
+              <option key={plan.title} value={plan.title}>
                 {plan.title}
               </option>
             ))}
