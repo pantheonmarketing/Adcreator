@@ -8,7 +8,6 @@ import bcrypt from "bcryptjs";
 import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
 import { getClientIPAddress } from "@/lib/utils/IpUtils";
 import { autosubscribeToTrialOrFreePlan } from "@/modules/subscriptions/services/PricingService";
-import crypto from "crypto";
 import { getBaseURL } from "@/lib/services/url.server";
 import { stripeService } from "@/modules/subscriptions/services/StripeService";
 import AuthUtils, { RegistrationData } from "../utils/AuthUtils";
@@ -19,6 +18,7 @@ import { AppConfigurationDto } from "@/modules/core/dtos/AppConfigurationDto";
 import { addTenantUser, createTenant } from "./TenantService";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { headers } from "next/headers";
+import crypto from "crypto";
 
 function getHome({ isAdmin, defaultTenant }: { isAdmin: boolean; defaultTenant: { slug: string } | null }) {
   let appHome = "";
@@ -97,68 +97,76 @@ export async function actionLogin(prev: any, form: FormData) {
   }
 }
 
-// async function registerFromRequest(request: Request) {
-//   const { t } = await getServerTranslations();
-//   const userInfo = getUserInfo();
-//   try {
-//     const registrationData = await AuthUtils.getRegistrationFormData(request);
-//     const result = await validateRegistration({ request, registrationData, addToTrialOrFreePlan: true });
-//     if (result.verificationRequired) {
-//       await createRegistrationForm({ ...registrationData, email: result.email, ipAddress: result.ipAddress, recreateToken: false, request });
-//       return json({ verificationEmailSent: true });
-//     } else if (result.registered) {
-//       const defaultTenant = await getDefaultTenant(result.registered.user);
-//       const home = getHome({
-//         isAdmin: false,
-//         defaultTenant,
-//       });
-//       return createUserSession(
-//         {
-//           ...userInfo,
-//           userId: result.registered.user.id,
-//         },
-//         home
-//       );
-//     }
-//     return json({ error: t("shared.unknownError") }, { status: 400 });
-//   } catch (e: any) {
-//     // eslint-disable-next-line no-console
-//     console.log(e.message);
-//     return json({ error: t(e.message) }, { status: 400 });
-//   }
-// }
+export async function actionRegister(prev: any, form: FormData) {
+  const { t } = await getServerTranslations();
+  const userInfo = getUserInfo();
+  try {
+    const registrationData = await AuthUtils.getRegistrationFormData(form);
+    const result = await validateRegistration({ registrationData, addToTrialOrFreePlan: true });
+    if (result.verificationRequired) {
+      await createRegistrationForm({ ...registrationData, email: result.email, ipAddress: result.ipAddress, recreateToken: false });
+      return { verificationEmailSent: true };
+    } else if (result.registered) {
+      const defaultTenant = await getDefaultTenant(result.registered.user);
+      const home = getHome({
+        isAdmin: false,
+        defaultTenant,
+      });
+      return createUserSession(
+        {
+          ...userInfo,
+          userId: result.registered.user.id,
+        },
+        home
+      );
+    }
+    throw new Error(t("shared.unknownError"));
+  } catch (e: any) {
+    if (isRedirectError(e)) {
+      throw e;
+    }
+    // eslint-disable-next-line no-console
+    console.log(e.message);
+    throw new Error(t(e.message));
+  }
+}
 
-// async function verifyFromRequest({ request, params }: { request: Request; params: { [param: string]: string } }) {
-//   const { t } = await getServerTranslations();
-//   const userInfo = getUserInfo();
+export async function actionVerify(prev: any, form: FormData) {
+  const verificationId = form.get("verificationId")?.toString() ?? "";
+  const { t } = await getServerTranslations();
+  const userInfo = getUserInfo();
 
-//   const registration = await db.userRegistrationAttempt.getByToken(params.id ?? "");
-//   if (!registration || registration.createdTenantId) {
-//     return json({ error: t("api.errors.userAlreadyRegistered") }, { status: 400 });
-//   }
+  const registration = await db.userRegistrationAttempt.getByToken(verificationId);
+  console.log({ registration, verificationId });
+  if (!registration || registration.createdTenantId) {
+    return { error: t("api.errors.userAlreadyRegistered") };
+  }
 
-//   try {
-//     const registrationData = await AuthUtils.getRegistrationFormData(request);
-//     const result = await validateRegistration({ request, registrationData, checkEmailVerification: false, addToTrialOrFreePlan: true });
-//     if (!result.registered) {
-//       return json({ error: t("shared.unknownError") }, { status: 400 });
-//     }
-//     const defaultTenant = await getDefaultTenant(result.registered.user);
-//     const appHome = getHome({
-//       isAdmin: false,
-//       defaultTenant,
-//     });
-//     return createUserSession(
-//       {
-//         ...userInfo,
-//         userId: result.registered.user.id,
-//       },
-//       appHome
-//     );
-//   } catch (e: any) {
-//     return json({ error: e.message }, { status: 400 });
-//   }
-// }
+  try {
+    const registrationData = await AuthUtils.getRegistrationFormData(form);
+    const result = await validateRegistration({ registrationData, checkEmailVerification: false, addToTrialOrFreePlan: true });
+    if (!result.registered) {
+      throw new Error(t("shared.unknownError"));
+    }
+    const defaultTenant = await getDefaultTenant(result.registered.user);
+    const appHome = getHome({
+      isAdmin: false,
+      defaultTenant,
+    });
+    return createUserSession(
+      {
+        ...userInfo,
+        userId: result.registered.user.id,
+      },
+      appHome
+    );
+  } catch (e: any) {
+    if (isRedirectError(e)) {
+      throw e;
+    }
+    return { error: e.message as string };
+  }
+}
 
 export async function validateRegistration({
   registrationData,
@@ -223,71 +231,69 @@ export async function validateRegistration({
   return { email, ipAddress, verificationRequired: false, registered };
 }
 
-// async function createRegistrationForm({
-//   request,
-//   email,
-//   company,
-//   firstName,
-//   lastName,
-//   ipAddress,
-//   recreateToken,
-//   slug,
-// }: {
-//   request: Request;
-//   email: string;
-//   ipAddress: string;
-//   company?: string;
-//   firstName?: string;
-//   lastName?: string;
-//   recreateToken?: boolean;
-//   slug?: string;
-// }) {
-//   const appConfiguration = await getAppConfiguration();
-//   const registration = await db.userRegistrationAttempt.getByEmail(email);
-//   if (registration) {
-//     if (registration.createdTenantId) {
-//       throw Error("api.errors.userAlreadyRegistered");
-//     } else {
-//       if (recreateToken) {
-//         const newToken = crypto.randomBytes(20).toString("hex");
-//         await db.userRegistrationAttempt.update(registration.id, {
-//           firstName,
-//           lastName,
-//           company,
-//           token: newToken,
-//         });
-//         await sendEmail({
-//           to: email,
-//           ...EmailTemplates.VERIFICATION_EMAIL.parse({
-//             appConfiguration,
-//             name: firstName,
-//             action_url: getBaseURL(request) + `/verify/` + newToken,
-//           }),
-//         });
-//       }
-//     }
-//   } else {
-//     var token = crypto.randomBytes(20).toString("hex");
-//     await db.userRegistrationAttempt.create({
-//       email,
-//       firstName: firstName ?? "",
-//       lastName: lastName ?? "",
-//       company: company ?? "",
-//       token,
-//       ipAddress,
-//       slug: slug ?? null,
-//       createdTenantId: null,
-//     });
-//     await sendEmail({
-//       to: email,
-//       ...EmailTemplates.VERIFICATION_EMAIL.parse({
-//         name: firstName,
-//         action_url: getBaseURL(request) + `/verify/` + token,
-//         appConfiguration,
-//       }),
-//     });
-//   }
-// }
+async function createRegistrationForm({
+  email,
+  company,
+  firstName,
+  lastName,
+  ipAddress,
+  recreateToken,
+  slug,
+}: {
+  email: string;
+  ipAddress: string;
+  company?: string;
+  firstName?: string;
+  lastName?: string;
+  recreateToken?: boolean;
+  slug?: string;
+}) {
+  const appConfiguration = await getAppConfiguration();
+  const registration = await db.userRegistrationAttempt.getByEmail(email);
+  if (registration) {
+    if (registration.createdTenantId) {
+      throw Error("api.errors.userAlreadyRegistered");
+    } else {
+      if (recreateToken) {
+        const newToken = crypto.randomBytes(20).toString("hex");
+        await db.userRegistrationAttempt.update(registration.id, {
+          firstName,
+          lastName,
+          company,
+          token: newToken,
+        });
+        await sendEmail({
+          to: email,
+          ...EmailTemplates.VERIFICATION_EMAIL.parse({
+            appConfiguration,
+            name: firstName,
+            action_url: getBaseURL() + `/verify/` + newToken,
+          }),
+        });
+      }
+    }
+  } else {
+    var token = crypto.randomBytes(20).toString("hex");
+    await db.userRegistrationAttempt.create({
+      email,
+      firstName: firstName ?? "",
+      lastName: lastName ?? "",
+      company: company ?? "",
+      token,
+      ipAddress,
+      slug: slug ?? null,
+      createdTenantId: null,
+    });
+    await sendEmail({
+      to: email,
+      ...EmailTemplates.VERIFICATION_EMAIL.parse({
+        name: firstName,
+        action_url: getBaseURL() + `/verify/` + token,
+        appConfiguration,
+      }),
+    });
+  }
+}
 
 interface CreateUserAndTenantDto {
   email: string;

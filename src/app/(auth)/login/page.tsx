@@ -9,12 +9,12 @@ import { getUser } from "@/modules/accounts/services/UserService";
 import { redirect } from "next/navigation";
 import { getTenant } from "@/modules/accounts/services/TenantService";
 
-// export async function generateMetadata() {
-//   const { t } = await getServerTranslations();
-//   return getMetaTags({
-//     title: `${t("account.login.title")} | ${defaultSiteTags.title}`,
-//   });
-// }
+export async function generateMetadata() {
+  const { t } = await getServerTranslations();
+  return getMetaTags({
+    title: `${t("account.login.title")} | ${defaultSiteTags.title}`,
+  });
+}
 
 const loader = async () => {
   const userInfo = getUserInfo();
@@ -39,7 +39,7 @@ const loader = async () => {
     demoCredentials,
   };
 };
-export default async function Page() {
+export default async function () {
   const data = await loader();
 
   return (

@@ -255,7 +255,7 @@ export async function deletePlan(plan: SubscriptionProductDto) {
   }
 }
 
-type CheckoutSessionResponse = {
+export type CheckoutSessionResponse = {
   id: string;
   customer: {
     id: string;

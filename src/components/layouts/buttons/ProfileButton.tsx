@@ -27,7 +27,7 @@ export default function ProfileButton({ layout, items }: Props) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative flex-shrink-0">
       <div className="inline-flex divide-x divide-gray-300 rounded-sm shadow-none">
         <button
           onClick={() => setOpened(!opened)}

@@ -6,6 +6,8 @@ import { getServerTranslations } from "@/i18n/server";
 import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
 import { PricingPage } from "@/modules/pageBlocks/pages/PricingPage";
 import { revalidatePath } from "next/cache";
+import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
+import { redirect } from "next/navigation";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -14,6 +16,14 @@ export async function generateMetadata() {
 
 const loader = async ({ searchParams }: IServerComponentsProps) => {
   const { t } = await getServerTranslations();
+  const appConfiguration = await getAppConfiguration();
+  if (!appConfiguration.subscription.allowSubscribeBeforeSignUp) {
+    if (appConfiguration.subscription.allowSignUpBeforeSubscribe) {
+      return redirect("/register");
+    } else {
+      return redirect("/");
+    }
+  }
   const data: PricingPage.LoaderData = {
     metatags: PricingPage.metatags({ t }),
     pricingBlockData: await PricingBlockService.load({ searchParams }),
