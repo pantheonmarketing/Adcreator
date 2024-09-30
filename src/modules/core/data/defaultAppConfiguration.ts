@@ -18,7 +18,7 @@ export const defaultAppConfiguration: AppConfigurationDto = {
     scheme: defaultThemeScheme,
   },
   auth: {
-    requireEmailVerification: true,
+    requireEmailVerification: false,
     requireOrganization: true,
     requireName: true,
   },
