@@ -22,7 +22,7 @@ export namespace LandingPage {
           style: "bottom",
           text: "RockStack demo site.",
           textMd: "This is the RockStack demo site.",
-          cta: [{ text: "RockStack", href: "https://rockstack.dev/?ref=nextjs.rockstack.dev", isPrimary: true, target: "_blank" }],
+          cta: [{ text: "Back to RockStack.dev", href: "https://rockstack.dev/?ref=nextjs.rockstack.dev", isPrimary: true, target: "_blank" }],
         },
       },
       // Header

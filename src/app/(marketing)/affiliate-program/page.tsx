@@ -5,7 +5,6 @@ import { defaultAppConfiguration } from "@/modules/core/data/defaultAppConfigura
 import { getAppConfiguration } from "@/modules/core/services/AppConfigurationService";
 import { defaultSiteTags, getMetaTags } from "@/modules/pageBlocks/seo/SeoMetaTagsUtils";
 import Component from "./component";
-import Page404 from "@/components/pages/Page404";
 
 export async function generateMetadata() {
   const { t } = await getServerTranslations();
@@ -52,7 +51,7 @@ export let loader = async () => {
   return data;
 };
 
-export default async function DevRoute() {
+export default async function () {
   const data = await loader();
   return <Component data={data} />;
 }
