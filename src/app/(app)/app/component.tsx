@@ -35,7 +35,7 @@ export default function ({ data }: { data: AppIndexLoaderData }) {
                 </p>
               </div>
               <div className="mt-12">
-                {data.myTenants.length === 0 ? (
+                {data.myTenants.length === 0 && !data.user.admin ? (
                   <EmptyState className="rounded-2xl border-border" description={t("api.errors.noOrganizations")} />
                 ) : (
                   <Combobox

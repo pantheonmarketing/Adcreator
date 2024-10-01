@@ -61,7 +61,7 @@ export async function actionLogin(prev: any, form: FormData) {
       if (process.env.NODE_ENV === "development") {
         const countUsers = await db.user.count();
         if (countUsers === 0) {
-          return redirect("/dev");
+          throw Error("There are no users in the database. Seed the database first.");
         }
       }
       // return json({ fields, error: t("api.errors.invalidPassword") }, { status: 400 });

@@ -1,4 +1,4 @@
-// app/db/tests/subscriptionProduct.db.test.ts
+// src/db/tests/subscriptionProduct.db.test.ts
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { mockDb } from "@/db/config/mock/data/mockDb";

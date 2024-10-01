@@ -13,7 +13,9 @@
     "lint": "next lint",
     "typecheck": "tsc -b",
     "prettier": "prettier --write '**/*.{ts,tsx}'",
-    "seed": "tsx src/db/seed.ts"
+    "seed": "tsx src/db/seed.ts",
+    "migration:generate": "npx drizzle-kit generate",
+    "migration:push": "npx tsx src/db/config/drizzle/migrate.ts"
   },
   "dependencies": {
     "@epic-web/cachified": "^5.2.0",
@@ -58,6 +60,7 @@
     "clsx": "^2.1.1",
     "cookie": "^0.6.0",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.33.0",
     "embla-carousel-react": "^8.1.5",
     "i18next": "^23.11.5",
@@ -72,6 +75,7 @@
     "next-themes": "^0.2.1",
     "numeral": "^2.0.6",
     "pg": "^8.13.0",
+    "postgres": "^3.4.4",
     "postmark": "^4.0.5",
     "react": "19.0.0-rc-512b09b2-20240718",
     "react-day-picker": "^8.10.0",
@@ -101,6 +105,7 @@
     "@types/react-dom": "^18",
     "@types/redis": "^4.0.11",
     "@types/uuid": "^10.0.0",
+    "drizzle-kit": "^0.24.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",

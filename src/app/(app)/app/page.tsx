@@ -25,9 +25,9 @@ const loader = async () => {
   if (myTenants.length === 1) {
     return redirect("/app/" + encodeURIComponent(myTenants[0].slug) + "/dashboard");
   }
-  if (myTenants.length === 0 && user.admin) {
-    return redirect("/admin");
-  }
+  // if (myTenants.length === 0 && user.admin) {
+  //   return redirect("/admin");
+  // }
 
   const data: AppIndexLoaderData = {
     user,
