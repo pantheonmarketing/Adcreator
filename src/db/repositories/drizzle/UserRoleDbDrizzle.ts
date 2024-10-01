@@ -95,6 +95,9 @@ export class UserRoleDbDrizzle implements IUserRoleDb {
   }
 
   async createMany(userId: string, roles: { id: string; tenantId: string | null }[]): Promise<void> {
+    if (roles.length === 0) {
+      return;
+    }
     await drizzleDb.insert(UserRole).values(
       roles.map((role) => ({
         id: createId(),

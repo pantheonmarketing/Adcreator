@@ -181,7 +181,7 @@ export default function Plan({
     } else if (isDowngrade) {
       form.set("is-downgrade", "true");
     }
-    if (params?.tenant.toString()) {
+    if (params?.tenant?.toString()) {
       form.set("tenantSlug", params.tenant.toString());
     }
     serverAction?.action(form);
