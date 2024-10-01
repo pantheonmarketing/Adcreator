@@ -10,6 +10,8 @@ const databaseUrl = process.env.NODE_ENV === "test" ? process.env.DATABASE_URL_T
 
 if (!process.env.DATABASE_URL_TEST && process.env.NODE_ENV === "test") {
   throw new Error("Cannot run tests without DATABASE_URL_TEST environment variable");
+} else if (process.env.DATABASE_URL_TEST && process.env.DATABASE_URL_TEST === process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL_TEST and DATABASE_URL cannot be the same");
 }
 // this is needed because in development we don't want to restart
 // the server with every change, but we want to make sure we don't
