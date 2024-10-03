@@ -16,11 +16,10 @@ interface Props {
   asLinks?: boolean;
   onSelected?: (idx: number) => void;
   breakpoint?: "sm" | "md" | "lg" | "xl" | "2xl";
-  exact?: boolean;
   selectedTab?: number;
 }
 
-export default function Tabs({ className = "", breakpoint = "md", tabs = [], asLinks = true, onSelected, exact, selectedTab = 0 }: Props) {
+export default function Tabs({ className = "", breakpoint = "md", tabs = [], asLinks = true, onSelected, selectedTab = 0 }: Props) {
   const { t } = useTranslation();
 
   const pathname = usePathname();

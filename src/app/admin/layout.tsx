@@ -9,10 +9,9 @@ import SidebarLayout from "@/components/layouts/SidebarLayout";
 import AdminDataLayout from "@/context/AdminDataLayout";
 import { redirect } from "next/navigation";
 import { IServerComponentsProps } from "@/lib/dtos/ServerComponentsProps";
-import { headers } from "next/headers";
 import { getCurrentUrl } from "@/lib/services/url.server";
 
-const loader = async ({ params, searchParams }: IServerComponentsProps): Promise<AdminDataDto> => {
+const loader = async ({}: IServerComponentsProps): Promise<AdminDataDto> => {
   const userInfo = getUserInfo();
   const user = userInfo.userId ? await getUser(userInfo.userId) : null;
   const url = new URL(getCurrentUrl());
