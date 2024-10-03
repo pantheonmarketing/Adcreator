@@ -16,11 +16,10 @@ import Link from "next/link";
 interface Props {
   items: TenantWithDetailsDto[];
   pagination: PaginationDto;
-  actions?: RowHeaderActionDto<TenantWithDetailsDto>[];
   tenantInvoices?: Stripe.Invoice[];
   isStripeTest?: boolean;
 }
-export default function TenantsTable({ items, pagination, actions = [], tenantInvoices, isStripeTest }: Props) {
+export default function TenantsTable({ items, pagination, tenantInvoices, isStripeTest }: Props) {
   const { t } = useTranslation();
 
   function getTenantInvoices(tenant: TenantWithDetailsDto) {
@@ -170,7 +169,6 @@ export default function TenantsTable({ items, pagination, actions = [], tenantIn
             title: t("admin.tenants.overview"),
             onClickRoute: (_, item) => `/admin/accounts/${item.id}`,
           },
-          ...actions,
         ]}
         pagination={pagination}
       />
