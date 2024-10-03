@@ -1,11 +1,9 @@
 "use client";
 
 import ButtonTertiary from "@/components/ui/buttons/ButtonTertiary";
-import ConfirmModal, { RefConfirmModal } from "@/components/ui/modals/ConfirmModal";
 import UploadFile from "@/components/ui/uploaders/UploadFile";
-import UploadImage from "@/components/ui/uploaders/UploadImage";
 import useAdminData from "@/lib/state/useAdminData";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useRef, useEffect, useState, useActionState } from "react";
 import { useTranslation } from "react-i18next";
 import { actionAdminProfile } from "./actions";
@@ -15,14 +13,9 @@ import LoadingButton from "@/components/ui/buttons/LoadingButton";
 
 export default function () {
   const adminData = useAdminData();
-  const search = useSearchParams();
-  const searchParams = new URLSearchParams(search.toString());
-  const pathname = usePathname();
   const router = useRouter();
   const [actionData, action, pending] = useActionState(actionAdminProfile, null);
   const { t, i18n } = useTranslation();
-
-  const confirmModal = useRef<RefConfirmModal>(null);
 
   const inputFirstName = useRef<HTMLInputElement>(null);
 
@@ -32,19 +25,13 @@ export default function () {
   }, []);
 
   const [avatar, setAvatar] = useState<string | undefined>(adminData.user?.avatar ?? undefined);
-  const [showUploadImage, setShowUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  function changedLocale(lang: string) {
+  function onChangedLocale(lang: string) {
     i18next.changeLanguage(lang);
     router.refresh();
   }
 
-  function confirmDelete() {
-    const form = new FormData();
-    form.set("action", "deleteAccount");
-    action(form);
-  }
   function loadedImage(image: string | undefined) {
     setAvatar(image);
     setUploadingImage(true);
@@ -301,7 +288,7 @@ export default function () {
                         id="locale"
                         required
                         value={i18n.language}
-                        onChange={(e) => changedLocale(e.currentTarget.value)}
+                        onChange={(e) => onChangedLocale(e.currentTarget.value)}
                         className="focus:border-theme-500 focus:ring-theme-500 mt-1 block w-full min-w-0 flex-1 rounded-md border-gray-300 sm:text-sm"
                       >
                         {languages.map((locale, idx) => {
@@ -323,11 +310,6 @@ export default function () {
             <div className="py-5">{/* <div className="border-t border-border"></div> */}</div>
           </div>
         </div>
-
-        {showUploadImage && !uploadingImage && (
-          <UploadImage onClose={() => setShowUploadImage(false)} title={t("shared.avatar")} initialImage={avatar} onLoaded={loadedImage} />
-        )}
-        <ConfirmModal ref={confirmModal} onYes={confirmDelete} />
       </div>
     </div>
   );

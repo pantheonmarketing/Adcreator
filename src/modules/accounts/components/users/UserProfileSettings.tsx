@@ -10,7 +10,6 @@ import ErrorModal, { RefErrorModal } from "@/components/ui/modals/ErrorModal";
 import SuccessModal, { RefSuccessModal } from "@/components/ui/modals/SuccessModal";
 import SettingSection from "@/components/ui/sections/SettingSection";
 import UploadFile from "@/components/ui/uploaders/UploadFile";
-import UploadImage from "@/components/ui/uploaders/UploadImage";
 import { UserDto } from "@/db/models";
 import { languages } from "@/i18n/settings";
 import { IServerAction } from "@/lib/dtos/ServerComponentsProps";
@@ -42,10 +41,9 @@ export default function UserProfileSettings({ user, serverAction }: { user: User
   }, []);
 
   const [avatar, setAvatar] = useState<string | undefined>(user?.avatar ?? undefined);
-  const [showUploadImage, setShowUploadImage] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  function changedLocale(lang: string) {
+  function onChangedLocale(lang: string) {
     i18next.changeLanguage(lang);
     router.refresh();
   }
@@ -251,7 +249,7 @@ export default function UserProfileSettings({ user, serverAction }: { user: User
                       id="locale"
                       required
                       value={i18n.language}
-                      onChange={(e) => changedLocale(e.currentTarget.value)}
+                      onChange={(e) => onChangedLocale(e.currentTarget.value)}
                       className="focus:border-theme-500 focus:ring-theme-500 mt-1 block w-full min-w-0 flex-1 rounded-md border-gray-300 sm:text-sm"
                     >
                       {languages.map((locale, idx) => {
@@ -298,9 +296,6 @@ export default function UserProfileSettings({ user, serverAction }: { user: User
           </div>
         </SettingSection>
       </div>
-      {showUploadImage && !uploadingImage && (
-        <UploadImage onClose={() => setShowUploadImage(false)} title={t("shared.avatar")} initialImage={avatar} onLoaded={loadedImage} />
-      )}
       <SuccessModal ref={successModal} />
       <ErrorModal ref={errorModal} />
       <ConfirmModal ref={confirmModal} onYes={confirmDelete} />

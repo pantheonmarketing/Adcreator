@@ -16,7 +16,9 @@ export default function ({ data, children }: { data: AdminRolesLoaderData; child
     <div className="space-y-2">
       <div className="flex justify-end space-x-2">
         <InputFilters filters={data.filterableProperties} withSearch={false} />
-        <ButtonPrimary to="/admin/accounts/roles-and-permissions/roles/new">{t("shared.new")}</ButtonPrimary>
+        <ButtonPrimary disabled={!getUserHasPermission(adminData, "admin.roles.create")} to="/admin/accounts/roles-and-permissions/roles/new">
+          {t("shared.new")}
+        </ButtonPrimary>
       </div>
       {/* <InputSearchWithURL onNewRoute={getUserHasPermission(adminData, "admin.roles.create") ? "new" : undefined} /> */}
       <RolesTable items={data.items} canUpdate={getUserHasPermission(adminData, "admin.roles.update")} />

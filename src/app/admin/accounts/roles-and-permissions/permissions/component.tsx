@@ -5,7 +5,6 @@ import { actionAdminPermissions, AdminPermissionsLoaderData } from "./layout";
 import { useTranslation } from "react-i18next";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary";
 import InputFilters from "@/components/ui/input/InputFilters";
-import InputSearchWithURL from "@/components/ui/input/InputSearchWithURL";
 import { getUserHasPermission } from "@/lib/helpers/PermissionsHelper";
 import { useActionState } from "react";
 import PermissionsTable from "@/modules/permissions/components/PermissionsTable";
@@ -19,7 +18,9 @@ export default function ({ data, children }: { data: AdminPermissionsLoaderData;
     <div className="space-y-2">
       <div className="flex justify-end space-x-2">
         <InputFilters filters={data.filterableProperties} withSearch={false} />
-        <ButtonPrimary to="/admin/accounts/roles-and-permissions/permissions/new">{t("shared.new")}</ButtonPrimary>
+        <ButtonPrimary disabled={!getUserHasPermission(adminData, "admin.roles.create")} to="/admin/accounts/roles-and-permissions/permissions/new">
+          {t("shared.new")}
+        </ButtonPrimary>
       </div>
       <PermissionsTable
         items={actionData?.items ?? data.items}

@@ -34,7 +34,9 @@ export default function ({ data, children }: { data: AdminUsersLoaderData; child
       buttons={
         <>
           <InputFilters filters={data.filterableProperties} />
-          <ButtonPrimary to="/admin/accounts/users/new">{t("shared.new")}</ButtonPrimary>
+          <ButtonPrimary disabled={!getUserHasPermission(adminData, "admin.accounts.create")} to="/admin/accounts/users/new">
+            {t("shared.new")}
+          </ButtonPrimary>
         </>
       }
     >

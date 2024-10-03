@@ -120,7 +120,7 @@ export default function UploadFile({
   return (
     <div
       className={clsx(
-        "drop flex items-center overflow-hidden rounded-md border-2 border-dashed border-border text-center hover:bg-background/90",
+        "drop flex items-center overflow-hidden rounded-md border-2 border-dashed border-border bg-background text-center hover:bg-background/90",
         customClasses,
         className
       )}
