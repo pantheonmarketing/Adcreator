@@ -1,45 +1,59 @@
-# syntax = docker/dockerfile:1
+#!/bin/bash
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=20.12.2
-FROM node:${NODE_VERSION}-slim as base
+# base node image
+FROM --platform=linux/amd64 node:18-bookworm-slim as base
 
-LABEL fly_launch_runtime="Next.js"
+# set for base and all layer that inherit from it
+ENV NODE_ENV production
 
-# Next.js app lives here
-WORKDIR /app
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl
 
-# Set production environment
-ENV NODE_ENV="production"
+# Install all node_modules, including dev dependencies
+FROM base as deps
 
+WORKDIR /myapp
 
-# Throw-away build stage to reduce size of final image
+ADD package.json ./
+RUN npm install --production=false --legacy-peer-deps
+
+# Setup production node_modules
+FROM base as production-deps
+
+WORKDIR /myapp
+
+COPY --from=deps /myapp/node_modules /myapp/node_modules
+ADD package.json ./
+RUN npm prune --production --legacy-peer-deps
+
+# Build the app
 FROM base as build
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
+WORKDIR /myapp
 
-# Install node modules
-COPY --link package-lock.json package.json ./
-RUN npm ci --include=dev --legacy-peer-deps
+COPY --from=deps /myapp/node_modules /myapp/node_modules
 
-# Copy application code
-COPY --link . .
+ADD src/db/config/prisma prisma
+RUN npx prisma generate
 
-# Build application
+ADD . .
 RUN npm run build
 
-# Remove development dependencies
-RUN npm prune --omit=dev --legacy-peer-deps
-
-
-# Final stage for app image
+# Finally, build the production image with minimal footprint
 FROM base
 
-# Copy built application
-COPY --from=build /app /app
+ENV PORT="3000"
+ENV NODE_ENV="production"
 
-# Start the server by default, this can be overwritten at runtime
+WORKDIR /myapp
+
+COPY --from=production-deps /myapp/node_modules /myapp/node_modules
+COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
+
+COPY --from=build /myapp /myapp
+COPY --from=build /myapp/public /myapp/public
+COPY --from=build /myapp/package.json /myapp/package.json
+COPY --from=build /myapp/prisma /myapp/prisma
+
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+ENTRYPOINT [ "npm" , "run", "start" ]

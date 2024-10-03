@@ -29,7 +29,8 @@ export default function LoginForm({ appConfiguration, redirectTo }: { appConfigu
     setTimeout(() => {
       emailInput.current?.focus();
     }, 300);
-  }, []);
+  }, [actionData]);
+
   return (
     <div className="space-y-5">
       <div className="flex flex-col items-center">
@@ -59,7 +60,7 @@ export default function LoginForm({ appConfiguration, redirectTo }: { appConfigu
               required
               placeholder="email@address.com"
               disabled={pending}
-              defaultValue=""
+              defaultValue={actionData?.email}
             />
           </div>
           <div>

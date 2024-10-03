@@ -33,10 +33,10 @@ function getHome({ isAdmin, defaultTenant }: { isAdmin: boolean; defaultTenant: 
 }
 
 export async function actionLogin(prev: any, form: FormData) {
+  const email = form.get("email")?.toString().toLowerCase().trim();
   try {
     const userInfo = getUserInfo();
     const { t } = await getServerTranslations();
-    const email = form.get("email")?.toString().toLowerCase().trim();
     const password = form.get("password");
     const redirectTo = form.get("redirectTo");
     if (typeof email !== "string" || typeof password !== "string" || typeof redirectTo !== "string") {
@@ -93,7 +93,10 @@ export async function actionLogin(prev: any, form: FormData) {
     }
     // eslint-disable-next-line no-console
     console.log(e.message);
-    return { error: e.message as string };
+    return {
+      email,
+      error: e.message as string,
+    };
   }
 }
 

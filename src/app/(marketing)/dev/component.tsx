@@ -96,12 +96,12 @@ export default function DevComponent({
                 </>
               }
             />
-            <ButtonSecondary disabled={rootData.user ? false : true} onClick={() => onClick("logout")}>
+            {/* <ButtonSecondary disabled={rootData.user ? false : true} onClick={() => onClick("logout")}>
               Logout
             </ButtonSecondary>
             <ButtonSecondary disabled={rootData.user ? true : false} onClick={() => onClick("login")}>
               Login
-            </ButtonSecondary>
+            </ButtonSecondary> */}
           </div>
         </div>
       </div>

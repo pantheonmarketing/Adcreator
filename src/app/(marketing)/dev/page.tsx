@@ -43,17 +43,17 @@ export const actionDev = async (prev: any, form: FormData) => {
     } catch (e: any) {
       return { error: e.message };
     }
-  } else if (action === "logout") {
-    resetUserSession();
-    return { success: "Logged out" };
-  } else if (action === "login") {
-    const form = new FormData();
-    form.set("email", "admin@email.com");
-    form.set("password", "password");
-    form.set("redirectTo", "/dev");
-    return actionLogin(null, form);
-    // return { success: "Logged in" };
   }
+  // else if (action === "logout") {
+  //   resetUserSession();
+  //   return { success: "Logged out" };
+  // } else if (action === "login") {
+  //   const form = new FormData();
+  //   form.set("email", "admin@email.com");
+  //   form.set("password", "password");
+  //   form.set("redirectTo", "/dev");
+  //   return actionLogin(null, form);
+  // }
 };
 
 export default async function DevRoute() {
