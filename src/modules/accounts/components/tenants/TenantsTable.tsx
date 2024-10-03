@@ -23,153 +23,148 @@ interface Props {
 export default function TenantsTable({ items, pagination, actions = [], tenantInvoices, isStripeTest }: Props) {
   const { t } = useTranslation();
 
-  const [headers, setHeaders] = useState<RowHeaderDisplayDto<TenantWithDetailsDto>[]>([]);
-
-  useEffect(() => {
-    const headers: RowHeaderDisplayDto<TenantWithDetailsDto>[] = [];
-    headers.push({
-      name: "tenant",
-      title: t("models.tenant.object"),
-      value: (i) => (
-        <div className="max-w-sm truncate">
-          <div className="flex items-center space-x-1 truncate font-medium text-gray-800">
-            <Link href={`/admin/accounts/${i.id}`} className="hover:underline">
-              {i.name}
-            </Link>
-          </div>
-
-          <Link
-            href={"/app/" + i.slug}
-            className="rounded-md border-b border-dashed text-xs text-gray-500 hover:border-dashed hover:border-gray-400 focus:bg-gray-100"
-          >
-            <span>/{i.slug}</span>
-          </Link>
-        </div>
-      ),
-    });
-    headers.push({
-      name: "subscription",
-      title: t("admin.tenants.subscription.title"),
-      // value: (i) => "",
-      value: (item) => (
-        <span>
-          {item.subscription?.products ? (
-            <>
-              <div>
-                {item.subscription.products.map((product) => {
-                  return (
-                    <div key={product.id}>
-                      <div>
-                        {t(product.subscriptionProduct.title)}{" "}
-                        {product.prices
-                          .map(
-                            (f) =>
-                              `$${NumberUtils.decimalFormat(Number(f.subscriptionPrice?.price ?? 0))} - ${SubscriptionUtils.getBillingPeriodDescription(
-                                t,
-                                f.subscriptionPrice?.billingPeriod ?? 0
-                              )}`
-                          )
-                          .join(", ")}
-                      </div>
-                      {product.endsAt && (
-                        <>
-                          {new Date() < new Date(product.endsAt) ? (
-                            <div className="text-red-500">
-                              {t("settings.subscription.ends")} {DateUtils.dateMonthDayYear(product.endsAt)}
-                            </div>
-                          ) : (
-                            <div className="text-red-500">
-                              {t("settings.subscription.endedAt")} {DateUtils.dateMonthDayYear(product.endsAt)}
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          ) : (
-            <span className="text-sm italic text-gray-400">{t("settings.subscription.noSubscription")}</span>
-          )}
-        </span>
-      ),
-    });
-    if (tenantInvoices !== undefined) {
-      function getTenantInvoices(tenant: TenantWithDetailsDto) {
-        const items = tenantInvoices?.filter((f) => f.customer?.toString() === tenant.subscription?.stripeCustomerId) ?? [];
-        const sortedByCreatedDesc = items.sort((a, b) => (a.created > b.created ? 1 : -1));
-        return sortedByCreatedDesc;
-      }
-      function lastTenantInvoice(tenant: TenantWithDetailsDto): Stripe.Invoice | undefined {
-        const items = getTenantInvoices(tenant);
-        return items.length > 0 ? items[items.length - 1] : undefined;
-      }
-      function getTotalPaid(tenant: TenantWithDetailsDto): number {
-        const items = getTenantInvoices(tenant);
-        return items.reduce((a, b) => a + Number(b.amount_paid / 100), 0);
-      }
-      headers.push({
-        name: "lastInvoice",
-        title: "Last invoice",
-        value: (i) => (
-          <a
-            className="flex flex-col space-y-1 hover:underline"
-            target="_blank"
-            rel="noreferrer"
-            href={`https://dashboard.stripe.com${isStripeTest ? "/test" : ""}/customers/${i.subscription?.stripeCustomerId ?? ""}`}
-          >
-            <div className="flex flex-col space-y-1">{!lastTenantInvoice(i) ? <span>-</span> : <TenantInvoice item={lastTenantInvoice(i)!} />}</div>
-          </a>
-        ),
-      });
-      headers.push({
-        name: "totalInvoicesPaid",
-        title: "Total paid",
-        value: (i) => (
-          <a
-            className="flex flex-col space-y-1 hover:underline"
-            target="_blank"
-            rel="noreferrer"
-            href={`https://dashboard.stripe.com${isStripeTest ? "/test" : ""}/customers/${i.subscription?.stripeCustomerId ?? ""}`}
-          >
-            {getTotalPaid(i) === 0 ? (
-              <span>-</span>
-            ) : (
-              <div>
-                ${NumberUtils.decimalFormat(getTotalPaid(i))} ({getTenantInvoices(i).filter((f) => f.paid).length})
-              </div>
-            )}
-          </a>
-        ),
-      });
-    }
-    headers.push({
-      name: "users",
-      title: t("models.user.plural"),
-      className: "max-w-xs truncate",
-      value: (i) => i.users.map((f) => f.user.email).join(", "),
-      href: (i) => `/admin/accounts/users?tenantId=${i.id}`,
-    });
-    headers.push({
-      name: "createdAt",
-      title: t("shared.createdAt"),
-      // value: (i) => i.createdAt,
-      value: (item) => (
-        <div className="flex flex-col">
-          <div>{DateUtils.dateYMD(item.createdAt)}</div>
-          <div className="text-xs">{DateUtils.dateAgo(item.createdAt)}</div>
-        </div>
-      ),
-    });
-    setHeaders(headers);
-  }, [isStripeTest, t, tenantInvoices]);
+  function getTenantInvoices(tenant: TenantWithDetailsDto) {
+    const items = tenantInvoices?.filter((f) => f.customer?.toString() === tenant.subscription?.stripeCustomerId) ?? [];
+    const sortedByCreatedDesc = items.sort((a, b) => (a.created > b.created ? 1 : -1));
+    return sortedByCreatedDesc;
+  }
+  function lastTenantInvoice(tenant: TenantWithDetailsDto): Stripe.Invoice | undefined {
+    const items = getTenantInvoices(tenant);
+    return items.length > 0 ? items[items.length - 1] : undefined;
+  }
+  function getTotalPaid(tenant: TenantWithDetailsDto): number {
+    const items = getTenantInvoices(tenant);
+    return items.reduce((a, b) => a + Number(b.amount_paid / 100), 0);
+  }
 
   return (
     <div className="space-y-2">
       <TableSimple
         items={items}
-        headers={headers}
+        headers={[
+          {
+            name: "tenant",
+            title: t("models.tenant.object"),
+            value: (i) => (
+              <div className="max-w-sm truncate">
+                <div className="flex items-center space-x-1 truncate font-medium text-gray-800">
+                  <Link href={`/admin/accounts/${i.id}`} className="hover:underline">
+                    {i.name}
+                  </Link>
+                </div>
+
+                <Link
+                  href={"/app/" + i.slug}
+                  className="rounded-md border-b border-dashed text-xs text-gray-500 hover:border-dashed hover:border-gray-400 focus:bg-gray-100"
+                >
+                  <span>/{i.slug}</span>
+                </Link>
+              </div>
+            ),
+          },
+          {
+            name: "subscription",
+            title: t("admin.tenants.subscription.title"),
+            // value: (i) => "",
+            value: (item) => (
+              <span>
+                {item.subscription?.products ? (
+                  <>
+                    <div>
+                      {item.subscription.products.map((product) => {
+                        return (
+                          <div key={product.id}>
+                            <div>
+                              {t(product.subscriptionProduct.title)}{" "}
+                              {product.prices
+                                .map(
+                                  (f) =>
+                                    `$${NumberUtils.decimalFormat(Number(f.subscriptionPrice?.price ?? 0))} - ${SubscriptionUtils.getBillingPeriodDescription(
+                                      t,
+                                      f.subscriptionPrice?.billingPeriod ?? 0
+                                    )}`
+                                )
+                                .join(", ")}
+                            </div>
+                            {product.endsAt && (
+                              <>
+                                {new Date() < new Date(product.endsAt) ? (
+                                  <div className="text-red-500">
+                                    {t("settings.subscription.ends")} {DateUtils.dateMonthDayYear(product.endsAt)}
+                                  </div>
+                                ) : (
+                                  <div className="text-red-500">
+                                    {t("settings.subscription.endedAt")} {DateUtils.dateMonthDayYear(product.endsAt)}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <span className="text-sm italic text-gray-400">{t("settings.subscription.noSubscription")}</span>
+                )}
+              </span>
+            ),
+          },
+          {
+            name: "lastInvoice",
+            title: "Last invoice",
+            hidden: tenantInvoices === undefined,
+            value: (i) => (
+              <a
+                className="flex flex-col space-y-1 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://dashboard.stripe.com${isStripeTest ? "/test" : ""}/customers/${i.subscription?.stripeCustomerId ?? ""}`}
+              >
+                <div className="flex flex-col space-y-1">{!lastTenantInvoice(i) ? <span>-</span> : <TenantInvoice item={lastTenantInvoice(i)!} />}</div>
+              </a>
+            ),
+          },
+          {
+            name: "totalInvoicesPaid",
+            title: "Total paid",
+            hidden: tenantInvoices === undefined,
+            value: (i) => (
+              <a
+                className="flex flex-col space-y-1 hover:underline"
+                target="_blank"
+                rel="noreferrer"
+                href={`https://dashboard.stripe.com${isStripeTest ? "/test" : ""}/customers/${i.subscription?.stripeCustomerId ?? ""}`}
+              >
+                {getTotalPaid(i) === 0 ? (
+                  <span>-</span>
+                ) : (
+                  <div>
+                    ${NumberUtils.decimalFormat(getTotalPaid(i))} ({getTenantInvoices(i).filter((f) => f.paid).length})
+                  </div>
+                )}
+              </a>
+            ),
+          },
+          {
+            name: "users",
+            title: t("models.user.plural"),
+            className: "max-w-xs truncate",
+            value: (i) => i.users.map((f) => f.user.email).join(", "),
+            href: (i) => `/admin/accounts/users?tenantId=${i.id}`,
+          },
+          {
+            name: "createdAt",
+            title: t("shared.createdAt"),
+            // value: (i) => i.createdAt,
+            value: (item) => (
+              <div className="flex flex-col">
+                <div>{DateUtils.dateYMD(item.createdAt)}</div>
+                <div className="text-xs">{DateUtils.dateAgo(item.createdAt)}</div>
+              </div>
+            ),
+          },
+        ]}
         actions={[
           {
             title: t("admin.tenants.overview"),
