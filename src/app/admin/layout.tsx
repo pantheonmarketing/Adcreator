@@ -15,11 +15,12 @@ import { getCurrentUrl } from "@/lib/services/url.server";
 const loader = async ({ params, searchParams }: IServerComponentsProps): Promise<AdminDataDto> => {
   const userInfo = getUserInfo();
   const user = userInfo.userId ? await getUser(userInfo.userId) : null;
-  const url = getCurrentUrl();
-  const redirectTo = url + url.search;
+  const url = new URL(getCurrentUrl());
+  const redirectTo = url.pathname + url.search;
   if (!userInfo || !user || !userInfo.userId) {
     let searchParams = new URLSearchParams([["redirect", redirectTo]]);
-    throw redirect(`/login?${searchParams}`);
+    console.log({ searchParams: searchParams.toString() });
+    throw redirect(`/login?${searchParams.toString()}`);
   }
 
   if (!user.admin) {
